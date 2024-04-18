@@ -19,6 +19,7 @@ Photon::Photon(const Photon& copy_from)
   rest_mass = copy_from.rest_mass;
   charge = copy_from.charge;
   name = copy_from.name;
+  cal_deposits = copy_from.cal_deposits;
 }
 
 // Move Constructor
@@ -28,6 +29,7 @@ Photon::Photon(Photon&& move_from)
   rest_mass = move_from.rest_mass;
   charge = move_from.charge;
   name = std::move(move_from.name);
+  cal_deposits = std::move(move_from.cal_deposits);
   
   // Reset the moved-from object
   move_from.true_energy = 0;
@@ -52,6 +54,7 @@ Photon& Photon::operator=(const Photon& copy_from)
   rest_mass = copy_from.rest_mass;
   charge = copy_from.charge;
   name = copy_from.name;
+  cal_deposits = copy_from.cal_deposits;
   
   return *this;
 }
@@ -66,6 +69,7 @@ Photon& Photon::operator=(Photon&& move_from)
   rest_mass = move_from.rest_mass;
   charge = move_from.charge;
   name = std::move(move_from.name);
+  cal_deposits = std::move(move_from.cal_deposits);
   
   // Reset the moved-from object
   move_from.true_energy = 0;

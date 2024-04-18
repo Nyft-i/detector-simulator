@@ -27,15 +27,18 @@ string Particle::get_name() {return name;}
 // Setters
 void Particle::set_true_energy(double setter_energy) 
 {
-  // Makes sure that the energy is not zero.
-  if(setter_energy>0) true_energy = setter_energy;
-  else true_energy = 1;  
+  // Makes sure that the energy is not less than the rest mass.
+  if(setter_energy>rest_mass) true_energy = setter_energy;
+  else true_energy = rest_mass;  
 }
 void Particle::set_rest_mass(double setter_rm)
 {
   // Ensures that the rest mass cannot be negative.
   if(setter_rm<0) rest_mass = std::abs(setter_rm);
+  // Also the rest mass shouldn't be larger than the true energy.
+  else if(setter_rm>true_energy) rest_mass = true_energy;
   else rest_mass = setter_rm;
+
 }
 void Particle::set_charge(int setter_char) {charge = setter_char;}
 void Particle::set_name(string setter_name) {name = setter_name;}

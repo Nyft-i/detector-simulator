@@ -19,14 +19,7 @@ public:
   Particle();
   // Parameterised
   // Copy
-  Particle(const Particle& other_particle) 
-  {
-    identifier = other_particle.identifier;
-    true_energy = other_particle.true_energy;
-    rest_mass = other_particle.rest_mass;
-    charge = other_particle.charge;
-    name = other_particle.name;
-  }
+  
   // Move
 
   // Destructor

@@ -1,10 +1,10 @@
 #ifndef PHOTON_H_INCLUDED
 #define PHOTON_H_INCLUDED
 
-#include"energy_depositer.h"
+#include"depositor_particle.h"
 #include"particle.h"
 
-class Photon : public Particle, public EnergyDepositer
+class Photon : public DepositorParticle
 {
 public:
   // Constructors
