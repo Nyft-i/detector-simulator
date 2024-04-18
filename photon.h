@@ -13,21 +13,19 @@ public:
   // Parameterised
   Photon(double con_energy);
   // Copy
-  Photon(Photon& copy_from);
+  Photon(const Photon& copy_from);
   // Move
   Photon(Photon&& move_from);
 
-  // Destructor
+  // Destructor, don't need
 
   // Assignment
   // Copy
-  Photon& operator=(Photon& copy_from);
+  Photon& operator=(const Photon& copy_from);
   // Move
   Photon& operator=(Photon&& move_from);
 
-  // Getters
-  // Nothing unique to photons.
-  // Setters
+  // Nothing unique to photons to get or set.
 
   // Functionality
 };
