@@ -55,5 +55,5 @@ Nucleon::Nucleon(string con_nuc_type, double con_energy)
 // Functionality
 void Nucleon::print()
 {
-
+  
 }
