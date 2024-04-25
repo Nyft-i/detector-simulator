@@ -19,7 +19,6 @@ Particle::Particle()
 
 // Getters
 int Particle::identify() {return identifier;}
-
 double Particle::get_true_energy() {return true_energy;}
 double Particle::get_rest_mass() {return rest_mass;}
 int Particle::get_charge() {return charge;}

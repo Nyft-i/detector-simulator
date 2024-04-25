@@ -6,7 +6,7 @@
 class Electron : public DepositorParticle
 {
 private:
-  // Electron has nothing unique! It just deposits in the calorimiter layer.
+  // Electron has nothing unique! It just deposits in the calorimiter layer, so it inherits from DepositorParticle.
 public:
   // Constructors
   // Default
