@@ -2,13 +2,25 @@
 // Project - Detector Simulation: Jade Salisbury
 
 #include<iostream>
+#include<memory>
+#include<vector>
 
 #include"particle.h"
 #include"photon.h"
+#include"electron.h"
+
+using std::shared_ptr;
+using std::vector;
 
 int Particle::numberer=0; // Starts the particle numbering from 0.
 int main()
 {
-  Photon test(1500);
-  std::cout<<test.identify();
+  vector<shared_ptr<Particle>> particle_list;
+  particle_list.push_back(std::make_shared<Photon>(1500, vector<double>{1,2,3,4}));
+  particle_list.push_back(std::make_shared<Electron>(200, vector<double>{5,10,15,20}));
+
+  //std::cout<<particle_list[0]->identify();
+  particle_list[0]->print();
+  particle_list[1]->print();
+
 }

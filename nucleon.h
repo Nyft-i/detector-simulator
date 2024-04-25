@@ -14,7 +14,7 @@ private:
 public:
   // Constructors
   // Default
-  Nucleon() = default;
+  Nucleon();
   // Parameterised
   Nucleon(string con_nuc_type, double con_energy);
   // Copy
@@ -31,6 +31,7 @@ public:
   Nucleon& operator=(Nucleon&& move_from);
 
   // Functionality
+  void print() override;
 };
 
 

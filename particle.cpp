@@ -5,7 +5,7 @@
 // Constructor
 Particle::Particle()
 {
-  std::cout<<"Particle() called."<<std::endl;
+  //std::cout<<"Particle() called."<<std::endl;
   // Number Management
   identifier = numberer;
   numberer++;
@@ -13,6 +13,7 @@ Particle::Particle()
   true_energy = 0;
   rest_mass = 0;
   charge = 0;
+  pap_status = 0; // Particle/antiparticle status
   name = "unknown particle";
 }
 
@@ -42,3 +43,13 @@ void Particle::set_rest_mass(double setter_rm)
 }
 void Particle::set_charge(int setter_char) {charge = setter_char;}
 void Particle::set_name(string setter_name) {name = setter_name;}
+
+void Particle::print()
+{
+  //Overidden print functions call this one at the end. So this needs to print everything that is not unique to any particle.
+  std::cout<<"this particle is identified by : "<<identifier<<std::endl;
+  std::cout<<"true energy (MeV) : "<<true_energy<<std::endl;
+  std::cout<<"rest mass (MeV) : "<<rest_mass<<std::endl;
+  std::cout<<"charge (e) : "<<charge<<std::endl;
+  std::cout<<"name : "<<name<<std::endl;
+}

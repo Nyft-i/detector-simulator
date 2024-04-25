@@ -12,6 +12,7 @@ protected:
   double true_energy;
   double rest_mass;
   int charge; // There are only particles with integer charges required in this assignment.
+  int pap_status; // 1 for particle, -1 for antiparticle and 0 for a particle that is its own antiparticle.
   string name;
 public:
   // Constructors
@@ -42,6 +43,7 @@ public:
   void set_name(string setter_name);
 
   // Functionality
+  virtual void print();
 };
 
 #endif

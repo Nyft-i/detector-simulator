@@ -21,12 +21,18 @@ public:
   const double get_HAD_2();
   
   // Setters
-  void set_cal_deposits(std::shared_ptr<vector<double>> setter_cal_deposits);
+  void set_cal_deposits(vector<double> setter_cal_deposits);
   void set_cal_deposits(double setter_EM_1, double setter_EM_2, double setter_HAD_1, double setter_HAD_2);
   void set_EM_1(double setter_EM_1);
   void set_EM_2(double setter_EM_2);
   void set_HAD_1(double setter_HAD_1);
   void set_HAD_2(double setter_HAD_2);
+
+  // Functionality
+  string cal_dep_string();
+  virtual void print() override;
 };
+
+
 
 #endif

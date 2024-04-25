@@ -51,3 +51,9 @@ Nucleon::Nucleon(string con_nuc_type, double con_energy)
     cal_deposits;
   }
 }
+
+// Functionality
+void Nucleon::print()
+{
+
+}
