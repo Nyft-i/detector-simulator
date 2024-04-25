@@ -5,7 +5,7 @@ CC = g++
 CFLAGS = -std=c++11
 
 # Source files
-SRCS = detector_simulation.cpp depositor_particle.cpp particle.cpp photon.cpp electron.cpp nucleon.cpp muon.cpp
+SRCS = detector_simulation.cpp depositor_particle.cpp particle.cpp photon.cpp electron.cpp nucleon.cpp muon.cpp tau.cpp 
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)
