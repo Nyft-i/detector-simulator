@@ -11,6 +11,8 @@
 #include"muon.h"
 #include"tau.h"
 #include"neutrino.h"
+#include"sub_detector.h"
+#include"tracker.h"
 
 using std::shared_ptr;
 using std::vector;
@@ -30,4 +32,12 @@ int main()
   particle_list[2]->print();
   particle_list[3]->print();
   particle_list[4]->print();
+
+  Tracker testing;
+  testing.interact(*particle_list[0]);
+  std::cout<<testing.get_hit_layer(0)<<std::endl;
+  std::cout<<testing.get_hit_layer(1)<<std::endl;
+  std::cout<<testing.get_hit_layer(2)<<std::endl;
+
+
 }
