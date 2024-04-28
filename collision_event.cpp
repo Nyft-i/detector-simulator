@@ -80,9 +80,9 @@ Particle& CollisionEvent::operator [](int index)
 }  
 
 // Functionality
-void CollisionEvent::add_particle(Particle& add_particle)
+void CollisionEvent::add_particle(shared_ptr<Particle> add_particle)
 {
-  event_particles.push_back(std::make_shared<Particle>(add_particle));
+  event_particles.push_back(std::move(add_particle));
 }
 
 void CollisionEvent::print(int index)

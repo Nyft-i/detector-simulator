@@ -2,7 +2,7 @@
 CC = g++
 
 # Compiler flags
-CFLAGS = -std=c++11
+CFLAGS = -std=c++17
 
 # Source files
 SRCS = detector_simulation.cpp depositor_particle.cpp particle.cpp photon.cpp electron.cpp nucleon.cpp muon.cpp tau.cpp neutrino.cpp sub_detector.cpp tracker.cpp detector.cpp collision_event.cpp

@@ -6,14 +6,13 @@
 // Default
 
 // Parameterised
-Photon::Photon(double con_energy, vector<double> con_cal_deposits)
+Photon::Photon(double con_energy)
 {
-  true_energy = con_energy;
   rest_mass = 0;
   charge = 0;
   pap_status = 0;
   name = "photon";
-  set_cal_deposits(con_cal_deposits);
+  set_true_energy(con_energy);
 }
 
 // Deep Copy Constructor

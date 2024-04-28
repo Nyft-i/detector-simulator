@@ -33,6 +33,7 @@ public:
   virtual void print();
   virtual void interact(Particle& interacting_particle)=0;
   virtual void interact(CollisionEvent& interacting_event)=0;
+  virtual void reset()=0;
 };
 
 #endif

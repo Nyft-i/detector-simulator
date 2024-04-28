@@ -11,7 +11,7 @@ public:
   // Default
   Photon() = default;
   // Parameterised
-  Photon(double con_energy, vector<double> con_cal_deposits);
+  Photon(double con_energy);
   // Copy
   Photon(const Photon& copy_from);
   // Move

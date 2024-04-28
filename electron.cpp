@@ -6,11 +6,9 @@
 // Default
 
 // Parameterised
-Electron::Electron(double con_energy, int con_pap, vector<double> con_cal_deposits)
+Electron::Electron(double con_energy, int con_pap)
 {
-  true_energy = con_energy;
   rest_mass = 0.511;
-  set_cal_deposits(con_cal_deposits);
   if(con_pap==-1)
   {
     charge = 1;
@@ -21,16 +19,7 @@ Electron::Electron(double con_energy, int con_pap, vector<double> con_cal_deposi
     charge = -1;
     name = "electron";
   }
-}
-
-Electron::Electron(double con_energy, vector<double> con_cal_deposits)
-{
-  true_energy = con_energy;
-  rest_mass = 0.511;
-  charge = -1;
-  name = "electron";
-  pap_status = 1;
-  set_cal_deposits(con_cal_deposits);
+  set_true_energy(con_energy); // Generates cal_deposits too.
 }
 
 // Deep Copy Constructor

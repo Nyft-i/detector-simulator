@@ -37,7 +37,7 @@ public:
   string get_name();
 
   // Setters
-  void set_true_energy(double set_energy);
+  virtual void set_true_energy(double set_energy);
   void set_rest_mass(double set_rm);
   void set_charge(int set_char);
   void set_name(string set_name);

@@ -35,3 +35,10 @@ void Detector::see_detections()
   if(tracker.detection_status()) std::cout<<"tracker detection!"<<std::endl;
   else std::cout<<"no tracker detection"<<std::endl;
 }
+
+void Detector::reset()
+{
+  tracker.reset();
+  //calorimiter.reset();
+  //muon_chamber.reset();
+}

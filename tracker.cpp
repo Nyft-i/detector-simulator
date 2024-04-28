@@ -155,3 +155,11 @@ void Tracker::see_detection()
   if(detection_status()) std::cout<<"tracker detection!"<<std::endl;
   else std::cout<<"no tracker detection"<<std::endl;
 }
+
+void Tracker::reset()
+{
+  hit_layers->at(INNER_PIXEL_LAYER) = false;
+  hit_layers->at(OUTER_PIXEL_LAYER) = false;
+  hit_layers->at(STRIP_LAYER) = false;
+  total_energy_detected = 0;
+}

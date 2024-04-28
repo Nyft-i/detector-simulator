@@ -47,7 +47,7 @@ public:
   Particle& operator [](int index);
 
   // Functionality
-  void add_particle(Particle& add_particle);
+  void add_particle(shared_ptr<Particle> add_particle);
   void print(int index);
   void print();
 };

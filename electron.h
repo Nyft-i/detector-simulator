@@ -12,8 +12,7 @@ public:
   // Default
   Electron();
   // Parameterised
-  Electron(double con_energy, int con_pap, vector<double> con_cal_deps);
-  Electron(double con_energy, vector<double> con_cal_deps);
+  Electron(double con_energy, int con_pap=1);
   // Copy
   Electron(const Electron& copy_from);
   // Move

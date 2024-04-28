@@ -8,11 +8,10 @@ Nucleon::Nucleon()
 {
   // Assume neutron if not told otherwise
   nuc_type = "neutron";
-  true_energy = 939.565;
   rest_mass = 939.565;
   charge = 0;
   name = "nucleon";
-  ;
+  set_true_energy(939.565);
 }
 
 // Parameterised
@@ -26,29 +25,26 @@ Nucleon::Nucleon(string con_nuc_type, double con_energy)
     // Error message and default to neutron user doesn't enter a valid nucleon type.
     std::cout<<"Invalid nucleon type. Defaulting to neutron."<<std::endl;
     nuc_type="neutron";
-    true_energy = 939.565;
     rest_mass = 939.565;
     charge = 0;
     name = "nucleon";
-    cal_deposits;
+    set_true_energy(con_energy);
   }
   else if(con_nuc_type=="proton")
   {
     nuc_type = con_nuc_type;
-    true_energy = con_energy;
     rest_mass = 938.272;
     charge = 1;
     name = "nucleon";
-    cal_deposits;
+    set_true_energy(con_energy);
   }
   else
   {
     nuc_type = con_nuc_type;
-    true_energy = con_energy;
     rest_mass = 939.565;
     charge = 0;
     name = "nucleon";
-    cal_deposits;
+    set_true_energy(con_energy);
   }
 }
 

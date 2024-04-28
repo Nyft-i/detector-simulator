@@ -54,6 +54,7 @@ public:
   int get_num_hits();
   bool detection_status();
   void see_detection();
+  void reset() override;
 };
 
 #endif
