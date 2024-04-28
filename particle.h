@@ -20,14 +20,17 @@ public:
   Particle();
   // Parameterised
   // Copy
-  
+  Particle(const Particle& copy_from);
   // Move
+  Particle(Particle&& move_from);
 
   // Destructor
 
   // Assignment
   // Copy
+  Particle& operator=(const Particle& copy_from);
   // Move
+  Particle& operator=(Particle&& move_from);
 
   // Getters
   int identify();
