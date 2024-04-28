@@ -37,8 +37,8 @@ public:
 
   // Functionality
   void interact(Particle& interacting_particle);
-  void interact(CollisionEvent& interacting_event);
-  Particle guess_particle();
+  void interact(CollisionEvent& col_event);
+  void see_detections();
 };
 
 #endif

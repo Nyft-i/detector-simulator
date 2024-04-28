@@ -1,6 +1,7 @@
 #include<cstdlib>
 #include<iostream>
 #include<ctime>
+#include<chrono>
 
 #include"tracker.h"
 #include"sub_detector.h"
@@ -109,23 +110,48 @@ void Tracker::print()
 
 void Tracker::interact(Particle& interacting_particle)
 {
-  ///@todo find out if this is the correct way to do this from piazza. Works for now
-  // This code randomly determines, with percent_chance% probability if each layer has been hit
-  std::srand(std::time(nullptr)); // use current time as seed for random generator
-  for(int i=0; i<3; i++)
+  // Only particles with a charge can interact with the tracker.
+  if(interacting_particle.get_charge() == 0) return;
+  else
   {
-    int random_value = std::rand();
-    if(random_value%100 < percent_chance) hit_layers->at(i) = true;
+    // This code randomly determines, with percent_chance% probability if each layer has been hit
+    for(int i=0; i<3; i++)
+    {
+      int random_value = std::rand();
+      if(random_value%100 < percent_chance) hit_layers->at(i) = true;
+    }
+  }
+}
+
+void Tracker::interact(CollisionEvent& col_event)
+{
+  for(int i=0; i<col_event.get_num_particles(); i++)
+  {
+    interact(col_event[i]);
   }
 }
 
 int Tracker::get_num_hits()
 {
-  // Function that counts the number of pixel layers that have been hit. This can be 0, 1 or 2.
+  // Counts the number of pixel layers that have been hit. This can be 0, 1 or 2.
   int num_hits = 0;
   for(int i=0; i<3; i++)
   {
     if(hit_layers->at(i)) num_hits++;
   }
   return num_hits;
+}
+
+bool Tracker::detection_status()
+{
+  // Returns true if the tracker has detected a particle.
+  if(get_num_hits()>=2) return true;
+  else return false;
+}
+
+void Tracker::see_detection()
+{
+  // Prints a message if the tracker has detected a particle.
+  if(detection_status()) std::cout<<"tracker detection!"<<std::endl;
+  else std::cout<<"no tracker detection"<<std::endl;
 }

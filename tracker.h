@@ -48,9 +48,12 @@ public:
   void set_percent_chance(int set_percent_chance);
 
   // Functionality
-  void interact(Particle& interacting_particle);
+  void interact(Particle& interacting_particle) override;
+  void interact(CollisionEvent& col_event) override;
   void print() override;
   int get_num_hits();
+  bool detection_status();
+  void see_detection();
 };
 
 #endif

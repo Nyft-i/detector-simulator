@@ -2,6 +2,7 @@
 #define SUB_DETECTOR_H_INCLUDED
 
 #include"particle.h"
+#include"collision_event.h"
 
 class SubDetector
 {
@@ -31,6 +32,7 @@ public:
   // Functionality
   virtual void print();
   virtual void interact(Particle& interacting_particle)=0;
+  virtual void interact(CollisionEvent& interacting_event)=0;
 };
 
 #endif

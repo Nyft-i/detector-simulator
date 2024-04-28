@@ -37,8 +37,11 @@ public:
   CollisionEvent& operator=(CollisionEvent&& move_from);
   
   // Getters
+  string get_event_name();
+  int get_num_particles();
 
   // Setters
+  void set_event_name(string set_event_name);
 
   // Operator overload
   Particle& operator [](int index);

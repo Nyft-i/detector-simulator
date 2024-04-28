@@ -67,8 +67,11 @@ CollisionEvent& CollisionEvent::operator=(CollisionEvent&& move_from)
 
 
 // Getters
+string CollisionEvent::get_event_name() {return event_name;}
+int CollisionEvent::get_num_particles() {return event_particles.size();}
 
 // Setters
+void CollisionEvent::set_event_name(string set_event_name) {event_name = set_event_name;}
 
 // Operator overload
 Particle& CollisionEvent::operator [](int index)

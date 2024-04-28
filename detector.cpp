@@ -21,12 +21,17 @@ void Detector::interact(Particle& interacting_particle)
   //muon_chamber.interact(interacting_particle);
 }
 
-Particle Detector::guess_particle()
+void Detector::interact(CollisionEvent& col_event)
+{
+  tracker.interact(col_event);
+  //calorimiter.interact(interacting_event);
+  //muon_chamber.interact(interacting_event);
+}
+
+void Detector::see_detections()
 {
   // Uses the information available to guess the particle.
   // Tracker
-  if(tracker.get_num_hits()>=2)
-  {
-    std::cout<<"tracker detection!"<<std::endl;
-  } // Particle can be a charged particle.
+  if(tracker.detection_status()) std::cout<<"tracker detection!"<<std::endl;
+  else std::cout<<"no tracker detection"<<std::endl;
 }

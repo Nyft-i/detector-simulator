@@ -6,7 +6,6 @@
 // Default
 SubDetector::SubDetector()
 {
-  std::cout<<"SubDetector() called"<<std::endl;
   total_energy_detected = 0;
 }
 
