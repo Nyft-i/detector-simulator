@@ -40,7 +40,7 @@ Neutrino::Neutrino(Neutrino&& move_from)
   flavour = move_from.flavour;
   has_interacted = move_from.has_interacted;
 
-  // Reset the moved-from object
+  // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
   move_from.rest_mass = 0;
   move_from.charge = 0;
@@ -87,7 +87,7 @@ Neutrino& Neutrino::operator=(Neutrino&& move_from)
   flavour = move_from.flavour;
   has_interacted = move_from.has_interacted;
   
-  // Reset the moved-from object
+  // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
   move_from.rest_mass = 0;
   move_from.charge = 0;

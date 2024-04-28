@@ -48,7 +48,7 @@ Muon::Muon(Muon&& move_from)
   tracker_energy = move_from.tracker_energy;
   chamber_energy = move_from.chamber_energy;
 
-  // Reset the moved-from object
+  // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
   move_from.rest_mass = 0;
   move_from.charge = 0;
@@ -95,7 +95,7 @@ Muon& Muon::operator=(Muon&& move_from)
   tracker_energy = move_from.tracker_energy; 
   chamber_energy = move_from.chamber_energy;
   
-  // Reset the moved-from object
+  // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
   move_from.rest_mass = 0;
   move_from.charge = 0;
@@ -112,8 +112,8 @@ const double Muon::get_tracker_energy() {return tracker_energy;}
 const double Muon::get_chamber_energy() {return chamber_energy;}
 
 // Setters
-void Muon::set_tracker_energy(double setter_tracker_energy) {tracker_energy = setter_tracker_energy;}
-void Muon::set_chamber_energy(double setter_chamber_energy) {chamber_energy = setter_chamber_energy;}
+void Muon::set_tracker_energy(double set_tracker_energy) {tracker_energy = set_tracker_energy;}
+void Muon::set_chamber_energy(double set_chamber_energy) {chamber_energy = set_chamber_energy;}
 
 // Functionality
 void Muon::print()

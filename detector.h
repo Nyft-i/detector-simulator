@@ -7,13 +7,15 @@
 class Detector
 {
 private:
+  //Calorimiter calorimiter;
   Tracker tracker;
+  //MuonChamber muon_chamber;
 public:
   // Constructor
   // Default
-
+  Detector();
   // Parameterised
-
+  Detector(int con_tracker_percent_chance);
   // Copy
 
   // Move
@@ -36,6 +38,7 @@ public:
   // Functionality
   void interact(Particle& interacting_particle);
   void interact(CollisionEvent& interacting_event);
+  Particle guess_particle();
 };
 
 #endif

@@ -54,7 +54,7 @@ Electron::Electron(Electron&& move_from)
   pap_status = move_from.pap_status;
   cal_deposits = std::move(move_from.cal_deposits);
   
-  // Reset the moved-from object
+  // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
   move_from.rest_mass = 0;
   move_from.charge = 0;
@@ -97,7 +97,7 @@ Electron& Electron::operator=(Electron&& move_from)
   pap_status = move_from.pap_status;
   cal_deposits = std::move(move_from.cal_deposits);
   
-  // Reset the moved-from object
+  // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
   move_from.rest_mass = 0;
   move_from.charge = 0;

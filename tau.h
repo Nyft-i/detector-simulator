@@ -35,7 +35,7 @@ public:
   // Getters
   const string get_decay_mode();
   // Setters
-  void set_decay_mode(string setter_decay_mode);
+  void set_decay_mode(string set_decay_mode);
 
   // Functionality
   shared_ptr<Particle> decay();

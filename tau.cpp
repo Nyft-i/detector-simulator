@@ -46,7 +46,7 @@ Tau::Tau(Tau&& move_from)
   decay_mode = std::move(move_from.decay_mode);
   name = std::move(move_from.name);
 
-  // Reset the moved-from object
+  // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
   move_from.rest_mass = 0;
   move_from.charge = 0;
@@ -90,7 +90,7 @@ Tau& Tau::operator=(Tau&& move_from)
   decay_mode = std::move(move_from.decay_mode);
   name = std::move(move_from.name);
   
-  // Reset the moved-from object
+  // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
   move_from.rest_mass = 0;
   move_from.charge = 0;
@@ -104,7 +104,7 @@ Tau& Tau::operator=(Tau&& move_from)
 // Getters
 const string Tau::get_decay_mode() {return decay_mode;}
 // Setters
-void Tau::set_decay_mode(string setter_decay_mode) {decay_mode = setter_decay_mode;}
+void Tau::set_decay_mode(string set_decay_mode) {decay_mode = set_decay_mode;}
 
 // Functionality
 void Tau::print()

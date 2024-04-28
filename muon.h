@@ -32,8 +32,8 @@ public:
   const double get_chamber_energy();
 
   // Setters
-  void set_tracker_energy(double setter_tracker_energy);
-  void set_chamber_energy(double setter_chamber_energy);
+  void set_tracker_energy(double set_tracker_energy);
+  void set_chamber_energy(double set_chamber_energy);
 
   // Functionality
   void print() override;

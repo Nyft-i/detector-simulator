@@ -10,14 +10,22 @@
 
 Tracker::Tracker()
 {
-  std::cout<<"Tracker() called"<<std::endl;
   hit_layers = std::make_shared<vector<bool>>(3);
   hit_layers->at(INNER_PIXEL_LAYER) = false;
   hit_layers->at(OUTER_PIXEL_LAYER) = false;
   hit_layers->at(STRIP_LAYER) = false;
+  percent_chance = 70;
 }
 
 // Parameterised
+Tracker::Tracker(int con_percent_chance)
+{
+  hit_layers = std::make_shared<vector<bool>>(3);
+  hit_layers->at(INNER_PIXEL_LAYER) = false;
+  hit_layers->at(OUTER_PIXEL_LAYER) = false;
+  hit_layers->at(STRIP_LAYER) = false;
+  percent_chance = con_percent_chance;
+}
 
 // Copy
 Tracker::Tracker(const Tracker& copy_from)
@@ -74,17 +82,19 @@ Tracker& Tracker::operator=(Tracker&& move_from)
 // Getters
 std::shared_ptr<vector<bool>>& Tracker::get_hit_layers() {return hit_layers;}
 bool Tracker::get_hit_layer(int hit_layer) {return hit_layers->at(hit_layer);}
+int Tracker::get_percent_chance() {return percent_chance;}
 
 // Setters
-void Tracker::set_hit_layers(vector<bool> setter_layers)
+void Tracker::set_hit_layers(vector<bool> set_layers)
 {
-  hit_layers->at(INNER_PIXEL_LAYER) = setter_layers.at(INNER_PIXEL_LAYER);
-  hit_layers->at(OUTER_PIXEL_LAYER) = setter_layers.at(OUTER_PIXEL_LAYER); 
-  hit_layers->at(STRIP_LAYER) = setter_layers.at(STRIP_LAYER);
+  hit_layers->at(INNER_PIXEL_LAYER) = set_layers.at(INNER_PIXEL_LAYER);
+  hit_layers->at(OUTER_PIXEL_LAYER) = set_layers.at(OUTER_PIXEL_LAYER); 
+  hit_layers->at(STRIP_LAYER) = set_layers.at(STRIP_LAYER);
 }
-void Tracker::set_inner_pixel_layer(bool setter_inner) {hit_layers->at(INNER_PIXEL_LAYER) = setter_inner;}
-void Tracker::set_outer_pixel_layer(bool setter_outer) {hit_layers->at(OUTER_PIXEL_LAYER) = setter_outer;}
-void Tracker::set_strip_layer(bool setter_strip) {hit_layers->at(STRIP_LAYER) = setter_strip;}
+void Tracker::set_inner_pixel_layer(bool set_inner) {hit_layers->at(INNER_PIXEL_LAYER) = set_inner;}
+void Tracker::set_outer_pixel_layer(bool set_outer) {hit_layers->at(OUTER_PIXEL_LAYER) = set_outer;}
+void Tracker::set_strip_layer(bool set_strip) {hit_layers->at(STRIP_LAYER) = set_strip;}
+void Tracker::set_percent_chance(int set_percent_chance) {percent_chance = set_percent_chance;}
 
 // Functionality
 void Tracker::print()
@@ -100,7 +110,6 @@ void Tracker::print()
 void Tracker::interact(Particle& interacting_particle)
 {
   ///@todo find out if this is the correct way to do this from piazza. Works for now
-  int percent_chance = 70;
   // This code randomly determines, with percent_chance% probability if each layer has been hit
   std::srand(std::time(nullptr)); // use current time as seed for random generator
   for(int i=0; i<3; i++)
@@ -108,4 +117,15 @@ void Tracker::interact(Particle& interacting_particle)
     int random_value = std::rand();
     if(random_value%100 < percent_chance) hit_layers->at(i) = true;
   }
+}
+
+int Tracker::get_num_hits()
+{
+  // Function that counts the number of pixel layers that have been hit. This can be 0, 1 or 2.
+  int num_hits = 0;
+  for(int i=0; i<3; i++)
+  {
+    if(hit_layers->at(i)) num_hits++;
+  }
+  return num_hits;
 }

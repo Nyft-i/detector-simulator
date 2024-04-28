@@ -37,10 +37,10 @@ public:
   string get_name();
 
   // Setters
-  void set_true_energy(double setter_energy);
-  void set_rest_mass(double setter_rm);
-  void set_charge(int setter_char);
-  void set_name(string setter_name);
+  void set_true_energy(double set_energy);
+  void set_rest_mass(double set_rm);
+  void set_charge(int set_char);
+  void set_name(string set_name);
 
   // Functionality
   virtual void print();

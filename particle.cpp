@@ -25,23 +25,25 @@ int Particle::get_charge() {return charge;}
 string Particle::get_name() {return name;}
 
 // Setters
-void Particle::set_true_energy(double setter_energy) 
+void Particle::set_true_energy(double set_energy) 
 {
   // Makes sure that the energy is not less than the rest mass.
-  if(setter_energy>rest_mass) true_energy = setter_energy;
+  // For photons, which have 0 rest mass, it is ensuring that its true energy is not negative.
+  if(set_energy>rest_mass) true_energy = set_energy;
   else true_energy = rest_mass;  
 }
-void Particle::set_rest_mass(double setter_rm)
+
+void Particle::set_rest_mass(double set_rm)
 {
   // Ensures that the rest mass cannot be negative.
-  if(setter_rm<0) rest_mass = std::abs(setter_rm);
+  if(set_rm<0) rest_mass = std::abs(set_rm);
   // Also the rest mass shouldn't be larger than the true energy.
-  else if(setter_rm>true_energy) rest_mass = true_energy;
-  else rest_mass = setter_rm;
+  else if(set_rm>true_energy) rest_mass = true_energy;
+  else rest_mass = set_rm;
 
 }
-void Particle::set_charge(int setter_char) {charge = setter_char;}
-void Particle::set_name(string setter_name) {name = setter_name;}
+void Particle::set_charge(int set_char) {charge = set_char;}
+void Particle::set_name(string set_name) {name = set_name;}
 
 void Particle::print()
 {

@@ -13,9 +13,12 @@
 #include"neutrino.h"
 #include"sub_detector.h"
 #include"tracker.h"
+#include"collision_event.h"
 
 using std::shared_ptr;
 using std::vector;
+using std::string;
+
 
 int Particle::numberer=0; // Starts the particle numbering from 0.
 int main()
@@ -27,17 +30,20 @@ int main()
   particle_list.push_back(std::make_shared<Tau>(400, 1, "leptonic"));
   particle_list.push_back(std::make_shared<Neutrino>(500, 1, 1, false));
 
+  /*
   particle_list[0]->print();
   particle_list[1]->print();
   particle_list[2]->print();
   particle_list[3]->print();
   particle_list[4]->print();
+  */
 
-  Tracker testing;
-  testing.interact(*particle_list[0]);
-  std::cout<<testing.get_hit_layer(0)<<std::endl;
-  std::cout<<testing.get_hit_layer(1)<<std::endl;
-  std::cout<<testing.get_hit_layer(2)<<std::endl;
+  CollisionEvent event1("test");
+  event1.add_particle(*particle_list[0]);
+  event1.add_particle(*particle_list[1]);
+
+  event1.print();
 
 
+  return 0;
 }
