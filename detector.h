@@ -1,14 +1,18 @@
 #ifndef DETECTOR_H_INCLUDED
 #define DETECTOR_H_INCLUDED
 
+#include<memory>
+
 #include"tracker.h"
 #include"collision_event.h"
+
+using std::unique_ptr;
 
 class Detector
 {
 private:
   //Calorimiter calorimiter;
-  Tracker tracker;
+  shared_ptr<Tracker> tracker;
   //MuonChamber muon_chamber;
 public:
   // Constructor
@@ -17,23 +21,24 @@ public:
   // Parameterised
   Detector(int con_tracker_percent_chance);
   // Copy
-
+  Detector(const Detector& copy_from);
   // Move
-
+  Detector(Detector&& move_from);
 
   // Destructor
 
-
   // Assignment
   // Copy
-
+  Detector& operator=(const Detector& copy_from);
   // Move
-
+  Detector& operator=(Detector&& move_from);
 
   // Getters
-
+  Tracker& get_tracker();
+  //Calorimeter& get_calorimeter();
+  //MuonDetector& get_muon_detector();
   // Setters
-
+  void set_tracker(shared_ptr<Tracker> set_tracker);
 
   // Functionality
 

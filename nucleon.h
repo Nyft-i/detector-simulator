@@ -16,7 +16,7 @@ public:
   // Default
   Nucleon();
   // Parameterised
-  Nucleon(string con_nuc_type, double con_energy);
+  Nucleon(double con_energy, string con_nuc_type="neutron");
   // Copy
   Nucleon(const Nucleon& copy_from);
   // Move

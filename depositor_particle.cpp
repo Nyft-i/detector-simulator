@@ -10,14 +10,83 @@ using std::vector;
 
 // Constructors
 // Default
-
 DepositorParticle::DepositorParticle()
 {
-  std::cout<<"DepositorParticle() called"<<std::endl;
   cal_deposits = std::make_shared<vector<double>>(4, 0);
 }
+// Copy
+DepositorParticle::DepositorParticle(const DepositorParticle& copy_from)
+{
+  true_energy = copy_from.true_energy;
+  rest_mass = copy_from.rest_mass;
+  charge = copy_from.charge;
+  name = copy_from.name;
+  pap_status = copy_from.pap_status;
+  cal_deposits = copy_from.cal_deposits;
+}
 
-// Parameterised
+// Move
+DepositorParticle::DepositorParticle(DepositorParticle&& move_from)
+{
+  true_energy = move_from.true_energy;
+  rest_mass = move_from.rest_mass;
+  charge = move_from.charge;
+  name = std::move(move_from.name);
+  pap_status = move_from.pap_status;
+  cal_deposits = std::move(move_from.cal_deposits);
+  
+  // Set attributes of move_from to nothing.
+  move_from.true_energy = 0;
+  move_from.rest_mass = 0;
+  move_from.charge = 0;
+  move_from.pap_status = 0;
+  move_from.name = "";
+  move_from.cal_deposits = std::make_shared<vector<double>>(4, 0);
+}
+
+// Destructor, don't need
+
+// Assignment
+// Copy
+DepositorParticle& DepositorParticle::operator=(const DepositorParticle& copy_from)
+{
+  // Make sure we're not copying ourself.
+  if(&copy_from==this) return *this;
+  
+  // Copy the data
+  true_energy = copy_from.true_energy;
+  rest_mass = copy_from.rest_mass;
+  charge = copy_from.charge;
+  name = copy_from.name;
+  pap_status = copy_from.pap_status;
+  cal_deposits = copy_from.cal_deposits;
+  
+  return *this;
+}
+
+// Move
+DepositorParticle& DepositorParticle::operator=(DepositorParticle&& move_from)
+{
+  // Make sure we're not moving ourself.
+  if(&move_from==this) return *this;
+
+  true_energy = move_from.true_energy;
+  rest_mass = move_from.rest_mass;
+  charge = move_from.charge;
+  name = std::move(move_from.name);
+  pap_status = move_from.pap_status;
+  cal_deposits = std::move(move_from.cal_deposits);
+  
+  // Set attributes of move_from to nothing.
+  move_from.true_energy = 0;
+  move_from.rest_mass = 0;
+  move_from.charge = 0;
+  move_from.pap_status = 0;
+  move_from.name = "";
+  move_from.cal_deposits = std::make_shared<vector<double>>(4, 0);
+
+  return *this;
+}
 
 
 // Getters
@@ -47,7 +116,6 @@ void DepositorParticle::set_cal_deposits(double set_EM_1, double set_EM_2, doubl
 
 void DepositorParticle::set_true_energy(double set_energy)
 {
-  std::cout<<"DepositorParticle::set_true_energy(double) called"<<std::endl;
   // Sets the true energy using the base class method. We benefit from the existing verification in Particle.
   Particle::set_true_energy(set_energy);
 

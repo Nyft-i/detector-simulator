@@ -48,13 +48,11 @@ int main()
   CollisionEvent event1("test");
   event1.add_particle(particle_list[0]);
   event1.add_particle(particle_list[1]);
-  std::cout<<"test"<<std::endl;
   event1.print();
 
   Detector main_detector(70);
   main_detector.interact(event1);
   main_detector.see_detections();
   
-
   return 0;
 }

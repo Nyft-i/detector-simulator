@@ -28,17 +28,19 @@ public:
   // Parameterised
 
   // Copy
-
+  // Copy
+  DepositorParticle(const DepositorParticle& other);
   // Move
+  DepositorParticle(DepositorParticle&& other);
 
 
   // Destructor, not needed.
 
   // Assignment
   // Copy
-
+  DepositorParticle& operator=(const DepositorParticle& other);
   // Move
-
+  DepositorParticle& operator=(DepositorParticle&& other);
 
   // Getters
   const std::shared_ptr<vector<double>>& get_cal_deposits();

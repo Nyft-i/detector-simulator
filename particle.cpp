@@ -5,7 +5,6 @@
 // Constructor
 Particle::Particle()
 {
-  std::cout<<"Particle() called."<<std::endl;
   // Number Management
   identifier = numberer;
   numberer++;

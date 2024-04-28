@@ -15,7 +15,7 @@ Nucleon::Nucleon()
 }
 
 // Parameterised
-Nucleon::Nucleon(string con_nuc_type, double con_energy)
+Nucleon::Nucleon(double con_energy, string con_nuc_type)
 {
   // Case insensitivity, converting user input to lowercase.
   for(int i=0; i<con_nuc_type.length(); i++) {con_nuc_type[i] = tolower(con_nuc_type[i]);}
