@@ -41,11 +41,11 @@ public:
   int get_percent_chance();
 
   // Setters
-  void set_hit_layers(vector<bool> set_layers);
-  void set_inner_pixel_layer(bool set_inner);
-  void set_outer_pixel_layer(bool set_outer);
-  void set_strip_layer(bool set_strip);
-  void set_percent_chance(int set_percent_chance);
+  void set_hit_layers(vector<bool> set_layers) const;
+  void set_inner_pixel_layer(bool set_inner) const;
+  void set_outer_pixel_layer(bool set_outer) const;
+  void set_strip_layer(bool set_strip) const;
+  void set_percent_chance(int set_percent_chance) const;
 
   // Functionality
   void interact(Particle& interacting_particle) override;

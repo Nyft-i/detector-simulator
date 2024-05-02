@@ -43,17 +43,17 @@ public:
   DepositorParticle& operator=(DepositorParticle&& other);
 
   // Getters
-  const std::shared_ptr<vector<double>>& get_cal_deposits();
-  const double get_EM_1();
-  const double get_EM_2();
-  const double get_HAD_1();
-  const double get_HAD_2();
+  std::shared_ptr<vector<double>>& get_cal_deposits() const;
+  double get_EM_1() const;
+  double get_EM_2() const;
+  double get_HAD_1() const;
+  double get_HAD_2() const;
   
   // Setters
   void set_true_energy(double set_energy) override;
 
   // Functionality
-  string cal_dep_string();
+  string cal_dep_string() const;
   virtual void print() override;
 };
 

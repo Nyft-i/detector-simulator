@@ -33,11 +33,11 @@ public:
   Particle& operator=(Particle&& move_from);
 
   // Getters
-  int identify();
-  double get_true_energy();
-  double get_rest_mass();
-  int get_charge();
-  string get_name();
+  int identify() const;
+  double get_true_energy() const;
+  double get_rest_mass() const;
+  int get_charge() const;
+  string get_name() const;
 
   // Setters
   virtual void set_true_energy(double set_energy);

@@ -28,8 +28,8 @@ public:
   Muon& operator=(Muon&& move_from);
 
   // Getters
-  const double get_tracker_energy();
-  const double get_chamber_energy();
+  double get_tracker_energy() const;
+  double get_chamber_energy() const;
 
   // Setters
   void set_tracker_energy(double set_tracker_energy);

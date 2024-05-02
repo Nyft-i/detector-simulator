@@ -33,7 +33,7 @@ public:
   Tau& operator=(Tau&& move_from);
 
   // Getters
-  const string get_decay_mode();
+  string get_decay_mode() const;
   // Setters
   void set_decay_mode(string set_decay_mode);
 

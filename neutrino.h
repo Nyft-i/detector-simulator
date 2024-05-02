@@ -29,9 +29,9 @@ public:
   Neutrino& operator=(Neutrino&& move_from);
   
   // Getters
-  int get_flavour();
-  bool get_interaction_status();
-  string get_flavour_name();
+  int get_flavour() const;
+  bool get_interaction_status() const;
+  string get_flavour_name() const;
   // Setters
   void set_interaction_status(bool set_interacted);
   void set_flavour(int set_flavour);
