@@ -102,7 +102,7 @@ Tau& Tau::operator=(Tau&& move_from)
 }
 
 // Getters
-const string Tau::get_decay_mode() {return decay_mode;}
+string Tau::get_decay_mode() const {return decay_mode;}
 // Setters
 void Tau::set_decay_mode(string set_decay_mode) {decay_mode = set_decay_mode;}
 

@@ -23,7 +23,7 @@ Photon::Photon(const Photon& copy_from)
   charge = copy_from.charge;
   pap_status = copy_from.pap_status;
   name = copy_from.name;
-  cal_deposits = std::make_unique<vector<double>>(copy_from.cal_deposits);
+  cal_deposits = std::make_unique<vector<double>>(*copy_from.cal_deposits);
 }
 
 // Move Constructor
@@ -61,7 +61,7 @@ Photon& Photon::operator=(const Photon& copy_from)
   charge = copy_from.charge;
   pap_status = copy_from.pap_status;
   name = copy_from.name;
-  cal_deposits = std::make_unique<vector<double>>(copy_from.cal_deposits);
+  cal_deposits = std::make_unique<vector<double>>(*copy_from.cal_deposits);
   
   return *this;
 }
