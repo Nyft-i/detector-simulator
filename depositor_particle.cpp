@@ -7,6 +7,7 @@
 #include"depositor_particle.h"
 
 using std::vector;
+using std::string;
 
 // Constructors
 // Default
@@ -22,7 +23,7 @@ DepositorParticle::DepositorParticle(const DepositorParticle& copy_from)
   charge = copy_from.charge;
   name = copy_from.name;
   pap_status = copy_from.pap_status;
-  cal_deposits = std::make_unique<vector<double>>(copy_from.cal_deposits);
+  cal_deposits = std::make_unique<vector<double>>(*copy_from.cal_deposits);
 }
 
 // Move
@@ -59,7 +60,7 @@ DepositorParticle& DepositorParticle::operator=(const DepositorParticle& copy_fr
   charge = copy_from.charge;
   name = copy_from.name;
   pap_status = copy_from.pap_status;
-  cal_deposits = std::make_unique<vector<double>>(copy_from.cal_deposits);
+  cal_deposits = std::make_unique<vector<double>>(*copy_from.cal_deposits);
   
   return *this;
 }
@@ -106,11 +107,11 @@ void DepositorParticle::set_cal_deposits(vector<double> set_cal_deposits)
 void DepositorParticle::set_cal_deposits(double set_EM_1, double set_EM_2, double set_HAD_1, double set_HAD_2)
 {
   // Implementation where the user can just enter 4 values and the vector is created for them.
-  std::unique_ptr<vector<double>> temp = std::make_unique<vector<double>>();
-  temp->push_back(set_EM_1);
-  temp->push_back(set_EM_2);
-  temp->push_back(set_HAD_1);
-  temp->push_back(set_HAD_2);
+  std::unique_ptr<vector<double>> temp = std::make_unique<vector<double>>(4, 0);
+  temp->at(0) = set_EM_1;
+  temp->at(1) = set_EM_2;
+  temp->at(2) = set_HAD_1;
+  temp->at(3) = set_HAD_2;
   cal_deposits = std::move(temp);
 }
 

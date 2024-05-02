@@ -82,8 +82,8 @@ Tracker& Tracker::operator=(Tracker&& move_from)
 
 // Getters
 std::shared_ptr<vector<bool>>& Tracker::get_hit_layers() {return hit_layers;}
-bool Tracker::get_hit_layer(int hit_layer) {return hit_layers->at(hit_layer);}
-int Tracker::get_percent_chance() {return percent_chance;}
+bool Tracker::get_hit_layer(int hit_layer) const {return hit_layers->at(hit_layer);}
+int Tracker::get_percent_chance() const {return percent_chance;}
 
 // Setters
 void Tracker::set_hit_layers(vector<bool> set_layers)
