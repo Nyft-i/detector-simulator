@@ -49,7 +49,6 @@ public:
 
   // Functionality
   void interact(Particle& interacting_particle) override;
-  void interact(CollisionEvent& col_event) override;
   void print() override;
   int get_num_hits();
   bool detection_status();

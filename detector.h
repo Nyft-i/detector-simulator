@@ -4,6 +4,7 @@
 #include<memory>
 
 #include"tracker.h"
+#include"calorimeter.h"
 #include"collision_event.h"
 
 using std::unique_ptr;
@@ -11,8 +12,8 @@ using std::unique_ptr;
 class Detector
 {
 private:
-  //Calorimiter calorimiter;
-  shared_ptr<Tracker> tracker;
+  unique_ptr<Tracker> tracker;
+  unique_ptr<Calorimeter> calorimeter;
   //MuonChamber muon_chamber;
 public:
   // Constructor

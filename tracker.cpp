@@ -123,14 +123,6 @@ void Tracker::interact(Particle& interacting_particle)
   }
 }
 
-void Tracker::interact(CollisionEvent& col_event)
-{
-  for(int i=0; i<col_event.get_num_particles(); i++)
-  {
-    interact(col_event[i]);
-  }
-}
-
 int Tracker::get_num_hits()
 {
   // Counts the number of pixel layers that have been hit. This can be 0, 1 or 2.

@@ -2,6 +2,8 @@
 #include<memory>
 
 #include"detector.h"
+#include"tracker.h"
+#include"calorimeter.h"
 
 // Constructors
 // Default
@@ -9,16 +11,16 @@
 // Parameterised
 Detector::Detector(int con_percent_chance)
 {
-  tracker = std::make_shared<Tracker>(con_percent_chance);
-  //calorimiter = Calorimiter();
+  tracker = std::make_unique<Tracker>(con_percent_chance);
+  calorimeter = std::make_unique<Calorimeter>();
   //muon_chamber = MuonChamber();
 }
 
 // Copy
 Detector::Detector(const Detector& copy_from)
 {
-  tracker = std::make_shared<Tracker>(*copy_from.tracker);
-  //calorimiter = copy_from.calorimiter;
+  tracker = std::make_unique<Tracker>(*copy_from.tracker);
+  calorimeter = std::make_unique<Calorimeter>(*copy_from.calorimeter);  
   //muon_chamber = copy_from.muon_chamber;
 }
 
@@ -26,12 +28,12 @@ Detector::Detector(const Detector& copy_from)
 Detector::Detector(Detector&& move_from)
 {
   tracker = std::move(move_from.tracker);
-  //calorimiter = std::move(move_from.calorimiter);
+  calorimeter = std::move(move_from.calorimeter);
   //muon_chamber = std::move(move_from.muon_chamber);
 
   // Set move_from to 0.
   tracker = nullptr;
-  //calorimiter = nullptr;
+  calorimeter = nullptr;
   //muon_chamber = nullptr;
 }
 
@@ -44,8 +46,8 @@ Detector& Detector::operator=(const Detector& copy_from)
   // Self assignment
   if(this == &copy_from) return *this;
 
-  tracker = std::make_shared<Tracker>(*copy_from.tracker);
-  //calorimiter = copy_from.calorimiter;
+  tracker = std::make_unique<Tracker>(*copy_from.tracker);
+  calorimeter = std::make_unique<Calorimeter>(*copy_from.calorimeter);
   //muon_chamber = copy_from.muon_chamber;
   return *this;
 }
@@ -57,12 +59,12 @@ Detector& Detector::operator=(Detector&& move_from)
   if(this == &move_from) return *this;
 
   tracker = std::move(move_from.tracker);
-  //calorimiter = std::move(move_from.calorimiter);
+  calorimeter = std::move(move_from.calorimeter);
   //muon_chamber = std::move(move_from.muon_chamber);
 
   // Set move_from to 0.
   tracker = nullptr;
-  //calorimiter = nullptr;
+  calorimeter = nullptr;
   //muon_chamber = nullptr;
   return *this;
 }
@@ -71,14 +73,14 @@ Detector& Detector::operator=(Detector&& move_from)
 void Detector::interact(Particle& interacting_particle)
 {
   tracker->interact(interacting_particle);
-  //calorimiter.interact(interacting_particle);
+  calorimeter->interact(interacting_particle);
   //muon_chamber.interact(interacting_particle);
 }
 
 void Detector::interact(CollisionEvent& col_event)
 {
-  tracker->interact(col_event);
-  //calorimiter.interact(interacting_event);
+  tracker->SubDetector::interact(col_event); // Overloads hidden by default in c++, stupid rule IMO. see "hiding rule".
+  calorimeter->SubDetector::interact(col_event);
   //muon_chamber.interact(interacting_event);
 }
 
@@ -88,11 +90,14 @@ void Detector::see_detections()
   // Tracker
   if(tracker->detection_status()) std::cout<<"tracker detection!"<<std::endl;
   else std::cout<<"no tracker detection"<<std::endl;
+
+  // Calorimeter
+  calorimeter->print();
 }
 
 void Detector::reset()
 {
   tracker->reset();
-  //calorimiter.reset();
+  calorimeter->reset();
   //muon_chamber.reset();
 }

@@ -121,3 +121,5 @@ void Particle::print()
   std::cout<<"charge (e) : "<<charge<<std::endl;
   std::cout<<"name : "<<name<<std::endl;
 }
+
+// Virtual Members

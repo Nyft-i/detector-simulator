@@ -32,7 +32,7 @@ public:
   // Functionality
   virtual void print();
   virtual void interact(Particle& interacting_particle)=0;
-  virtual void interact(CollisionEvent& interacting_event)=0;
+  void interact(CollisionEvent& interacting_event);
   virtual void reset()=0;
 };
 
