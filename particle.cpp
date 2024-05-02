@@ -85,11 +85,11 @@ Particle& Particle::operator=(Particle&& move_from)
 }
   
 // Getters
-int Particle::identify() {return identifier;}
-double Particle::get_true_energy() {return true_energy;}
-double Particle::get_rest_mass() {return rest_mass;}
-int Particle::get_charge() {return charge;}
-string Particle::get_name() {return name;}
+int Particle::identify() const {return identifier;}
+double Particle::get_true_energy() const {return true_energy;}
+double Particle::get_rest_mass() const {return rest_mass;}
+int Particle::get_charge() const {return charge;}
+string Particle::get_name() const {return name;}
 
 // Setters
 void Particle::set_true_energy(double set_energy) 

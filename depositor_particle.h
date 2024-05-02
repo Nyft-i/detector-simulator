@@ -10,7 +10,7 @@ using std::vector;
 class DepositorParticle : public Particle
 {
 protected:
-  std::shared_ptr<vector<double>> cal_deposits; // Unique pointer to a vector of doubles.
+  std::unique_ptr<vector<double>> cal_deposits; // Unique pointer to a vector so that it maintains ownership
   // Names of the calorimeter inputs are EM_1, EM_2, HAD_1, HAD_2.
 
   // These don't have validation the same way that set_true_energy does, so they are dangerous for external use and can result in the user setting cal_deposits to not add up to the true energy.
@@ -43,7 +43,7 @@ public:
   DepositorParticle& operator=(DepositorParticle&& other);
 
   // Getters
-  std::shared_ptr<vector<double>>& get_cal_deposits() const;
+  vector<double> get_cal_deposits() const;
   double get_EM_1() const;
   double get_EM_2() const;
   double get_HAD_1() const;

@@ -108,8 +108,8 @@ Muon& Muon::operator=(Muon&& move_from)
 }
 
 // Getters
-const double Muon::get_tracker_energy() {return tracker_energy;}
-const double Muon::get_chamber_energy() {return chamber_energy;}
+double Muon::get_tracker_energy() const {return tracker_energy;}
+double Muon::get_chamber_energy() const {return chamber_energy;}
 
 // Setters
 void Muon::set_tracker_energy(double set_tracker_energy) {tracker_energy = set_tracker_energy;}

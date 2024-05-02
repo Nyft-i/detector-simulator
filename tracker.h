@@ -37,15 +37,15 @@ public:
   
   // Getters
   std::shared_ptr<vector<bool>>& get_hit_layers();
-  bool get_hit_layer(int hit_layer);
-  int get_percent_chance();
+  bool get_hit_layer(int hit_layer) const;
+  int get_percent_chance() const;
 
   // Setters
-  void set_hit_layers(vector<bool> set_layers) const;
-  void set_inner_pixel_layer(bool set_inner) const;
-  void set_outer_pixel_layer(bool set_outer) const;
-  void set_strip_layer(bool set_strip) const;
-  void set_percent_chance(int set_percent_chance) const;
+  void set_hit_layers(vector<bool> set_layers);
+  void set_inner_pixel_layer(bool set_inner);
+  void set_outer_pixel_layer(bool set_outer);
+  void set_strip_layer(bool set_strip);
+  void set_percent_chance(int set_percent_chance);
 
   // Functionality
   void interact(Particle& interacting_particle) override;

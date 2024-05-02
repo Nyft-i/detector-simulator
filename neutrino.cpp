@@ -100,9 +100,9 @@ Neutrino& Neutrino::operator=(Neutrino&& move_from)
 }
 
 // Getters
-int Neutrino::get_flavour() {return flavour;}
-bool Neutrino::get_interaction_status() {return has_interacted;}
-string Neutrino::get_flavour_name()
+int Neutrino::get_flavour() const {return flavour;}
+bool Neutrino::get_interaction_status() const {return has_interacted;}
+string Neutrino::get_flavour_name() const
 {
   switch(flavour)
   {

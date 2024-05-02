@@ -30,7 +30,7 @@ Electron::Electron(const Electron& copy_from)
   charge = copy_from.charge;
   name = copy_from.name;
   pap_status = copy_from.pap_status;
-  cal_deposits = copy_from.cal_deposits;
+  cal_deposits = std::make_unique<vector<double>>(copy_from.cal_deposits);
 }
 
 // Move Constructor
@@ -68,7 +68,7 @@ Electron& Electron::operator=(const Electron& copy_from)
   charge = copy_from.charge;
   name = copy_from.name;
   pap_status = copy_from.pap_status;
-  cal_deposits = copy_from.cal_deposits;
+  cal_deposits = std::make_unique<vector<double>>(copy_from.cal_deposits);
   
   return *this;
 }

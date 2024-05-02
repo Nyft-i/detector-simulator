@@ -12,7 +12,7 @@ using std::vector;
 // Default
 DepositorParticle::DepositorParticle()
 {
-  cal_deposits = std::make_shared<vector<double>>(4, 0);
+  cal_deposits = std::make_unique<vector<double>>(4, 0);
 }
 // Copy
 DepositorParticle::DepositorParticle(const DepositorParticle& copy_from)
@@ -22,7 +22,7 @@ DepositorParticle::DepositorParticle(const DepositorParticle& copy_from)
   charge = copy_from.charge;
   name = copy_from.name;
   pap_status = copy_from.pap_status;
-  cal_deposits = copy_from.cal_deposits;
+  cal_deposits = std::make_unique<vector<double>>(copy_from.cal_deposits);
 }
 
 // Move
@@ -41,7 +41,7 @@ DepositorParticle::DepositorParticle(DepositorParticle&& move_from)
   move_from.charge = 0;
   move_from.pap_status = 0;
   move_from.name = "";
-  move_from.cal_deposits = std::make_shared<vector<double>>(4, 0);
+  move_from.cal_deposits = std::make_unique<vector<double>>(4, 0);
 }
 
 // Destructor, don't need
@@ -59,7 +59,7 @@ DepositorParticle& DepositorParticle::operator=(const DepositorParticle& copy_fr
   charge = copy_from.charge;
   name = copy_from.name;
   pap_status = copy_from.pap_status;
-  cal_deposits = copy_from.cal_deposits;
+  cal_deposits = std::make_unique<vector<double>>(copy_from.cal_deposits);
   
   return *this;
 }
@@ -83,35 +83,35 @@ DepositorParticle& DepositorParticle::operator=(DepositorParticle&& move_from)
   move_from.charge = 0;
   move_from.pap_status = 0;
   move_from.name = "";
-  move_from.cal_deposits = std::make_shared<vector<double>>(4, 0);
+  move_from.cal_deposits = std::make_unique<vector<double>>(4, 0);
 
   return *this;
 }
 
 
 // Getters
-const std::shared_ptr<vector<double>>& DepositorParticle::get_cal_deposits() {return cal_deposits;}
-const double DepositorParticle::get_EM_1() {return cal_deposits->at(0);}
-const double DepositorParticle::get_EM_2() {return cal_deposits->at(1);}
-const double DepositorParticle::get_HAD_1() {return cal_deposits->at(2);}
-const double DepositorParticle::get_HAD_2() {return cal_deposits->at(3);}
+vector<double> DepositorParticle::get_cal_deposits() const {return *cal_deposits;}
+double DepositorParticle::get_EM_1() const {return cal_deposits->at(0);}
+double DepositorParticle::get_EM_2() const {return cal_deposits->at(1);}
+double DepositorParticle::get_HAD_1() const {return cal_deposits->at(2);}
+double DepositorParticle::get_HAD_2() const {return cal_deposits->at(3);}
 
 // Setters
 void DepositorParticle::set_cal_deposits(vector<double> set_cal_deposits)
 {
   ///@todo ensure that the full energy in the cal_deposits is equal to the true energy of the particle.
-  cal_deposits = std::make_shared<vector<double>>(set_cal_deposits);
+  cal_deposits = std::make_unique<vector<double>>(set_cal_deposits);
 }
 
 void DepositorParticle::set_cal_deposits(double set_EM_1, double set_EM_2, double set_HAD_1, double set_HAD_2)
 {
   // Implementation where the user can just enter 4 values and the vector is created for them.
-  std::shared_ptr<vector<double>> temp = std::make_shared<vector<double>>();
+  std::unique_ptr<vector<double>> temp = std::make_unique<vector<double>>();
   temp->push_back(set_EM_1);
   temp->push_back(set_EM_2);
   temp->push_back(set_HAD_1);
   temp->push_back(set_HAD_2);
-  cal_deposits = temp;
+  cal_deposits = std::move(temp);
 }
 
 void DepositorParticle::set_true_energy(double set_energy)
@@ -140,7 +140,7 @@ void DepositorParticle::set_true_energy(double set_energy)
 }
 
 // Functionality
-string DepositorParticle::cal_dep_string()
+string DepositorParticle::cal_dep_string() const
 {
   string return_string;
   return_string = "("+std::to_string(cal_deposits->at(0))+", "+std::to_string(cal_deposits->at(1))+", "+std::to_string(cal_deposits->at(2))+", "+std::to_string(cal_deposits->at(3))+")";
