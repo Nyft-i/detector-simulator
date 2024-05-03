@@ -17,17 +17,17 @@ Tracker::Tracker()
   hit_layers->at(INNER_PIXEL_LAYER) = false;
   hit_layers->at(OUTER_PIXEL_LAYER) = false;
   hit_layers->at(STRIP_LAYER) = false;
-  percent_chance = 70;
 }
 
 // Parameterised
-Tracker::Tracker(int con_percent_chance)
+Tracker::Tracker(double con_efficiency, double con_chance):
+SubDetector(con_efficiency),
+percent_chance(con_chance)
 {
   hit_layers = std::make_shared<vector<bool>>(3);
   hit_layers->at(INNER_PIXEL_LAYER) = false;
   hit_layers->at(OUTER_PIXEL_LAYER) = false;
   hit_layers->at(STRIP_LAYER) = false;
-  percent_chance = con_percent_chance;
 }
 
 // Copy
@@ -125,7 +125,7 @@ void Tracker::interact(Particle& interacting_particle)
     for(int i=0; i<3; i++)
     {
       int random_value = std::rand();
-      if(random_value%100 < percent_chance) hit_layers->at(i) = true;
+      if(random_value/RAND_MAX < percent_chance) hit_layers->at(i) = true;
     }
     
     // The amount of energy deposited, not a muon

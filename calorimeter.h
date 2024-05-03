@@ -18,7 +18,7 @@ public:
   // Default
   Calorimeter();
   // Parameterised
-  Calorimeter(vector<double> set_cal_detection);
+  Calorimeter(double con_efficiency);
   // Copy
   Calorimeter(const Calorimeter& other);
   // Move

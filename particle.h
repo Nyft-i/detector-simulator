@@ -19,6 +19,7 @@ public:
   // Default - This is an abstract class therefore doesn't need parameterised constructors
   Particle();
   // Parameterised
+  Particle(double con_energy, double con_rm, int con_charge, string con_name, int con_pap);
   // Copy
   Particle(const Particle& copy_from);
   // Move

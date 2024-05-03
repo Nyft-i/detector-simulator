@@ -20,7 +20,7 @@ public:
   // Default
   Tracker();
   // Parameterised
-  Tracker(int con_percent_chance);
+  Tracker(double con_efficiency=1, double con_chance=1);
   
   // Copy
   Tracker(const Tracker& copy_from);

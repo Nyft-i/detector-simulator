@@ -9,11 +9,11 @@
 // Default
 
 // Parameterised
-Detector::Detector(int con_percent_chance)
+Detector::Detector(double tracker_efficiency, double calorimeter_efficiency, double muon_efficiency, double con_tracker_percent_chance, double con_muon_percent_chance)
 {
-  tracker = std::make_unique<Tracker>(con_percent_chance);
-  calorimeter = std::make_unique<Calorimeter>();
-  muon_detector = std::make_unique<MuonDetector>();
+  tracker = std::make_unique<Tracker>(tracker_efficiency, con_tracker_percent_chance);
+  calorimeter = std::make_unique<Calorimeter>(calorimeter_efficiency);
+  muon_detector = std::make_unique<MuonDetector>(muon_efficiency, con_muon_percent_chance);
 
   current_col = nullptr;
   col_elem = 0;

@@ -7,6 +7,14 @@
 SubDetector::SubDetector()
 {
   total_energy_detected = 0;
+  efficiency = 0;
+}
+
+// Parameterised
+SubDetector::SubDetector(double con_efficiency)
+{
+  total_energy_detected = 0;
+  efficiency = con_efficiency;
 }
 
 // Functionality

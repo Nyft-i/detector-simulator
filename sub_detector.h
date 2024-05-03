@@ -8,11 +8,13 @@ class SubDetector
 {
 protected:
   double total_energy_detected;
+  double efficiency;
 public:
   // Constructor
   // Default
   SubDetector();
   // Parameterised
+  SubDetector(double con_efficiency);
 
   // Copy
 

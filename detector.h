@@ -21,9 +21,8 @@ private:
 public:
   // Constructor
   // Default
-  Detector();
   // Parameterised
-  Detector(int con_tracker_percent_chance);
+  Detector(double tracker_efficiency=1, double calorimeter_efficiency=1, double muon_efficiency=1, double con_tracker_percent_chance=1, double con_muon_percent_chance=1);
   // Copy
   Detector(const Detector& copy_from);
   // Move

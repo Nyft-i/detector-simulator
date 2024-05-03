@@ -3,17 +3,29 @@
 #include"particle.h"
 
 // Constructor
-Particle::Particle()
+Particle::Particle():
+  identifier(numberer),
+  true_energy(0),
+  rest_mass(0),
+  charge(0),
+  pap_status(0),
+  name("unknown particle")
 {
   // Number Management
-  identifier = numberer;
   numberer++;
+}
 
-  true_energy = 0;
-  rest_mass = 0;
-  charge = 0;
-  pap_status = 0; // Particle/antiparticle status
-  name = "unknown particle";
+// Parameterised
+Particle::Particle(double con_energy, double con_rm, int con_charge, string con_name, int con_pap):
+  identifier(numberer),
+  true_energy(con_energy),
+  rest_mass(con_rm),
+  charge(con_charge),
+  pap_status(con_pap),
+  name(con_name)
+{
+  // Number Management
+  numberer++;
 }
 
 // Copy

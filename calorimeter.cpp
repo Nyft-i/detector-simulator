@@ -13,6 +13,12 @@ Calorimeter::Calorimeter()
 }
 
 // Parameterised
+Calorimeter::Calorimeter(double con_efficiency):
+SubDetector(con_efficiency)
+{
+  total_energy_detected = 0;
+  cal_detection = std::make_unique<vector<double>>(4, 0);
+}
 
 
 // Copy

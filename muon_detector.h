@@ -19,7 +19,7 @@ public:
   // Default
   MuonDetector();
   // Parameterised
-  MuonDetector(int con_percent_chance);
+  MuonDetector(double con_efficiency, double con_chance);
   
   // Copy
   MuonDetector(const MuonDetector& copy_from);
