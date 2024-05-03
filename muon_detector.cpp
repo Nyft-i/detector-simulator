@@ -13,7 +13,6 @@
 MuonDetector::MuonDetector()
 {
   hit_layers = std::make_unique<vector<bool>>(2, false);
-  layer_deposits = std::make_unique<vector<double>>(2, 0);
   percent_chance = 70;
 }
 
@@ -21,7 +20,6 @@ MuonDetector::MuonDetector()
 MuonDetector::MuonDetector(int con_percent_chance)
 {
   hit_layers = std::make_unique<vector<bool>>(2, false);
-  layer_deposits = std::make_unique<vector<double>>(2, 0);
   percent_chance = con_percent_chance;
 }
 
@@ -30,7 +28,6 @@ MuonDetector::MuonDetector(const MuonDetector& copy_from)
 {
   total_energy_detected = copy_from.total_energy_detected;
   hit_layers = std::make_unique<vector<bool>>(*copy_from.hit_layers);
-  layer_deposits = std::make_unique<vector<double>>(*copy_from.layer_deposits);
   percent_chance = copy_from.percent_chance;
 }
 
@@ -39,13 +36,11 @@ MuonDetector::MuonDetector(MuonDetector&& move_from)
 {
   total_energy_detected = move_from.total_energy_detected;
   hit_layers = std::move(move_from.hit_layers);
-  layer_deposits = std::move(move_from.layer_deposits);
   percent_chance = move_from.percent_chance;
 
   // Set move_from to 0.
   move_from.total_energy_detected = 0;
   move_from.hit_layers = nullptr;
-  move_from.layer_deposits = nullptr;
   move_from.percent_chance = 0;
 }
 
@@ -61,7 +56,6 @@ MuonDetector& MuonDetector::operator=(const MuonDetector& copy_from)
   // Copy data
   total_energy_detected = copy_from.total_energy_detected;
   hit_layers = std::make_unique<vector<bool>>(*copy_from.hit_layers);
-  layer_deposits = std::make_unique<vector<double>>(*copy_from.layer_deposits);
   percent_chance = copy_from.percent_chance;
 
   return *this;
@@ -76,13 +70,11 @@ MuonDetector& MuonDetector::operator=(MuonDetector&& move_from)
   // Steal data
   total_energy_detected = move_from.total_energy_detected;
   hit_layers = std::move(move_from.hit_layers);
-  layer_deposits = std::move(move_from.layer_deposits);
   percent_chance = move_from.percent_chance;
 
   // Set move_from to 0.
   move_from.total_energy_detected = 0;
   move_from.hit_layers = nullptr;
-  move_from.layer_deposits = nullptr;
   move_from.percent_chance = 0;
 
   return *this;
@@ -115,23 +107,29 @@ void MuonDetector::print()
 void MuonDetector::interact(Particle& interacting_particle)
 {
   // Only muons can interact with muon detector
-  if(typeid(&interacting_particle)!=typeid(Muon)) return;
-  else
+  if(typeid(interacting_particle)==typeid(Muon))
   {
+    std::cout<<"MuonDetector interacting with Muon"<<std::endl;
+    Muon& interacting_muon = dynamic_cast<Muon&>(interacting_particle);
     // This code randomly determines, with percent_chance% probability if each layer has been hit
+    
     for(int i=0; i<2; i++)
     {
       int random_value = std::rand();
-      if(random_value%100 < percent_chance) hit_layers->at(i) = true;
+      if(random_value%100 < percent_chance)
+      {
+        hit_layers->at(i) = true;
+      }
     }
 
     // Also the energies from the muon are added to the chamber energies.
+    total_energy_detected += interacting_muon.get_chamber_energy();
   }
 }
 
 int MuonDetector::get_num_hits()
 {
-  // Counts the number of pixel layers that have been hit. This can be 0, 1 or 2.
+  // Counts the number of muon layers that have been hit. This can be 0 or 1 or 2.
   int num_hits = 0;
   for(int i=0; i<2; i++)
   {

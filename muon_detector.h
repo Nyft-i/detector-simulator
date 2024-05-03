@@ -13,7 +13,6 @@ class MuonDetector : public SubDetector
 private:
   enum tracker_layers{INNER_MUON_LAYER=0, OUTER_MUON_LAYER=1};
   std::unique_ptr<vector<bool>> hit_layers; // Unique pointer to a vector of booleans.
-  std::unique_ptr<vector<double>> layer_deposits;
   int percent_chance;
 public:
   // Constructor

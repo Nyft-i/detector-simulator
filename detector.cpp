@@ -131,6 +131,7 @@ void Detector::see_detections()
   // Muon Detector
   if(muon_detector->detection_status()) std::cout<<"muon detector detection!"<<std::endl;
   else std::cout<<"no muon detector detection"<<std::endl;
+  muon_detector->print();
 }
 
 void Detector::reset()

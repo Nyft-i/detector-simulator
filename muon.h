@@ -13,7 +13,7 @@ public:
   // Default
   Muon();
   // Parameterised
-  Muon(double con_energy, int con_pap=1, double con_tracker_energy=0, double con_chamber_energy=0);
+  Muon(double con_energy, int con_pap=1);
   // Copy
   Muon(const Muon& copy_from);
   // Move
@@ -34,6 +34,7 @@ public:
   // Setters
   void set_tracker_energy(double set_tracker_energy);
   void set_chamber_energy(double set_chamber_energy);
+  void set_true_energy(double set_energy) override;
 
   // Functionality
   void print() override;

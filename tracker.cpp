@@ -5,6 +5,8 @@
 
 #include"tracker.h"
 #include"sub_detector.h"
+#include"particle.h"
+#include"muon.h"
 
 // Constructors
 // Default
@@ -124,6 +126,15 @@ void Tracker::interact(Particle& interacting_particle)
     {
       int random_value = std::rand();
       if(random_value%100 < percent_chance) hit_layers->at(i) = true;
+    }
+    
+    // The amount of energy deposited, not a muon
+    if(typeid(&interacting_particle)!=typeid(Muon)) total_energy_detected += interacting_particle.get_true_energy();
+    else 
+    {
+      // If the particle is a muon, it deposits a different amount of energy in detector + tracker
+      Muon& interacting_muon = dynamic_cast<Muon&>(interacting_particle);
+      total_energy_detected += interacting_muon.get_tracker_energy();
     }
   }
 }

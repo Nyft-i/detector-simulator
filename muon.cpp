@@ -1,17 +1,28 @@
 #include<iostream>
+#include<vector>
+#include<ctime>
+#include<chrono>
 
 #include"muon.h"
 
+using std::vector;
+
 // Constructors
 // Default
+Muon::Muon()
+{
+  set_true_energy(10);
+  rest_mass = 105.66;
+  pap_status = 1;
+  charge = -1;
+  name = "muon";
+}
 
 // Parameterised
-Muon::Muon(double con_energy, int con_pap, double con_tracker_energy, double con_chamber_energy)
+Muon::Muon(double con_energy, int con_pap)
 {
-  true_energy = con_energy;
+  set_true_energy(con_energy);
   rest_mass = 105.66;
-  tracker_energy = con_tracker_energy;
-  chamber_energy = con_chamber_energy;
   pap_status = con_pap;
   if(pap_status==-1)
   {
@@ -114,6 +125,26 @@ double Muon::get_chamber_energy() const {return chamber_energy;}
 // Setters
 void Muon::set_tracker_energy(double set_tracker_energy) {tracker_energy = set_tracker_energy;}
 void Muon::set_chamber_energy(double set_chamber_energy) {chamber_energy = set_chamber_energy;}
+void Muon::set_true_energy(double set_energy) 
+{
+  // Based on the calorimeter code, very similar but no need for loops for only 2 elements.
+  // Sets the true energy using the base class method. We benefit from the existing verification in Particle.
+  Particle::set_true_energy(set_energy);
+
+  // When the user tries to set the true energy, it is split randomly between the tracker and chamber deposits.
+  vector<double> random_ratio;
+
+  random_ratio.push_back(std::rand()); // Can be an int between 0 and RAND_MAX which is >32767
+  random_ratio.push_back(std::rand()); // Can be an int between 0 and RAND_MAX which is >32767
+
+  double total = random_ratio[0]+random_ratio[1];
+  // Divides each number by the total sum of all random numbers, then it will be out of 1 instead of a random number.
+  random_ratio[0] = random_ratio[0]/total;
+  random_ratio[1] = random_ratio[1]/total;
+  
+  tracker_energy = true_energy*random_ratio[0];
+  chamber_energy = true_energy*random_ratio[1];
+}
 
 // Functionality
 void Muon::print()
