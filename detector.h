@@ -14,7 +14,9 @@ class Detector
 private:
   unique_ptr<Tracker> tracker;
   unique_ptr<Calorimeter> calorimeter;
+  unique_ptr<CollisionEvent> current_col;
   //MuonChamber muon_chamber;
+  double col_elem;
 public:
   // Constructor
   // Default
@@ -44,7 +46,8 @@ public:
   // Functionality
 
   void interact(Particle& interacting_particle);
-  void interact(CollisionEvent& col_event);
+  void start_collision(unique_ptr<CollisionEvent> p_col_event);
+  void step_collision();
   void see_detections();
   void reset();
 };

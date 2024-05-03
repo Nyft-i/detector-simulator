@@ -2,6 +2,7 @@
 
 #include"collision_event.h"
 #include"particle.h"
+#include"tau.h"
 
 // Constructors
 // Default
@@ -82,7 +83,18 @@ Particle& CollisionEvent::operator [](int index)
 // Functionality
 void CollisionEvent::add_particle(shared_ptr<Particle> add_particle)
 {
-  event_particles.push_back(std::move(add_particle));
+  if(std::dynamic_pointer_cast<Tau>(add_particle))
+  {
+    shared_ptr<Tau> p_tau = std::dynamic_pointer_cast<Tau>(add_particle);
+    for(shared_ptr<Particle> p_product : p_tau->get_decay_products())
+    {
+      event_particles.push_back(p_product); // Copy, still belongs to the Tau
+    }
+  }
+  else
+  {
+    event_particles.push_back(std::move(add_particle)); // Move
+  }
 }
 
 void CollisionEvent::print(int index)

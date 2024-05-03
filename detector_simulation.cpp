@@ -43,16 +43,16 @@ int main()
   particle_list.push_back(std::make_shared<Photon>(1500));
   particle_list.push_back(std::make_shared<Electron>(200));
   particle_list.push_back(std::make_shared<Muon>(300, 1, 50, 100));
-  particle_list.push_back(std::make_shared<Tau>(400, 1, "leptonic"));
+  particle_list.push_back(std::make_shared<Tau>(400, 1, "hadronic"));
   particle_list.push_back(std::make_shared<Neutrino>(500, 1, 1, false));
+  std::cout<<"test"<<std::endl;
 
   CollisionEvent event1("test");
-  event1.add_particle(particle_list[0]);
-  event1.add_particle(particle_list[1]);
+  event1.add_particle(std::move(particle_list[3]));
   event1.print();
 
   Detector main_detector(70);
-  main_detector.interact(event1);
+  main_detector.start_collision(std::make_unique<CollisionEvent>(event1));
   main_detector.see_detections();
   
   return 0;

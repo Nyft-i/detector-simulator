@@ -13,12 +13,13 @@ class Tau : public Particle
 {
 private:
   string decay_mode;
+  vector<shared_ptr<Particle>> decay_products;
 public:
   // Constructors
   // Default
   Tau();
   // Parameterised
-  Tau(double con_energy, int con_pap = 1, string con_decay_mode="leptonic");
+  Tau(double con_energy, int con_pap = 1, string con_decay_mode="hadronic");
   // Copy
   Tau(const Tau& copy_from);
   // Move
@@ -34,11 +35,12 @@ public:
 
   // Getters
   string get_decay_mode() const;
+  vector<shared_ptr<Particle>> get_decay_products() const;
   // Setters
   void set_decay_mode(string set_decay_mode);
 
   // Functionality
-  shared_ptr<Particle> decay();
+  vector<shared_ptr<Particle>> construct_decay_particles(string decay_mode="leptonic");
   void print() override;
 };
 
