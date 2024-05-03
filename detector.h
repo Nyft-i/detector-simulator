@@ -6,6 +6,7 @@
 #include"tracker.h"
 #include"calorimeter.h"
 #include"collision_event.h"
+#include"muon_detector.h"
 
 using std::unique_ptr;
 
@@ -14,8 +15,8 @@ class Detector
 private:
   unique_ptr<Tracker> tracker;
   unique_ptr<Calorimeter> calorimeter;
+  unique_ptr<MuonDetector> muon_detector;
   unique_ptr<CollisionEvent> current_col;
-  //MuonChamber muon_chamber;
   double col_elem;
 public:
   // Constructor
@@ -38,8 +39,9 @@ public:
 
   // Getters
   Tracker& get_tracker();
-  //Calorimeter& get_calorimeter();
-  //MuonDetector& get_muon_detector();
+  Calorimeter& get_calorimeter();
+  MuonDetector& get_muon_detector();
+  
   // Setters
   void set_tracker(shared_ptr<Tracker> set_tracker);
 

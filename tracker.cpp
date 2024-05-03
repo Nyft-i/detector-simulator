@@ -33,6 +33,7 @@ Tracker::Tracker(const Tracker& copy_from)
 {
   total_energy_detected = copy_from.total_energy_detected;
   hit_layers = copy_from.hit_layers;
+  percent_chance = copy_from.percent_chance;
 }
 
 // Move
@@ -40,11 +41,12 @@ Tracker::Tracker(Tracker&& move_from)
 {
   total_energy_detected = move_from.total_energy_detected;
   hit_layers = std::move(move_from.hit_layers);
+  percent_chance = move_from.percent_chance;
 
   // Set move_from to 0.
   move_from.total_energy_detected = 0;
   move_from.hit_layers = nullptr;
-
+  move_from.percent_chance = 0;
 }
 
 // Destructor
@@ -59,6 +61,7 @@ Tracker& Tracker::operator=(const Tracker& copy_from)
   // Copy data
   total_energy_detected = copy_from.total_energy_detected;
   hit_layers = copy_from.hit_layers;
+  percent_chance = copy_from.percent_chance;
 
   return *this;
 }
@@ -72,16 +75,18 @@ Tracker& Tracker::operator=(Tracker&& move_from)
   // Steal data
   total_energy_detected = move_from.total_energy_detected;
   hit_layers = std::move(move_from.hit_layers);
+  percent_chance = move_from.percent_chance;
 
   // Set move_from to 0.
   move_from.total_energy_detected = 0;
   move_from.hit_layers = nullptr;
+  move_from.percent_chance = 0;
 
   return *this;
 }
 
 // Getters
-std::shared_ptr<vector<bool>>& Tracker::get_hit_layers() {return hit_layers;}
+vector<bool> Tracker::get_hit_layers() const {return *hit_layers;}
 bool Tracker::get_hit_layer(int hit_layer) const {return hit_layers->at(hit_layer);}
 int Tracker::get_percent_chance() const {return percent_chance;}
 

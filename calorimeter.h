@@ -46,8 +46,6 @@ public:
   void set_HAD_1(double set_HAD_1);
   void set_HAD_2(double set_HAD_2);
 
-
-  
   // Functionality
   void interact(Particle& interacting_particle) override;
   void reset() override;

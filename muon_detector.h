@@ -1,39 +1,39 @@
-#ifndef TRACKER_H_INCLUDED
-#define TRACKER_H_INCLUDED
-
-#include"sub_detector.h"
-#include"particle.h"
+#ifndef MUON_DETECTOR_H_INCLUDED
+#define MUON_DETECTOR_H_INCLUDED
 
 #include<vector>
 #include<memory>
 
+#include"sub_detector.h"
+
 using std::vector;
 
-class Tracker : public SubDetector
+class MuonDetector : public SubDetector
 {
 private:
-  enum tracker_layers{INNER_PIXEL_LAYER=0, OUTER_PIXEL_LAYER=1, STRIP_LAYER=2};
-  std::shared_ptr<vector<bool>> hit_layers; // Unique pointer to a vector of booleans.
+  enum tracker_layers{INNER_MUON_LAYER=0, OUTER_MUON_LAYER=1};
+  std::unique_ptr<vector<bool>> hit_layers; // Unique pointer to a vector of booleans.
+  std::unique_ptr<vector<double>> layer_deposits;
   int percent_chance;
 public:
   // Constructor
   // Default
-  Tracker();
+  MuonDetector();
   // Parameterised
-  Tracker(int con_percent_chance);
+  MuonDetector(int con_percent_chance);
   
   // Copy
-  Tracker(const Tracker& copy_from);
+  MuonDetector(const MuonDetector& copy_from);
   // Move
-  Tracker(Tracker&& move_from);
+  MuonDetector(MuonDetector&& move_from);
 
   // Destructor, not needed.
 
   // Assignment
   // Copy
-  Tracker& operator=(const Tracker& copy_from);
+  MuonDetector& operator=(const MuonDetector& copy_from);
   // Move
-  Tracker& operator=(Tracker&& move_from);
+  MuonDetector& operator=(MuonDetector&& move_from);
   
   // Getters
   vector<bool> get_hit_layers() const;
@@ -42,9 +42,8 @@ public:
 
   // Setters
   void set_hit_layers(vector<bool> set_layers);
-  void set_inner_pixel_layer(bool set_inner);
-  void set_outer_pixel_layer(bool set_outer);
-  void set_strip_layer(bool set_strip);
+  void set_inner_muon_layer(bool set_inner);
+  void set_outer_muon_layer(bool set_outer);
   void set_percent_chance(int set_percent_chance);
 
   // Functionality
@@ -55,5 +54,7 @@ public:
   void see_detection();
   void reset() override;
 };
+
+
 
 #endif

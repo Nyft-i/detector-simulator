@@ -53,6 +53,7 @@ int main()
 
   Detector main_detector(70);
   main_detector.start_collision(std::make_unique<CollisionEvent>(event1));
+  std::cout<<"step 1"<<std::endl;
   main_detector.see_detections();
   
   return 0;
