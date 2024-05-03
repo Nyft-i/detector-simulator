@@ -5,7 +5,7 @@
 // Constructor
 Particle::Particle():
   identifier(numberer),
-  true_energy(0),
+  true_energy(1),
   rest_mass(0),
   charge(0),
   pap_status(0),
@@ -18,7 +18,6 @@ Particle::Particle():
 // Parameterised
 Particle::Particle(double con_energy, double con_rm, int con_charge, string con_name, int con_pap):
   identifier(numberer),
-  true_energy(con_energy),
   rest_mass(con_rm),
   charge(con_charge),
   pap_status(con_pap),
@@ -26,11 +25,13 @@ Particle::Particle(double con_energy, double con_rm, int con_charge, string con_
 {
   // Number Management
   numberer++;
+  set_true_energy(con_energy);
 }
 
 // Copy
 Particle::Particle(const Particle& copy_from)
 {
+  // Copy the data
   true_energy = copy_from.true_energy;
   rest_mass = copy_from.rest_mass;
   charge = copy_from.charge;
@@ -41,6 +42,7 @@ Particle::Particle(const Particle& copy_from)
 // Move
 Particle::Particle(Particle&& move_from)
 {
+  // Move data/steal
   true_energy = move_from.true_energy;
   rest_mass = move_from.rest_mass;
   charge = move_from.charge;
@@ -106,20 +108,15 @@ string Particle::get_name() const {return name;}
 // Setters
 void Particle::set_true_energy(double set_energy) 
 {
-  // Makes sure that the energy is not less than the rest mass.
-  // For photons, which have 0 rest mass, it is ensuring that its true energy is not negative.
-  if(set_energy>rest_mass) true_energy = set_energy;
-  else true_energy = rest_mass;  
+  // True energy is all energy that is not the rest mass in this simulation, so only must be greater than.
+  if(set_energy<0) true_energy = 0;
+  else true_energy = set_energy;  
 }
 
 void Particle::set_rest_mass(double set_rm)
 {
   // Ensures that the rest mass cannot be negative.
-  if(set_rm<0) rest_mass = std::abs(set_rm);
-  // Also the rest mass shouldn't be larger than the true energy.
-  else if(set_rm>true_energy) rest_mass = true_energy;
-  else rest_mass = set_rm;
-
+  rest_mass = std::abs(set_rm);
 }
 void Particle::set_charge(int set_char) {charge = set_char;}
 void Particle::set_name(string set_name) {name = set_name;}
