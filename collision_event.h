@@ -14,14 +14,14 @@ using std::string;
 class CollisionEvent
 {
 private:
+  double collision_energy;
   string event_name;
   vector<shared_ptr<Particle>> event_particles;
 public:
   // Constructor
   // Default
-  CollisionEvent();
   // Parameterised
-  CollisionEvent(string con_event_name);
+  CollisionEvent(string con_event_name="default");
   
   // Copy
   CollisionEvent(const CollisionEvent& copy_from);
@@ -37,8 +37,10 @@ public:
   CollisionEvent& operator=(CollisionEvent&& move_from);
   
   // Getters
-  string get_event_name();
-  int get_num_particles();
+  string get_event_name() const;
+  int get_num_particles() const;
+  double get_collision_energy() const;
+
 
   // Setters
   void set_event_name(string set_event_name);

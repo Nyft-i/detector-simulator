@@ -8,6 +8,9 @@
 #include"detector.h"
 #include"tracker.h"
 #include"calorimeter.h"
+#include"muon_detector.h"
+#include"collision_event.h"
+#include"col_result_container.h"
 
 using std::vector;
 using std::string;
@@ -127,9 +130,14 @@ void Detector::interact(Particle& interacting_particle)
 
 void Detector::start_collision(unique_ptr<CollisionEvent> p_col_event)
 {
+  setup_collision(std::move(p_col_event));
+  step_collision();
+}
+
+void Detector::setup_collision(unique_ptr<CollisionEvent> p_col_event)
+{
   current_col = std::move(p_col_event);
   col_elem = 0;
-  step_collision();
 }
 
 void Detector::step_collision()
@@ -171,7 +179,7 @@ void Detector::sneak_look()
   tracker->print();
   calorimeter->print();
   muon_detector->print();
-  int total_energy = tracker->get_total_energy_detected() + calorimeter->get_total_energy_detected() + muon_detector->get_total_energy_detected();
+  int total_energy = tracker->get_total_energy_detected() + calorimeter->get_total_energy_detected(); // Muon detector energy is going to be the same as tracker energy for muons, so will accidentally double up the energy.
   std::cout<<"\ntotal energy detected, all sub-detectors (MeV) : "<<total_energy<<std::endl;
 }
 
@@ -217,7 +225,6 @@ list<string> Detector::guess_particle()
     });
   }
 
-
   // Calorimeter detection (HAD)
   if(detections[CAL_HAD])
   {
@@ -248,4 +255,29 @@ list<string> Detector::guess_particle()
   }
   
   return possible_particles;
+}
+
+shared_ptr<ColResultContainer> Detector::collide(unique_ptr<CollisionEvent> p_col_event)
+{
+  // Transfers ownership to the caller of a unique pointer to a container for all the known information about a potential collision event.
+  // Initial setup
+  setup_collision(std::move(p_col_event));
+
+  // Function that gives the results of a full collision
+  vector<list<string>> potential_particles;
+  double input_energy = current_col->get_collision_energy();
+  double detected_energy = 0;
+
+  // For every particle (note that tau's will automatically decay into their decay products when they are added to the collision event.)
+  for(int i = 0; i<current_col->get_num_particles(); i++)
+  {
+    step_collision();
+    std::cout<<i<<std::endl;
+    potential_particles.push_back(guess_particle());
+    detected_energy += tracker->get_total_energy_detected() + calorimeter->get_total_energy_detected(); // Muon detector energy is going to be the same as tracker energy for muons, so will accidentally double up the energy.
+
+  }
+
+  ColResultContainer results(input_energy, detected_energy, potential_particles);
+  return std::make_shared<ColResultContainer>(results);
 }

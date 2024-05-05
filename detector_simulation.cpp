@@ -48,20 +48,15 @@ int main()
   particle_list.push_back(std::make_shared<Muon>(300, 1));
   particle_list.push_back(std::make_shared<Tau>(400, 1, "hadronic"));
   particle_list.push_back(std::make_shared<Neutrino>(500, 1, 1, false));
-  std::cout<<"test"<<std::endl;
 
-  CollisionEvent event1("test");
-  event1.add_particle(std::move(particle_list[0]));
+  CollisionEvent event1("event 1");
+  event1.add_particle(std::move(std::make_unique<Photon>(75)));
+  event1.add_particle(std::move(std::make_unique<Photon>(75)));
   event1.print();
 
   Detector main_detector; // No arguments means that it will create a perfect detector
-  main_detector.start_collision(std::make_unique<CollisionEvent>(event1));
-  main_detector.sneak_look();
-  list<string> possible_parts = main_detector.guess_particle();
-  for (auto it = possible_parts.begin(); it != possible_parts.end(); ++it)
-  {
-    std::cout << *it << std::endl;
-  }
+  shared_ptr<ColResultContainer> p_results1 = main_detector.collide(std::make_unique<CollisionEvent>(event1));
+  p_results1->print();
   
   return 0;
 }

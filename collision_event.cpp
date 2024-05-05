@@ -6,16 +6,12 @@
 
 // Constructors
 // Default
-CollisionEvent::CollisionEvent()
-{
-  event_particles = {}; // Empty vector.
-}
-
 // Parameterised
 CollisionEvent::CollisionEvent(string con_event_name)
 {
   event_name = con_event_name;
   event_particles = {}; // Empty vector.
+  collision_energy = 0;
 }
 
 // Copy
@@ -23,6 +19,7 @@ CollisionEvent::CollisionEvent(const CollisionEvent& copy_from)
 {
   event_name = copy_from.event_name;
   event_particles = copy_from.event_particles;
+  collision_energy = copy_from.collision_energy;
 }
 
 // Move
@@ -30,10 +27,12 @@ CollisionEvent::CollisionEvent(CollisionEvent&& move_from)
 {
   event_name = std::move(move_from.event_name);
   event_particles = std::move(move_from.event_particles);
+  collision_energy = move_from.collision_energy;
 
   // Set attributes of move_from to nothing.
   move_from.event_name = "";
   move_from.event_particles = {};
+  move_from.collision_energy = 0;
 }
 
 // Destructor
@@ -48,6 +47,8 @@ CollisionEvent& CollisionEvent::operator=(const CollisionEvent& copy_from)
 
   event_name = copy_from.event_name;
   event_particles = copy_from.event_particles;
+  collision_energy = copy_from.collision_energy;
+
   return *this;
 }
 
@@ -59,17 +60,20 @@ CollisionEvent& CollisionEvent::operator=(CollisionEvent&& move_from)
 
   event_name = std::move(move_from.event_name);
   event_particles = std::move(move_from.event_particles);
+  collision_energy = move_from.collision_energy;
 
   // Set attributes of move_from to nothing.
   move_from.event_name = "";
   move_from.event_particles = {};
+  move_from.collision_energy = 0;
   return *this;
 }
 
 
 // Getters
-string CollisionEvent::get_event_name() {return event_name;}
-int CollisionEvent::get_num_particles() {return event_particles.size();}
+string CollisionEvent::get_event_name() const {return event_name;}
+int CollisionEvent::get_num_particles() const {return event_particles.size();}
+double CollisionEvent::get_collision_energy() const {return collision_energy;}
 
 // Setters
 void CollisionEvent::set_event_name(string set_event_name) {event_name = set_event_name;}
@@ -83,6 +87,9 @@ Particle& CollisionEvent::operator [](int index)
 // Functionality
 void CollisionEvent::add_particle(shared_ptr<Particle> add_particle)
 {
+  // Copy the energy from the particles into the event.
+  collision_energy += add_particle->get_true_energy();
+
   if(std::dynamic_pointer_cast<Tau>(add_particle))
   {
     shared_ptr<Tau> p_tau = std::dynamic_pointer_cast<Tau>(add_particle);

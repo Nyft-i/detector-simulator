@@ -10,6 +10,7 @@
 #include"calorimeter.h"
 #include"collision_event.h"
 #include"muon_detector.h"
+#include"col_result_container.h"
 
 using std::vector;
 using std::string;
@@ -55,11 +56,14 @@ public:
   // Functionality
   void interact(Particle& interacting_particle);
   void start_collision(unique_ptr<CollisionEvent> p_col_event);
+  void setup_collision(unique_ptr<CollisionEvent> p_col_event);
   void step_collision();
   void see_detections();
   void reset();
   void sneak_look();
   list<string> guess_particle();
+
+  shared_ptr<ColResultContainer> collide(unique_ptr<CollisionEvent> p_col_event);
 };
 
 #endif
