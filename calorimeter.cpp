@@ -79,6 +79,7 @@ double Calorimeter::get_EM_2() const {return cal_detection->at(1);}
 double Calorimeter::get_HAD_1() const {return cal_detection->at(2);}
 double Calorimeter::get_HAD_2() const {return cal_detection->at(3);}
 
+
 // Setters
 void Calorimeter::set_cal_detection(vector<double> set_cal_detection) {cal_detection = std::make_unique<vector<double>>(set_cal_detection);}
 void Calorimeter::set_EM_1(double set_EM_1) {cal_detection->at(0) = set_EM_1;}
@@ -118,4 +119,17 @@ void Calorimeter::reset()
 {
   total_energy_detected = 0;
   cal_detection = std::make_unique<vector<double>>(4, 0);
+}
+
+bool Calorimeter::EM_detection_status() const 
+{
+  // Boolean for if there is 
+  if(cal_detection->at(0) > 0 || cal_detection->at(1) > 0) return true;
+  else return false;
+}
+
+bool Calorimeter::HAD_detection_status() const 
+{
+  if(cal_detection->at(2) > 0 || cal_detection->at(3) > 0) return true;
+  else return false;
 }

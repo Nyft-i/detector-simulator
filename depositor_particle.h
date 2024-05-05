@@ -50,7 +50,7 @@ public:
   double get_EM_2() const;
   double get_HAD_1() const;
   double get_HAD_2() const;
-  
+    
   // Setters
   virtual void set_true_energy(double set_energy) override;
 

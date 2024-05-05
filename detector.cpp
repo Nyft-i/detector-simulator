@@ -1,9 +1,17 @@
 #include<iostream>
 #include<memory>
+#include<vector>
+#include<string>
+#include<list>
+#include<algorithm>
 
 #include"detector.h"
 #include"tracker.h"
 #include"calorimeter.h"
+
+using std::vector;
+using std::string;
+using std::list;
 
 // Constructors
 // Default
@@ -93,6 +101,21 @@ Detector& Detector::operator=(Detector&& move_from)
   return *this;
 }
 
+// Getters
+Tracker& Detector::get_tracker() const {return *tracker;}
+Calorimeter& Detector::get_calorimeter() const {return *calorimeter;}
+MuonDetector& Detector::get_muon_detector() const {return *muon_detector;}
+vector<bool> Detector::get_detections() const 
+{
+  vector<bool> detections;
+  // Vector of booleans for all the possible types of detections. Will only be accurate in the scenario that the detector is perfect.
+  detections.push_back(tracker->detection_status());
+  detections.push_back(calorimeter->EM_detection_status());
+  detections.push_back(calorimeter->HAD_detection_status());
+  detections.push_back(muon_detector->detection_status());
+  return detections;
+}
+
 // Functionality
 void Detector::interact(Particle& interacting_particle)
 {
@@ -150,4 +173,79 @@ void Detector::sneak_look()
   muon_detector->print();
   int total_energy = tracker->get_total_energy_detected() + calorimeter->get_total_energy_detected() + muon_detector->get_total_energy_detected();
   std::cout<<"\ntotal energy detected, all sub-detectors (MeV) : "<<total_energy<<std::endl;
+}
+
+list<string> Detector::guess_particle()
+{
+  // Uses the information from get_detections to guess the particle.
+  vector<bool> detections = get_detections();
+  enum detection_type {TRACKER=0, CAL_EM=1, CAL_HAD=2, MUON=3};
+  list<string> possible_particles = {"muon/antimuon", "electron/positron", "proton", "neutron", "photon", "tau/antitau", "neutrino/antineutrino"};
+
+  // Muon detection, unlike the calorimeter, if a detection isn't found then we cannot rule out muons, as their detection is % chance
+  if(detections[MUON])
+  {
+    // Removes every possiblity as it can only be a muon.
+    possible_particles.remove_if([](string const & x) {return x != "muon/antimuon";});
+    return possible_particles; // Return early because why not
+  }
+
+  // Tracker detection
+  if(detections[TRACKER])
+  {
+    // Removes every particle that doesn't have a charge.
+    possible_particles.remove_if([](string const & x) {return x == "photon" || x == "neutron" || x=="neutrino/antineutrino";});
+  }
+
+  // Calorimeter detection (EM)
+  if(detections[CAL_EM])
+  {
+    // Removes particles that cannot leave EM cal.
+    possible_particles.remove_if([](string const & x) 
+    {
+      return x == "neutrino/antineutrino";
+    });
+  }
+
+  // Calorimeter doesnt have a detect chance like muon chamber and tracker, so if there isn't a detection then it cannot be a particle that leaves energy on the calorimeter.
+  if(!detections[CAL_EM])
+  {
+    // Removes particles that CAN leave EM cal.
+    possible_particles.remove_if([](string const & x) 
+    {
+      return x != "neutrino/antineutrino";
+    });
+  }
+
+
+  // Calorimeter detection (HAD)
+  if(detections[CAL_HAD])
+  {
+    // Removes particles that cannot leave HAD cal.
+    possible_particles.remove_if([](string const & x) 
+    {
+      return x == "electron/positron" || x == "photon";
+    });
+  }
+
+  // Same applies here to the inverse of the hadronic layer. If its not detected then it must be the opposite to if it is detected. No percent chance, as the calorimeter depends on energies rather than percentage chances
+  if(!detections[CAL_HAD])
+  {
+    // Removes particles that CAN leave HAD cal.
+    possible_particles.remove_if([](string const & x) 
+    {
+      return x == "muon/antimuon" || x == "proton" || x == "neutron";
+    });
+  }
+
+  if(detections[CAL_EM] && detections[CAL_HAD])
+  {
+    // Removes particles that cannot leave energy in both types of calorimeter layers
+    possible_particles.remove_if([](string const & x) 
+    {
+      return x != "proton" || x != "neutron" || x != "muon/antimuon";
+    });
+  }
+  
+  return possible_particles;
 }

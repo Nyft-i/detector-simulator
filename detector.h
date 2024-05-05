@@ -2,12 +2,19 @@
 #define DETECTOR_H_INCLUDED
 
 #include<memory>
+#include<vector>
+#include<string>
+#include<list>
 
 #include"tracker.h"
 #include"calorimeter.h"
 #include"collision_event.h"
 #include"muon_detector.h"
 
+using std::vector;
+using std::string;
+using std::list;
+using std::shared_ptr;
 using std::unique_ptr;
 
 class Detector
@@ -37,21 +44,22 @@ public:
   Detector& operator=(Detector&& move_from);
 
   // Getters
-  Tracker& get_tracker();
-  Calorimeter& get_calorimeter();
-  MuonDetector& get_muon_detector();
+  Tracker& get_tracker() const;
+  Calorimeter& get_calorimeter() const;
+  MuonDetector& get_muon_detector() const;
+  vector<bool> get_detections() const;
   
   // Setters
   void set_tracker(shared_ptr<Tracker> set_tracker);
 
   // Functionality
-
   void interact(Particle& interacting_particle);
   void start_collision(unique_ptr<CollisionEvent> p_col_event);
   void step_collision();
   void see_detections();
   void reset();
   void sneak_look();
+  list<string> guess_particle();
 };
 
 #endif

@@ -110,7 +110,6 @@ void MuonDetector::interact(Particle& interacting_particle)
   // Only muons can interact with muon detector
   if(typeid(interacting_particle)==typeid(Muon))
   {
-    std::cout<<"MuonDetector interacting with Muon"<<std::endl;
     Muon& interacting_muon = dynamic_cast<Muon&>(interacting_particle);
     // This code randomly determines, with percent_chance% probability if each layer has been hit
     

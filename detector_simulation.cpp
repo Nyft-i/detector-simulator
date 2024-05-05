@@ -7,6 +7,7 @@
 #include<string>
 #include<ctime>
 #include<chrono>
+#include<list>
 
 #include"particle.h"
 #include"depositor_particle.h"
@@ -24,6 +25,8 @@
 using std::shared_ptr;
 using std::vector;
 using std::string;
+using std::list;
+using std::unique_ptr;
 
 unsigned long long get_ticks()
 {
@@ -48,13 +51,17 @@ int main()
   std::cout<<"test"<<std::endl;
 
   CollisionEvent event1("test");
-  event1.add_particle(std::move(particle_list[1]));
+  event1.add_particle(std::move(particle_list[0]));
   event1.print();
 
   Detector main_detector; // No arguments means that it will create a perfect detector
   main_detector.start_collision(std::make_unique<CollisionEvent>(event1));
-  std::cout<<"step 1"<<std::endl;
   main_detector.sneak_look();
+  list<string> possible_parts = main_detector.guess_particle();
+  for (auto it = possible_parts.begin(); it != possible_parts.end(); ++it)
+  {
+    std::cout << *it << std::endl;
+  }
   
   return 0;
 }
