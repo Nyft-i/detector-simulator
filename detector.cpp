@@ -188,72 +188,34 @@ list<string> Detector::guess_particle()
   // Uses the information from get_detections to guess the particle.
   vector<bool> detections = get_detections();
   enum detection_type {TRACKER=0, CAL_EM=1, CAL_HAD=2, MUON=3};
-  list<string> possible_particles = {"muon/antimuon", "electron/positron", "proton", "neutron", "photon", "tau/antitau", "neutrino/antineutrino"};
+  list<string> possible_particles = {"muon/antimuon", "electron/positron", "proton", "neutron", "photon", "neutrino/antineutrino"}; // No Tau present as they decay too fast
+  
 
   // Muon detection, unlike the calorimeter, if a detection isn't found then we cannot rule out muons, as their detection is % chance
-  if(detections[MUON])
-  {
-    // Removes every possiblity as it can only be a muon.
-    possible_particles.remove_if([](string const & x) {return x != "muon/antimuon";});
-    return possible_particles; // Return early because why not
-  }
+  if(detections[MUON]) // Must be a muon
+  {possible_particles.remove_if([](string const & x) {return x != "muon/antimuon";});}
+  if(!detections[MUON]) // Must NOT be a muon
+  {possible_particles.remove_if([](string const & x) {return x == "muon/antimuon";});}
 
   // Tracker detection
-  if(detections[TRACKER])
-  {
-    // Removes every particle that doesn't have a charge.
-    possible_particles.remove_if([](string const & x) {return x == "photon" || x == "neutron" || x=="neutrino/antineutrino";});
-  }
+  if(detections[TRACKER]) // must be charged
+  {possible_particles.remove_if([](string const & x) {return x != "muon/antimuon" && x != "electron/positron" && x != "tau/antitau" && x != "proton";});}
+  if(!detections[TRACKER]) // must NOT be charged
+  {possible_particles.remove_if([](string const & x) {return x == "muon/antimuon" || x == "electron/positron" || x == "tau/antitau" || x == "proton";});}
 
   // Calorimeter detection (EM)
-  if(detections[CAL_EM])
-  {
-    // Removes particles that cannot leave EM cal.
-    possible_particles.remove_if([](string const & x) 
-    {
-      return x == "neutrino/antineutrino";
-    });
-  }
-
-  // Calorimeter doesnt have a detect chance like muon chamber and tracker, so if there isn't a detection then it cannot be a particle that leaves energy on the calorimeter.
-  if(!detections[CAL_EM])
-  {
-    // Removes particles that CAN leave EM cal.
-    possible_particles.remove_if([](string const & x) 
-    {
-      return x != "neutrino/antineutrino";
-    });
-  }
+  if(detections[CAL_EM]) // must be anything but a neutrino or muon. Muon's don't leave energy in the EM calorimeter.
+  {possible_particles.remove_if([](string const & x) {return x == "neutrino/antineutrino" || x =="muon/antimuon";});}
+  if(!detections[CAL_EM]) // must be a neutrino or muon
+  {possible_particles.remove_if([](string const & x) {return x != "neutrino/antineutrino" && x !="muon/antimuon";});}
 
   // Calorimeter detection (HAD)
-  if(detections[CAL_HAD])
-  {
-    // Removes particles that cannot leave HAD cal.
-    possible_particles.remove_if([](string const & x) 
-    {
-      return x == "electron/positron" || x == "photon";
-    });
-  }
+  if(detections[CAL_HAD]) // Must be a proton or a neutron
+  {possible_particles.remove_if([](string const & x) {return x != "proton" && x != "neutron";});}
+  if(!detections[CAL_HAD]) // Must be a NOT proton or a neutron
+  {possible_particles.remove_if([](string const & x) {return x == "proton" || x == "neutron";});}
 
-  // Same applies here to the inverse of the hadronic layer. If its not detected then it must be the opposite to if it is detected. No percent chance, as the calorimeter depends on energies rather than percentage chances
-  if(!detections[CAL_HAD])
-  {
-    // Removes particles that CAN leave HAD cal.
-    possible_particles.remove_if([](string const & x) 
-    {
-      return x == "muon/antimuon" || x == "proton" || x == "neutron";
-    });
-  }
 
-  if(detections[CAL_EM] && detections[CAL_HAD])
-  {
-    // Removes particles that cannot leave energy in both types of calorimeter layers
-    possible_particles.remove_if([](string const & x) 
-    {
-      return x != "proton" || x != "neutron" || x != "muon/antimuon";
-    });
-  }
-  
   return possible_particles;
 }
 
@@ -262,22 +224,28 @@ shared_ptr<ColResultContainer> Detector::collide(unique_ptr<CollisionEvent> p_co
   // Transfers ownership to the caller of a unique pointer to a container for all the known information about a potential collision event.
   // Initial setup
   setup_collision(std::move(p_col_event));
-
-  // Function that gives the results of a full collision
+  enum detection_type {TRACKER=0, CAL_EM=1, CAL_HAD=2, MUON=3};
   vector<list<string>> potential_particles;
   double input_energy = current_col->get_collision_energy();
+  string collision_name = current_col->get_event_name();
   double detected_energy = 0;
 
   // For every particle (note that tau's will automatically decay into their decay products when they are added to the collision event.)
   for(int i = 0; i<current_col->get_num_particles(); i++)
   {
     step_collision();
-    std::cout<<i<<std::endl;
     potential_particles.push_back(guess_particle());
-    detected_energy += tracker->get_total_energy_detected() + calorimeter->get_total_energy_detected(); // Muon detector energy is going to be the same as tracker energy for muons, so will accidentally double up the energy.
+    
+    vector<bool> detections = get_detections();
 
+    // Code stops doubling up energies for particles which have imparted their true energy onto tracker/muon detector as well as the calorimeter.
+    // This is definitely not the physics way to do this but 
+    if(!detections[CAL_EM] && !detections[CAL_HAD]) detected_energy += tracker->get_total_energy_detected() + muon_detector->get_total_energy_detected();
+    else detected_energy += calorimeter -> get_total_energy_detected();
+
+    // sneak_look();
   }
 
-  ColResultContainer results(input_energy, detected_energy, potential_particles);
-  return std::make_shared<ColResultContainer>(results);
+  ColResultContainer results(collision_name, input_energy, detected_energy, potential_particles);
+  return std::make_shared<ColResultContainer>(results); // Transferral of ownership/joinery of ownership
 }

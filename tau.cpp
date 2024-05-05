@@ -163,7 +163,7 @@ vector<shared_ptr<Particle>> Tau::construct_decay_particles(string decay_product
   // Divides each number by the total sum of all random numbers, then it will be out of 1 instead of a random number.
   for(int i=0; i<3; i++)
   {
-    energy_distro[i] = energy_distro[i]/total;
+    energy_distro[i] = energy_distro[i]*true_energy/total;
   }
 
   // Defaults to hadronic if the user 
@@ -200,7 +200,7 @@ vector<shared_ptr<Particle>> Tau::construct_decay_particles(string decay_product
   }
   else if(decay_products=="hadronic") // proton-like, tau neutrino
   {
-    // Hadronically decaying Taus interact like protons, so we will just use protons.
+    // Hadronically decaying Taus interact like protons, so we will just use protons, under a different name.
     // Only 2 products so split the energy_distro[2] into the other two
     energy_distro[0] += energy_distro[2]/2;
     energy_distro[1] += energy_distro[2]/2;

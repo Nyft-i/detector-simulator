@@ -12,6 +12,7 @@ using std::list;
 class ColResultContainer
 {
 private:
+  string collision_name;
   double input_energy;
   double total_energy_detected;
   vector<list<string>> potential_particles;
@@ -19,7 +20,7 @@ public:
   // Constructor
   // Default
   // Parameterised
-  ColResultContainer(double con_input_energy, double con_detected_energy, vector<list<string>> con_potential_particles);
+  ColResultContainer(string con_col_name, double con_input_energy, double con_detected_energy, vector<list<string>> con_potential_particles);
   
   // Copy
   ColResultContainer(const ColResultContainer& copy_from);
