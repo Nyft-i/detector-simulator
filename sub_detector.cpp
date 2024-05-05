@@ -7,7 +7,7 @@
 SubDetector::SubDetector()
 {
   total_energy_detected = 0;
-  efficiency = 0;
+  efficiency = 1;
 }
 
 // Parameterised

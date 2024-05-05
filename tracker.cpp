@@ -17,6 +17,7 @@ Tracker::Tracker()
   hit_layers->at(INNER_PIXEL_LAYER) = false;
   hit_layers->at(OUTER_PIXEL_LAYER) = false;
   hit_layers->at(STRIP_LAYER) = false;
+  percent_chance = 1;
 }
 
 // Parameterised

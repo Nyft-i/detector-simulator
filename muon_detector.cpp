@@ -13,7 +13,7 @@
 MuonDetector::MuonDetector()
 {
   hit_layers = std::make_unique<vector<bool>>(2, false);
-  percent_chance = 70;
+  percent_chance = 0.7;
 }
 
 // Parameterised
