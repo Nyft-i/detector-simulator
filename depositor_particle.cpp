@@ -117,6 +117,7 @@ void DepositorParticle::set_cal_deposits(double set_EM_1, double set_EM_2, doubl
 
 void DepositorParticle::set_true_energy(double set_energy)
 {
+  // This is a virtual function. The code below only applies to particles which depoit in ALL layers (protons, neutrons, muons)
   // Sets the true energy using the base class method. We benefit from the existing verification in Particle.
   Particle::set_true_energy(set_energy);
 

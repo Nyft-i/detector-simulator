@@ -28,6 +28,7 @@ public:
   // Move
 
   // Getters
+  double get_total_energy_detected() const;
 
   // Setters
 

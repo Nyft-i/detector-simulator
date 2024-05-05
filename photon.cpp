@@ -95,3 +95,29 @@ void Photon::print()
   std::cout<<"\nparticle is : "<<name<<std::endl;
   DepositorParticle::print();
 }
+
+void Photon::set_true_energy(double set_energy)
+{
+  // This overrides the method in DepositorParticle, photons and electrons only deposit in the EM layers.
+  // Sets the true energy using the base class method. We benefit from the existing verification in Particle.
+  Particle::set_true_energy(set_energy);
+
+  // When the user tries to set the true energy, it is split randomly between the calorimeter deposits.
+  vector<double> random_ratio;
+  for(int i=0; i<2; i++)
+  {
+    random_ratio.push_back(std::rand()); // Can be an int between 0 and RAND_MAX which is >32767
+  }
+  double total = random_ratio[0]+random_ratio[1];
+  // Divides each number by the total sum of all random numbers, then it will be out of 1 instead of a random number.
+  for(int i=0; i<2; i++)
+  {
+    random_ratio[i] = random_ratio[i]/total;
+  }
+  
+  // Now the cal_deposits can be altered
+  for(int i=0; i<2; i++)
+  {
+    cal_deposits->at(i) = true_energy*random_ratio[i]; // From the true energy in case set_energy was invalid
+  }
+}

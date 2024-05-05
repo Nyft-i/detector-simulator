@@ -140,3 +140,14 @@ void Detector::reset()
   calorimeter->reset();
   muon_detector->reset();
 }
+
+void Detector::sneak_look()
+{
+  // Function that tells us everything about the sub-detectors in a way that shouldn't normally be visible for testing purposes.
+  std::cout<<"\n\n__ SUB-DETECTOR STATUSES __"<<std::endl;
+  tracker->print();
+  calorimeter->print();
+  muon_detector->print();
+  int total_energy = tracker->get_total_energy_detected() + calorimeter->get_total_energy_detected() + muon_detector->get_total_energy_detected();
+  std::cout<<"\ntotal energy detected, all sub-detectors (MeV) : "<<total_energy<<std::endl;
+}

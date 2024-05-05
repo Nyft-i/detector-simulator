@@ -51,6 +51,7 @@ public:
   void step_collision();
   void see_detections();
   void reset();
+  void sneak_look();
 };
 
 #endif

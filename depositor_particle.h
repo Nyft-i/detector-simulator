@@ -13,6 +13,8 @@ protected:
   std::unique_ptr<vector<double>> cal_deposits; // Unique pointer to a vector so that it maintains ownership
   // Names of the calorimeter inputs are EM_1, EM_2, HAD_1, HAD_2.
 
+  
+
   // These don't have validation the same way that set_true_energy does, so they are dangerous for external use and can result in the user setting cal_deposits to not add up to the true energy.
   // Therefore they are protected. The user is only allowed to set the true energies, and from that the cal_deposits are calculated. They are used in derived rule of 5 methods.
   void set_cal_deposits(vector<double> set_cal_deposits);
@@ -26,7 +28,7 @@ public:
   // Default
   DepositorParticle();
   // Parameterised
-
+  DepositorParticle(double con_energy, vector<double> con_cal_deposits);
   // Copy
   // Copy
   DepositorParticle(const DepositorParticle& other);
@@ -50,7 +52,7 @@ public:
   double get_HAD_2() const;
   
   // Setters
-  void set_true_energy(double set_energy) override;
+  virtual void set_true_energy(double set_energy) override;
 
   // Functionality
   string cal_dep_string() const;

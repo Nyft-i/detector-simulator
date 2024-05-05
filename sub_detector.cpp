@@ -17,6 +17,9 @@ SubDetector::SubDetector(double con_efficiency)
   efficiency = con_efficiency;
 }
 
+// Getters
+double SubDetector::get_total_energy_detected() const {return total_energy_detected;}
+
 // Functionality
 void SubDetector::print()
 {

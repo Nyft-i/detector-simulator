@@ -28,6 +28,7 @@ public:
 
   // Functionality
   void print() override;
+  void set_true_energy(double set_energy) override;
 };
 
 #endif
