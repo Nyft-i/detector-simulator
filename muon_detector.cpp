@@ -123,7 +123,11 @@ void MuonDetector::interact(Particle& interacting_particle)
     }
 
     // Also the energies from the muon are added to the chamber energies.
-    total_energy_detected += interacting_muon.get_chamber_energy();
+    if(get_num_hits()>=1)
+    {
+      total_energy_detected += interacting_muon.get_chamber_energy()*efficiency;
+      interacting_muon.set_detected_energy(5, interacting_muon.get_chamber_energy()*efficiency);
+    }
   }
 }
 

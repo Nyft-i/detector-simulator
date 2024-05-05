@@ -128,14 +128,23 @@ void Tracker::interact(Particle& interacting_particle)
       int random_value = std::rand();
       if(random_value/RAND_MAX < percent_chance) hit_layers->at(i) = true;
     }
-    
-    // The amount of energy deposited, not a muon
-    if(typeid(&interacting_particle)!=typeid(Muon)) total_energy_detected += interacting_particle.get_true_energy();
-    else 
-    {
-      // If the particle is a muon, it deposits a different amount of energy in detector + tracker
-      Muon& interacting_muon = dynamic_cast<Muon&>(interacting_particle);
-      total_energy_detected += interacting_muon.get_tracker_energy();
+
+    // more than 2 hits
+    if(get_num_hits()>=2) 
+    { 
+      // The amount of energy deposited, not a muon
+      if(typeid(&interacting_particle)!=typeid(Muon)) 
+      {
+        total_energy_detected += interacting_particle.get_true_energy()*efficiency;
+        interacting_particle.set_detected_energy(0, interacting_particle.get_true_energy()*efficiency); // Only detected at efficency*energy if 2 or more hit layers
+      }
+      else 
+      {
+        // If the particle is a muon, it deposits a different amount of energy in detector + tracker
+        Muon& interacting_muon = dynamic_cast<Muon&>(interacting_particle);
+        total_energy_detected += interacting_muon.get_tracker_energy()*efficiency;
+        interacting_muon.set_detected_energy(0, interacting_muon.get_tracker_energy()*efficiency); // Only detected at efficency*energy if 2 or more hit layers
+      }
     }
   }
 }

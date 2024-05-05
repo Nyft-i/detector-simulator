@@ -12,7 +12,7 @@ using std::vector;
 Muon::Muon()
 {
   set_true_energy(10);
-  rest_mass = 105.66;
+  rest_mass = 0.10566;
   pap_status = 1;
   charge = -1;
   name = "muon";
@@ -22,7 +22,7 @@ Muon::Muon()
 Muon::Muon(double con_energy, int con_pap)
 {
   set_true_energy(con_energy);
-  rest_mass = 105.66;
+  rest_mass = 0.10566;
   pap_status = con_pap;
   if(pap_status==-1)
   {
@@ -151,6 +151,6 @@ void Muon::print()
 {
   std::cout<<"\nparticle is : "<<name<<std::endl;
   Particle::print();
-  std::cout<<"tracker energy (MeV) : "<<tracker_energy<<std::endl;
-  std::cout<<"chamber energy (MeV) : "<<chamber_energy<<std::endl;
+  std::cout<<"tracker energy (GeV) : "<<tracker_energy<<std::endl;
+  std::cout<<"chamber energy (GeV) : "<<chamber_energy<<std::endl;
 }

@@ -16,6 +16,7 @@ class CollisionEvent
 private:
   double collision_energy;
   string event_name;
+  vector<shared_ptr<Particle>> input_particles;
   vector<shared_ptr<Particle>> event_particles;
 public:
   // Constructor
@@ -39,6 +40,7 @@ public:
   // Getters
   string get_event_name() const;
   int get_num_particles() const;
+  int get_num_input_particles() const;
   double get_collision_energy() const;
 
 
@@ -47,6 +49,7 @@ public:
 
   // Operator overload
   Particle& operator [](int index);
+  Particle& init_particle(int index);
 
   // Functionality
   void add_particle(shared_ptr<Particle> add_particle);

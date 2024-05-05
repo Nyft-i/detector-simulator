@@ -8,6 +8,7 @@ class SubDetector
 {
 protected:
   double total_energy_detected;
+  int num_particles_detected;
   double efficiency;
 public:
   // Constructor
@@ -29,6 +30,7 @@ public:
 
   // Getters
   double get_total_energy_detected() const;
+  int get_num_particles_detected() const;
 
   // Setters
 

@@ -4,10 +4,16 @@
 #include<vector>
 #include<string>
 #include<list>
+#include<memory>
+
+#include"particle.h"
+#include"collision_event.h"
 
 using std::vector;
 using std::string;
 using std::list;
+using std::shared_ptr;
+using std::unique_ptr;
 
 class ColResultContainer
 {
@@ -15,12 +21,13 @@ private:
   string collision_name;
   double input_energy;
   double total_energy_detected;
+  unique_ptr<CollisionEvent> input_event;
   vector<list<string>> potential_particles;
 public:
   // Constructor
   // Default
   // Parameterised
-  ColResultContainer(string con_col_name, double con_input_energy, double con_detected_energy, vector<list<string>> con_potential_particles);
+  ColResultContainer(string con_col_name, double con_input_energy, double con_detected_energy,vector<list<string>> con_potential_particles, unique_ptr<CollisionEvent> con_input_event);
   
   // Copy
   ColResultContainer(const ColResultContainer& copy_from);
@@ -36,6 +43,7 @@ public:
   ColResultContainer& operator=(ColResultContainer&& move_from);
   
   // Getters
+  string get_collision_name() const;
   int get_num_particles_detected() const;
   double get_total_energy_detected() const;
   double get_input_energy() const;

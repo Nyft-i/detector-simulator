@@ -13,6 +13,7 @@ Particle::Particle():
 {
   // Number Management
   numberer++;
+  detected_energies = std::make_unique<vector<double>>(6, 0);
 }
 
 // Parameterised
@@ -26,6 +27,7 @@ Particle::Particle(double con_energy, double con_rm, int con_charge, string con_
   // Number Management
   numberer++;
   set_true_energy(con_energy);
+  detected_energies = std::make_unique<vector<double>>(6, 0);
 }
 
 // Copy
@@ -37,6 +39,7 @@ Particle::Particle(const Particle& copy_from)
   charge = copy_from.charge;
   name = copy_from.name;
   pap_status = copy_from.pap_status;
+  detected_energies = std::make_unique<vector<double>>(*copy_from.detected_energies);
 }
 
 // Move
@@ -48,6 +51,7 @@ Particle::Particle(Particle&& move_from)
   charge = move_from.charge;
   name = std::move(move_from.name);
   pap_status = move_from.pap_status;
+  detected_energies = std::move(move_from.detected_energies);
 
   // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
@@ -55,6 +59,7 @@ Particle::Particle(Particle&& move_from)
   move_from.charge = 0;
   move_from.pap_status = 0;
   move_from.name = "";
+  move_from.detected_energies = std::make_unique<vector<double>>(6, 0);
 }
 
 // Destructor
@@ -72,6 +77,7 @@ Particle& Particle::operator=(const Particle& copy_from)
   charge = copy_from.charge;
   name = copy_from.name;
   pap_status = copy_from.pap_status;
+  detected_energies = std::make_unique<vector<double>>(*copy_from.detected_energies);
 
   return *this;
 }
@@ -87,6 +93,7 @@ Particle& Particle::operator=(Particle&& move_from)
   charge = move_from.charge;
   name = std::move(move_from.name);
   pap_status = move_from.pap_status;
+  detected_energies = std::move(move_from.detected_energies);
 
   // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
@@ -94,6 +101,7 @@ Particle& Particle::operator=(Particle&& move_from)
   move_from.charge = 0;
   move_from.pap_status = 0;
   move_from.name = "";
+  move_from.detected_energies = std::make_unique<vector<double>>(6, 0);
 
   return *this;
 }
@@ -104,6 +112,8 @@ double Particle::get_true_energy() const {return true_energy;}
 double Particle::get_rest_mass() const {return rest_mass;}
 int Particle::get_charge() const {return charge;}
 string Particle::get_name() const {return name;}
+int Particle::get_pap_status() const {return pap_status;}
+double Particle::get_detected_energy(int index) const {return detected_energies->at(index);}
 
 // Setters
 void Particle::set_true_energy(double set_energy) 
@@ -120,6 +130,8 @@ void Particle::set_rest_mass(double set_rm)
 }
 void Particle::set_charge(int set_char) {charge = set_char;}
 void Particle::set_name(string set_name) {name = set_name;}
+void Particle::set_pap_status(int set_pap) {pap_status = set_pap;}
+void Particle::set_detected_energy(int index, double set_energy) {detected_energies->at(index) = set_energy;}
 
 void Particle::print()
 {

@@ -8,7 +8,7 @@
 // Parameterised
 Electron::Electron(double con_energy, int con_pap)
 {
-  rest_mass = 0.511;
+  rest_mass = 0.000511;
   if(con_pap==-1)
   {
     charge = 1;

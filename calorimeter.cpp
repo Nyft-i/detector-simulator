@@ -105,13 +105,20 @@ void Calorimeter::interact(Particle& interacting_particle)
   if(dynamic_cast<DepositorParticle*>(&interacting_particle))
   {
     DepositorParticle& interacting_depositor_particle = dynamic_cast<DepositorParticle&>(interacting_particle);
-    cal_detection->at(0) += interacting_depositor_particle.get_EM_1();
-    cal_detection->at(1) += interacting_depositor_particle.get_EM_2();
-    cal_detection->at(2) += interacting_depositor_particle.get_HAD_1();
-    cal_detection->at(3) += interacting_depositor_particle.get_HAD_2();
+    // Telling the detector how much it detected
+    cal_detection->at(0) += interacting_depositor_particle.get_EM_1()*efficiency;
+    cal_detection->at(1) += interacting_depositor_particle.get_EM_2()*efficiency;
+    cal_detection->at(2) += interacting_depositor_particle.get_HAD_1()*efficiency;
+    cal_detection->at(3) += interacting_depositor_particle.get_HAD_2()*efficiency;
 
+    // Telling the event what portion got detected
+    interacting_depositor_particle.set_detected_energy(1, cal_detection->at(0));
+    interacting_depositor_particle.set_detected_energy(2, cal_detection->at(1));
+    interacting_depositor_particle.set_detected_energy(3, cal_detection->at(2));
+    interacting_depositor_particle.set_detected_energy(4, cal_detection->at(3));
     // Adds to the total energy detected.
-    total_energy_detected += interacting_depositor_particle.get_true_energy();
+    total_energy_detected += interacting_depositor_particle.get_true_energy()*efficiency;
+    
   }
 }
 

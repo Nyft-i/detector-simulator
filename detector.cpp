@@ -240,12 +240,18 @@ shared_ptr<ColResultContainer> Detector::collide(unique_ptr<CollisionEvent> p_co
 
     // Code stops doubling up energies for particles which have imparted their true energy onto tracker/muon detector as well as the calorimeter.
     // This is definitely not the physics way to do this but 
-    if(!detections[CAL_EM] && !detections[CAL_HAD]) detected_energy += tracker->get_total_energy_detected() + muon_detector->get_total_energy_detected();
-    else detected_energy += calorimeter -> get_total_energy_detected();
+    if(!detections[CAL_EM] && !detections[CAL_HAD]) 
+    {
+      detected_energy += tracker->get_total_energy_detected() + muon_detector->get_total_energy_detected();
+    }      
+    else
+    {
+      detected_energy += calorimeter -> get_total_energy_detected();
+    }
 
     // sneak_look();
   }
 
-  ColResultContainer results(collision_name, input_energy, detected_energy, potential_particles);
+  ColResultContainer results(collision_name, input_energy, detected_energy, potential_particles, std::move(current_col)); // Moves the collision event on to its final location.
   return std::make_shared<ColResultContainer>(results); // Transferral of ownership/joinery of ownership
 }

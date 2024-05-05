@@ -19,6 +19,7 @@ SubDetector::SubDetector(double con_efficiency)
 
 // Getters
 double SubDetector::get_total_energy_detected() const {return total_energy_detected;}
+int SubDetector::get_num_particles_detected() const {return num_particles_detected;}
 
 // Functionality
 void SubDetector::print()
