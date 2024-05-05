@@ -23,5 +23,5 @@ double SubDetector::get_total_energy_detected() const {return total_energy_detec
 // Functionality
 void SubDetector::print()
 {
-  std::cout<<"total energy detected (MeV) : "<<total_energy_detected<<std::endl;
+  std::cout<<"total energy detected (GeV) : "<<total_energy_detected<<std::endl;
 }

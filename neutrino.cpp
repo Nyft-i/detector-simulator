@@ -133,11 +133,11 @@ void Neutrino::set_flavour(int set_flavour)
     break;
   case MUON:
     flavour = MUON;
-    rest_mass = 0.17;
+    rest_mass = 0.00017;
     break;
   case TAU:
     flavour = TAU;
-    rest_mass = 18.2;
+    rest_mass = 0.0182;
     break;
   default: // Defaults to electron if flavour is invalid
     flavour = ELECTRON;

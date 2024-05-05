@@ -8,7 +8,7 @@ Nucleon::Nucleon()
 {
   // Assume neutron if not told otherwise
   nuc_type = "neutron";
-  rest_mass = 939.565;
+  rest_mass = 0.939565;
   charge = 0;
   name = "nucleon";
   set_true_energy(939.565);
@@ -23,7 +23,7 @@ Nucleon::Nucleon(double con_energy, string con_nuc_type)
   if(con_nuc_type=="proton")
   {
     nuc_type = con_nuc_type;
-    rest_mass = 938.272;
+    rest_mass = 0.938272;
     charge = 1;
     name = "nucleon";
     set_true_energy(con_energy);
@@ -31,7 +31,7 @@ Nucleon::Nucleon(double con_energy, string con_nuc_type)
   else if(con_nuc_type=="decaying_tau")
   {
     nuc_type = con_nuc_type;
-    rest_mass = 938.272;
+    rest_mass = 0.938272;
     charge = 1;
     name = "decaying_tau";
     set_true_energy(con_energy);
@@ -39,7 +39,7 @@ Nucleon::Nucleon(double con_energy, string con_nuc_type)
   else if(con_nuc_type=="neutron")
   {
     nuc_type = con_nuc_type;
-    rest_mass = 939.565;
+    rest_mass = 0.939565;
     charge = 0;
     name = "nucleon";
     set_true_energy(con_energy);
@@ -49,7 +49,7 @@ Nucleon::Nucleon(double con_energy, string con_nuc_type)
     // Error message and default to neutron user doesn't enter a valid nucleon type.
     std::cout<<"Invalid nucleon type. Defaulting to neutron."<<std::endl;
     nuc_type="neutron";
-    rest_mass = 939.565;
+    rest_mass = 0.939565;
     charge = 0;
     name = "nucleon";
     set_true_energy(con_energy);

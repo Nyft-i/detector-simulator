@@ -11,7 +11,7 @@
 Tau::Tau()
 {
   true_energy = 0;
-  rest_mass = 1777;
+  rest_mass = 1.777;
   decay_mode = "hadronic";
   decay_products = construct_decay_particles(decay_mode);
   pap_status = 1;
@@ -23,7 +23,7 @@ Tau::Tau()
 Tau::Tau(double con_energy, int con_pap, string con_decay_mode)
 {
   true_energy = con_energy;
-  rest_mass = 1777;
+  rest_mass = 1.777;
   decay_mode = con_decay_mode;
   decay_products = construct_decay_particles(decay_mode);
   pap_status = con_pap;

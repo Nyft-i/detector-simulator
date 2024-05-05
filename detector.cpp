@@ -180,7 +180,7 @@ void Detector::sneak_look()
   calorimeter->print();
   muon_detector->print();
   int total_energy = tracker->get_total_energy_detected() + calorimeter->get_total_energy_detected(); // Muon detector energy is going to be the same as tracker energy for muons, so will accidentally double up the energy.
-  std::cout<<"\ntotal energy detected, all sub-detectors (MeV) : "<<total_energy<<std::endl;
+  std::cout<<"\ntotal energy detected, all sub-detectors (GeV) : "<<total_energy<<std::endl;
 }
 
 list<string> Detector::guess_particle()

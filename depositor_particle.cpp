@@ -152,5 +152,5 @@ string DepositorParticle::cal_dep_string() const
 void DepositorParticle::print()
 {
   Particle::print();
-  std::cout<<"calorimiter deposits (MeV) : "<<cal_dep_string()<<std::endl;
+  std::cout<<"calorimiter deposits (Gev) : "<<cal_dep_string()<<std::endl;
 }

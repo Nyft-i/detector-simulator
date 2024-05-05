@@ -81,8 +81,8 @@ void ColResultContainer::set_input_energy(double set_input_energy) {input_energy
 void ColResultContainer::print()
 {
   std::cout<<"collision results for event : \""<<collision_name<<"\""<<std::endl;
-  std::cout<<"input energy (MeV) : "<< input_energy<<std::endl;
-  std::cout<<"total energy detected (MeV) : "<<total_energy_detected<<std::endl;
+  std::cout<<"input energy (GeV) : "<< input_energy<<std::endl;
+  std::cout<<"total energy detected (GeV) : "<<total_energy_detected<<std::endl;
   std::cout<<"potential particles (for a non-ideal detector) : "<<std::endl;
   for(int i=0; i<potential_particles.size(); i++)
   {

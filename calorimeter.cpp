@@ -92,10 +92,10 @@ void Calorimeter::print()
 {
   std::cout<<"\nprinting calorimeter..."<<std::endl;
   SubDetector::print();
-  std::cout<<"EM_1 (MeV) : "<<cal_detection->at(0)<<std::endl;
-  std::cout<<"EM_2 (MeV) : "<<cal_detection->at(1)<<std::endl;
-  std::cout<<"HAD_1 (MeV) : "<<cal_detection->at(2)<<std::endl;
-  std::cout<<"HAD_2 (MeV) : "<<cal_detection->at(3)<<std::endl;
+  std::cout<<"EM_1 (GeV) : "<<cal_detection->at(0)<<std::endl;
+  std::cout<<"EM_2 (Gev) : "<<cal_detection->at(1)<<std::endl;
+  std::cout<<"HAD_1 (Gev) : "<<cal_detection->at(2)<<std::endl;
+  std::cout<<"HAD_2 (Gev) : "<<cal_detection->at(3)<<std::endl;
 }
 
 void Calorimeter::interact(Particle& interacting_particle)

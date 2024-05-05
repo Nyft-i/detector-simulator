@@ -125,8 +125,8 @@ void Particle::print()
 {
   //Overidden print functions call this one at the end. So this needs to print everything that is not unique to any particle.
   std::cout<<"this particle is identified by : "<<identifier<<std::endl;
-  std::cout<<"true energy (MeV) : "<<true_energy<<std::endl;
-  std::cout<<"rest mass (MeV) : "<<rest_mass<<std::endl;
+  std::cout<<"true energy (GeV) : "<<true_energy<<std::endl;
+  std::cout<<"rest mass (GeV) : "<<rest_mass<<std::endl;
   std::cout<<"charge (e) : "<<charge<<std::endl;
   std::cout<<"name : "<<name<<std::endl;
 }
