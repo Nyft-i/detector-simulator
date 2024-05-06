@@ -6,6 +6,7 @@
 #include<list>
 #include<memory>
 
+class Detector;
 #include"particle.h"
 #include"collision_event.h"
 
@@ -23,11 +24,12 @@ private:
   double total_energy_detected;
   unique_ptr<CollisionEvent> input_event;
   vector<list<string>> potential_particles;
+  shared_ptr<Detector> p_detector;
 public:
   // Constructor
   // Default
   // Parameterised
-  ColResultContainer(string con_col_name, double con_input_energy, double con_detected_energy,vector<list<string>> con_potential_particles, unique_ptr<CollisionEvent> con_input_event);
+  ColResultContainer(string con_col_name, double con_input_energy, double con_detected_energy,vector<list<string>> con_potential_particles, unique_ptr<CollisionEvent> con_input_event, shared_ptr<Detector> con_p_detector);
   
   // Copy
   ColResultContainer(const ColResultContainer& copy_from);
@@ -54,7 +56,7 @@ public:
   void set_potential_particle_elem(int index, list<string> set_potential_particle_elem);
 
   // Functionality
-  void print_individual(int index, int &offset);
+  void print_individual(int index);
   void print();
 };
 

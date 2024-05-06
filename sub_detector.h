@@ -18,15 +18,16 @@ public:
   SubDetector(double con_efficiency);
 
   // Copy
-
+  SubDetector(const SubDetector& copy_from);
   // Move
-
+  SubDetector(SubDetector&& move_from);
   // Destructor, not needed.
 
   // Assignment
   // Copy
-
+  SubDetector& operator=(const SubDetector& copy_from);
   // Move
+  SubDetector& operator=(SubDetector&& move_from);
 
   // Getters
   double get_total_energy_detected() const;
@@ -38,6 +39,7 @@ public:
   virtual void print();
   virtual void interact(Particle& interacting_particle)=0;
   virtual void reset()=0;
+  virtual void total_reset()=0;
 };
 
 #endif

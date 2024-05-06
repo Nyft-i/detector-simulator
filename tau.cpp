@@ -42,34 +42,30 @@ Tau::Tau(double con_energy, int con_pap, string con_decay_mode)
 // Deep Copy Constructor
 Tau::Tau(const Tau& copy_from)
 {
-  true_energy = copy_from.true_energy;
-  rest_mass = copy_from.rest_mass;
-  charge = copy_from.charge;
-  pap_status = copy_from.pap_status;
+  Particle::operator=(copy_from);
   decay_mode = copy_from.decay_mode;
   decay_products = copy_from.decay_products;
-  name = copy_from.name;
 }
 
 // Move Constructor
 Tau::Tau(Tau&& move_from)
 {
-  true_energy = move_from.true_energy;
-  rest_mass = move_from.rest_mass;
-  charge = move_from.charge;
-  pap_status = move_from.pap_status;
+  Particle::operator=(std::move(move_from));
   decay_mode = std::move(move_from.decay_mode);
   decay_products = std::move(move_from.decay_products);
-  name = std::move(move_from.name);
 
   // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
   move_from.rest_mass = 0;
   move_from.charge = 0;
   move_from.pap_status = 0;
+  move_from.detected_energies->clear();
+  move_from.from_tau = false;
+  move_from.name = "moved particle";
+
+  // Tau Specific
   move_from.decay_mode = "";
   move_from.decay_products.clear();
-  move_from.name = "";
 }
 
 
@@ -84,13 +80,9 @@ Tau& Tau::operator=(const Tau& copy_from)
   if(&copy_from==this) return *this;
   
   // Copy the data
-  true_energy = copy_from.true_energy;
-  rest_mass = copy_from.rest_mass;
-  charge = copy_from.charge;
-  pap_status = copy_from.pap_status;
+  Particle::operator=(copy_from);
   decay_mode = copy_from.decay_mode;
   decay_products = copy_from.decay_products;
-  name = copy_from.name;
 
   return *this;
 }
@@ -101,23 +93,24 @@ Tau& Tau::operator=(Tau&& move_from)
   if(&move_from == this) return *this;
   
   // Move the data
-  true_energy = move_from.true_energy;
-  rest_mass = move_from.rest_mass;
-  charge = move_from.charge;
-  pap_status = move_from.pap_status;
+  Particle::operator=(std::move(move_from));
   decay_mode = std::move(move_from.decay_mode);
   decay_products = std::move(move_from.decay_products);
-  name = std::move(move_from.name);
+
   
   // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
   move_from.rest_mass = 0;
   move_from.charge = 0;
-  pap_status = 0;
-  decay_mode = "";
-  decay_products.clear();
+  move_from.pap_status = 0;
+  move_from.detected_energies->clear();
+  move_from.from_tau = false;
   move_from.name = "moved particle";
-  
+
+  // Tau Specific
+  move_from.decay_mode = "";
+  move_from.decay_products.clear();
+
   return *this;
 }
 
@@ -206,6 +199,12 @@ vector<shared_ptr<Particle>> Tau::construct_decay_particles(string decay_product
     energy_distro[1] += energy_distro[2]/2;
     return_vector.push_back(std::make_shared<Nucleon>(energy_distro[0], "decaying_tau")); 
     return_vector.push_back(std::make_shared<Neutrino>(energy_distro[1], 1, 3, false));
+  }
+
+  // Every element in the return vector, make sure that it is set to a tau product
+  for(shared_ptr<Particle>& particle : return_vector)
+  {
+    particle->set_from_tau(true);
   }
 
   return return_vector;

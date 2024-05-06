@@ -20,6 +20,7 @@ protected:
   int charge; // There are only particles with integer charges required in this assignment.
   int pap_status; // 1 for particle, -1 for antiparticle and 0 for a particle that is its own antiparticle.
   string name;
+  bool from_tau; // This is a flag to tell the detector if the particle was created from a tau decay.
 
   unique_ptr<vector<double>> detected_energies; // Variable that takes efficiency into account. Tells the collision event what energy it was detected at.
 public:
@@ -49,6 +50,7 @@ public:
   string get_name() const;
   int get_pap_status() const;
   double get_detected_energy(int index) const;
+  bool get_from_tau() const;
 
   // Setters
   virtual void set_true_energy(double set_energy);
@@ -57,6 +59,7 @@ public:
   void set_name(string set_name);
   void set_pap_status(int set_pap);
   void set_detected_energy(int index, double set_energy);
+  void set_from_tau(bool set_tau);
 
   // Functionality
   virtual void print();

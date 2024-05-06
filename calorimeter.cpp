@@ -9,7 +9,9 @@
 Calorimeter::Calorimeter()
 {
   total_energy_detected = 0;
+  num_particles_detected = 0;
   cal_detection = std::make_unique<vector<double>>(4, 0);
+
 }
 
 // Parameterised
@@ -17,6 +19,7 @@ Calorimeter::Calorimeter(double con_efficiency):
 SubDetector(con_efficiency)
 {
   total_energy_detected = 0;
+  num_particles_detected = 0;
   cal_detection = std::make_unique<vector<double>>(4, 0);
 }
 
@@ -104,6 +107,8 @@ void Calorimeter::interact(Particle& interacting_particle)
   // Downcast the particle to a DepositorParticle if possible.
   if(dynamic_cast<DepositorParticle*>(&interacting_particle))
   {
+    num_particles_detected++;
+    std::cout<<num_particles_detected<<std::endl;
     DepositorParticle& interacting_depositor_particle = dynamic_cast<DepositorParticle&>(interacting_particle);
     // Telling the detector how much it detected
     cal_detection->at(0) += interacting_depositor_particle.get_EM_1()*efficiency;
@@ -118,14 +123,19 @@ void Calorimeter::interact(Particle& interacting_particle)
     interacting_depositor_particle.set_detected_energy(4, cal_detection->at(3));
     // Adds to the total energy detected.
     total_energy_detected += interacting_depositor_particle.get_true_energy()*efficiency;
-    
   }
 }
 
 void Calorimeter::reset()
 {
-  total_energy_detected = 0;
   cal_detection = std::make_unique<vector<double>>(4, 0);
+}
+
+void Calorimeter::total_reset()
+{
+  reset();
+  total_energy_detected = 0;
+  num_particles_detected = 0;
 }
 
 bool Calorimeter::EM_detection_status() const 

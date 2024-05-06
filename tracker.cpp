@@ -34,7 +34,10 @@ percent_chance(con_chance)
 // Copy
 Tracker::Tracker(const Tracker& copy_from)
 {
+  std::cout<<"Tracker::Tracker(const Tracker& copy_from) called"<<std::endl;
   total_energy_detected = copy_from.total_energy_detected;
+  num_particles_detected = copy_from.num_particles_detected;
+  efficiency = copy_from.efficiency;
   hit_layers = copy_from.hit_layers;
   percent_chance = copy_from.percent_chance;
 }
@@ -42,13 +45,18 @@ Tracker::Tracker(const Tracker& copy_from)
 // Move
 Tracker::Tracker(Tracker&& move_from)
 {
+  std::cout<<"Tracker::Tracker(Tracker&& move_from) called"<<std::endl;
   total_energy_detected = move_from.total_energy_detected;
+  num_particles_detected = move_from.num_particles_detected;
+  efficiency = move_from.efficiency;
   hit_layers = std::move(move_from.hit_layers);
   percent_chance = move_from.percent_chance;
 
   // Set move_from to 0.
   move_from.total_energy_detected = 0;
   move_from.hit_layers = nullptr;
+  move_from.num_particles_detected = 0;
+  move_from.efficiency = 0;
   move_from.percent_chance = 0;
 }
 
@@ -58,11 +66,14 @@ Tracker::Tracker(Tracker&& move_from)
 // Copy
 Tracker& Tracker::operator=(const Tracker& copy_from)
 {
+  std::cout<<"Tracker::operator=(const Tracker& copy_from) called"<<std::endl;
   // Check for self assignment
   if(this == &copy_from) return *this;
 
   // Copy data
   total_energy_detected = copy_from.total_energy_detected;
+  num_particles_detected = copy_from.num_particles_detected;
+  efficiency = copy_from.efficiency;
   hit_layers = copy_from.hit_layers;
   percent_chance = copy_from.percent_chance;
 
@@ -72,17 +83,22 @@ Tracker& Tracker::operator=(const Tracker& copy_from)
 // Move
 Tracker& Tracker::operator=(Tracker&& move_from)
 {
+  std::cout<<"Tracker::operator=(Tracker&& move_from) called"<<std::endl;
   // Check for self assignment
   if(this == &move_from) return *this;
   
   // Steal data
   total_energy_detected = move_from.total_energy_detected;
   hit_layers = std::move(move_from.hit_layers);
+  num_particles_detected = move_from.num_particles_detected;
+  efficiency = move_from.efficiency;
   percent_chance = move_from.percent_chance;
 
   // Set move_from to 0.
   move_from.total_energy_detected = 0;
   move_from.hit_layers = nullptr;
+  move_from.num_particles_detected = 0;
+  move_from.efficiency = 0;
   move_from.percent_chance = 0;
 
   return *this;
@@ -132,6 +148,7 @@ void Tracker::interact(Particle& interacting_particle)
     // more than 2 hits
     if(get_num_hits()>=2) 
     { 
+      num_particles_detected++;
       // The amount of energy deposited, not a muon
       if(typeid(&interacting_particle)!=typeid(Muon)) 
       {
@@ -179,5 +196,11 @@ void Tracker::reset()
   hit_layers->at(INNER_PIXEL_LAYER) = false;
   hit_layers->at(OUTER_PIXEL_LAYER) = false;
   hit_layers->at(STRIP_LAYER) = false;
+}
+
+void Tracker::total_reset()
+{
+  reset();
   total_energy_detected = 0;
+  num_particles_detected = 0;
 }

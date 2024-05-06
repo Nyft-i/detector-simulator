@@ -60,6 +60,7 @@ public:
   void step_collision();
   void see_detections();
   void reset();
+  void total_reset();
   void sneak_look();
   list<string> guess_particle();
 

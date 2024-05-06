@@ -52,6 +52,8 @@ public:
   bool detection_status();
   void see_detection();
   void reset() override;
+  void total_reset() override;
+  
 };
 
 

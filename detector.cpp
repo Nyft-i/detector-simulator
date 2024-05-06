@@ -36,6 +36,8 @@ Detector::Detector(const Detector& copy_from)
   tracker = std::make_unique<Tracker>(*copy_from.tracker);
   calorimeter = std::make_unique<Calorimeter>(*copy_from.calorimeter);  
   muon_detector = std::make_unique<MuonDetector>(*copy_from.muon_detector);
+  std::cout<<"copy con: "<<tracker->get_num_particles_detected()<<std::endl;
+
 
   current_col = std::make_unique<CollisionEvent>(*copy_from.current_col);
   col_elem = copy_from.col_elem;
@@ -50,6 +52,8 @@ Detector::Detector(Detector&& move_from)
   tracker = std::move(move_from.tracker);
   calorimeter = std::move(move_from.calorimeter);
   muon_detector = std::move(move_from.muon_detector);
+  std::cout<<"move con: "<<tracker->get_num_particles_detected()<<std::endl;
+
 
   current_col = std::move(move_from.current_col);
   col_elem = move_from.col_elem;
@@ -74,6 +78,7 @@ Detector& Detector::operator=(const Detector& copy_from)
   tracker = std::make_unique<Tracker>(*copy_from.tracker);
   calorimeter = std::make_unique<Calorimeter>(*copy_from.calorimeter);
   muon_detector = std::make_unique<MuonDetector>(*copy_from.muon_detector);
+  std::cout<<"copy ass: "<<tracker->get_num_particles_detected()<<std::endl;
   
   current_col = std::make_unique<CollisionEvent>(*copy_from.current_col);
   col_elem = copy_from.col_elem;
@@ -90,6 +95,8 @@ Detector& Detector::operator=(Detector&& move_from)
   tracker = std::move(move_from.tracker);
   calorimeter = std::move(move_from.calorimeter);
   muon_detector = std::move(move_from.muon_detector);
+  std::cout<<"move ass: "<<tracker->get_num_particles_detected()<<std::endl;
+
 
   current_col = std::move(move_from.current_col);
   col_elem = move_from.col_elem;
@@ -172,6 +179,13 @@ void Detector::reset()
   muon_detector->reset();
 }
 
+void Detector::total_reset()
+{
+  tracker->total_reset();
+  calorimeter->total_reset();
+  muon_detector->total_reset();
+}
+
 void Detector::sneak_look()
 {
   // Function that tells us everything about the sub-detectors in a way that shouldn't normally be visible for testing purposes.
@@ -252,6 +266,7 @@ shared_ptr<ColResultContainer> Detector::collide(unique_ptr<CollisionEvent> p_co
     // sneak_look();
   }
 
-  ColResultContainer results(collision_name, input_energy, detected_energy, potential_particles, std::move(current_col)); // Moves the collision event on to its final location.
+  // At the end of the collision, so that we can account for Tau particles lets
+  ColResultContainer results(collision_name, input_energy, detected_energy, potential_particles, std::move(current_col), std::make_shared<Detector>(*this)); // Moves the collision event on to its final location.
   return std::make_shared<ColResultContainer>(results); // Transferral of ownership/joinery of ownership
 }

@@ -125,6 +125,7 @@ void MuonDetector::interact(Particle& interacting_particle)
     // Also the energies from the muon are added to the chamber energies.
     if(get_num_hits()>=1)
     {
+      num_particles_detected++;
       total_energy_detected += interacting_muon.get_chamber_energy()*efficiency;
       interacting_muon.set_detected_energy(5, interacting_muon.get_chamber_energy()*efficiency);
     }
@@ -160,5 +161,11 @@ void MuonDetector::reset()
 {
   hit_layers->at(INNER_MUON_LAYER) = false;
   hit_layers->at(OUTER_MUON_LAYER) = false;
+}
+
+void MuonDetector::total_reset()
+{
+  reset();
   total_energy_detected = 0;
+  num_particles_detected = 0;
 }

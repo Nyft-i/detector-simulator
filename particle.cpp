@@ -9,7 +9,8 @@ Particle::Particle():
   rest_mass(0),
   charge(0),
   pap_status(0),
-  name("unknown particle")
+  name("unknown particle"),
+  from_tau(false)
 {
   // Number Management
   numberer++;
@@ -22,7 +23,8 @@ Particle::Particle(double con_energy, double con_rm, int con_charge, string con_
   rest_mass(con_rm),
   charge(con_charge),
   pap_status(con_pap),
-  name(con_name)
+  name(con_name),
+  from_tau(false)
 {
   // Number Management
   numberer++;
@@ -39,6 +41,7 @@ Particle::Particle(const Particle& copy_from)
   charge = copy_from.charge;
   name = copy_from.name;
   pap_status = copy_from.pap_status;
+  from_tau = copy_from.from_tau;
   detected_energies = std::make_unique<vector<double>>(*copy_from.detected_energies);
 }
 
@@ -51,6 +54,7 @@ Particle::Particle(Particle&& move_from)
   charge = move_from.charge;
   name = std::move(move_from.name);
   pap_status = move_from.pap_status;
+  from_tau = move_from.from_tau;
   detected_energies = std::move(move_from.detected_energies);
 
   // Set attributes of move_from to nothing.
@@ -59,6 +63,7 @@ Particle::Particle(Particle&& move_from)
   move_from.charge = 0;
   move_from.pap_status = 0;
   move_from.name = "";
+  move_from.from_tau = false;
   move_from.detected_energies = std::make_unique<vector<double>>(6, 0);
 }
 
@@ -77,6 +82,7 @@ Particle& Particle::operator=(const Particle& copy_from)
   charge = copy_from.charge;
   name = copy_from.name;
   pap_status = copy_from.pap_status;
+  from_tau = copy_from.from_tau;
   detected_energies = std::make_unique<vector<double>>(*copy_from.detected_energies);
 
   return *this;
@@ -93,6 +99,7 @@ Particle& Particle::operator=(Particle&& move_from)
   charge = move_from.charge;
   name = std::move(move_from.name);
   pap_status = move_from.pap_status;
+  from_tau = move_from.from_tau;
   detected_energies = std::move(move_from.detected_energies);
 
   // Set attributes of move_from to nothing.
@@ -101,6 +108,7 @@ Particle& Particle::operator=(Particle&& move_from)
   move_from.charge = 0;
   move_from.pap_status = 0;
   move_from.name = "";
+  move_from.from_tau = false;
   move_from.detected_energies = std::make_unique<vector<double>>(6, 0);
 
   return *this;
@@ -114,6 +122,7 @@ int Particle::get_charge() const {return charge;}
 string Particle::get_name() const {return name;}
 int Particle::get_pap_status() const {return pap_status;}
 double Particle::get_detected_energy(int index) const {return detected_energies->at(index);}
+bool Particle::get_from_tau() const {return from_tau;}
 
 // Setters
 void Particle::set_true_energy(double set_energy) 
@@ -132,6 +141,7 @@ void Particle::set_charge(int set_char) {charge = set_char;}
 void Particle::set_name(string set_name) {name = set_name;}
 void Particle::set_pap_status(int set_pap) {pap_status = set_pap;}
 void Particle::set_detected_energy(int index, double set_energy) {detected_energies->at(index) = set_energy;}
+void Particle::set_from_tau(bool set_from_tau) {from_tau = set_from_tau;}
 
 void Particle::print()
 {

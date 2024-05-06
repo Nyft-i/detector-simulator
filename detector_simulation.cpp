@@ -9,6 +9,7 @@
 #include<chrono>
 #include<list>
 
+#include"detector.h"
 #include"particle.h"
 #include"depositor_particle.h"
 #include"collision_event.h"
@@ -19,7 +20,6 @@
 #include"neutrino.h"
 #include"sub_detector.h"
 #include"tracker.h"
-#include"detector.h"
 #include"calorimeter.h"
 #include"muon_detector.h"
 #include"col_result_container.h"
@@ -74,6 +74,7 @@ int main()
   Detector main_detector; // No arguments means that it will create a perfect detector
   main_detector.reset();
   shared_ptr<ColResultContainer> p_results3 = main_detector.collide(std::make_unique<CollisionEvent>(tau_event));
+  std::cout<<"main : "<<main_detector.get_tracker().get_num_particles_detected()<<std::endl;
   p_results3->print();
 
   

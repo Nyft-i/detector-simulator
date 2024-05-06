@@ -50,9 +50,11 @@ public:
   // Functionality
   void interact(Particle& interacting_particle) override;
   void reset() override;
+  void total_reset() override;
   void print() override;
   bool EM_detection_status() const;
   bool HAD_detection_status() const;
+
 };
 
 #endif
