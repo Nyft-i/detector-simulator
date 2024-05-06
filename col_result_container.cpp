@@ -6,6 +6,8 @@
 #include"depositor_particle.h"
 #include"muon.h"
 #include"tau.h"
+#include"nucleon.h"
+#include"neutrino.h"
 
 // Constructors
 // Parameterised
@@ -94,6 +96,97 @@ int ColResultContainer::get_num_particles_detected() const {return input_event->
 // Setters
 void ColResultContainer::set_input_energy(double set_input_energy) {input_energy = set_input_energy;}
 
+void ColResultContainer::print_individual(int index, int &offset) // Offset determines disparity in number of particles between start and end of event
+{
+  Particle& curr_particle = (*input_event)[index+offset];
+  
+  // Checks if it is a nucleon so it can print the type rather than printing the word nucleon at the beginning
+  if(dynamic_cast<Nucleon*>(&curr_particle))
+  {
+    Nucleon& curr_nucleon = dynamic_cast<Nucleon&>(curr_particle);
+    std::cout<<curr_nucleon.get_nuc_type();
+  }
+  else
+  {
+    std::cout<<curr_particle.get_name();
+  }
+
+  // Basic information
+  std::cout<<" : id = "<<curr_particle.identify()<<", charge = "<<curr_particle.get_charge()<<", true energy (GeV) = "<<curr_particle.get_true_energy()<<std::endl;
+
+  // Energy detected vs energy deposited in each section.
+  // Tracker
+  std::cout<<"  tracker:"<<std::endl;
+  // Muons act differently in the tracker
+  if(dynamic_cast<Muon*>(&curr_particle))
+  {
+    Muon& curr_muon = dynamic_cast<Muon&>(curr_particle);
+    std::cout<<"    energy (GeV) = "<<curr_muon.get_detected_energy(0)<<" / "<<curr_muon.get_tracker_energy()<<std::endl;
+  }
+  // Neutrinos leave leave nothing in the detector
+  if(dynamic_cast<Neutrino*>(&curr_particle))
+  {
+    std::cout<<"    energy (GeV) = "<<curr_particle.get_detected_energy(0)<<" / 0"<<std::endl;
+  }
+  else
+  {
+    std::cout<<"    energy (GeV) = "<<curr_particle.get_detected_energy(0)<<" / "<<curr_particle.get_true_energy()<<std::endl;
+  }
+  
+  // Calorimeter
+  std::cout<<"  calorimeter:"<<std::endl;
+  // dynamic cast to a depositor particle to retrieve cal energy deposits true energies
+  if(dynamic_cast<DepositorParticle*>(&curr_particle))
+  {
+    DepositorParticle& curr_depositor = dynamic_cast<DepositorParticle&>(curr_particle);
+    std::cout<<"    energy (GeV) = "<<"("<<curr_depositor.get_detected_energy(1)<<", "<<curr_depositor.get_detected_energy(2)<<", "<<curr_depositor.get_detected_energy(3)<<", "<<curr_depositor.get_detected_energy(4)<<")"<<" / "<<curr_depositor.cal_dep_string()<<std::endl;
+  }
+  else
+  {
+    std::cout<<"    energy (GeV) = (0, 0, 0, 0) / (0, 0, 0, 0)"<<std::endl;
+  }
+
+  // Muon Detector
+  std::cout<<"  muon_detector: "<<std::endl;
+  // Cast to muon, their get_true_energy does not suffice as it is not the same as the energy deposited in the muon detector
+  if(dynamic_cast<Muon*>(&curr_particle))
+  {
+    Muon& curr_muon = dynamic_cast<Muon&>(curr_particle);
+    std::cout<<"    energy (GeV) = <<"<<curr_muon.get_detected_energy(5)<<" / "<<curr_muon.get_chamber_energy()<<std::endl;
+  }
+  else
+  {
+    std::cout<<"    energy (GeV) = 0 / 0";
+  }
+  std::cout<<std::endl;
+  std::cout<<"  particle detected as : ";
+  string guessed_particle = potential_particles[index+offset].front();
+  std::cout<<guessed_particle;
+  // If the guess is correct
+  if(guessed_particle.find(curr_particle.get_name())!=string::npos) std::cout<<" (correct)";
+  // cast to nucleons as they also have a nucleon type in addition to being called just nucleons
+  else if(dynamic_cast<Nucleon*>(&curr_particle))
+  {
+    Nucleon& curr_nucleon = dynamic_cast<Nucleon&>(curr_particle);
+    if(guessed_particle.find(curr_nucleon.get_nuc_type())!=string::npos) std::cout<<" (correct)";
+  }
+  else std::cout<<" (incorrect)";
+  std::cout<<std::endl;
+  
+  
+
+  std::cout<<std::endl;
+  if(dynamic_cast<Nucleon*>(&curr_particle))
+  {
+    // Checks the number of decay products as there will be an offset 
+    Nucleon& curr_nucleon = dynamic_cast<Nucleon&>(curr_particle);
+    Tau& curr_tau = dynamic_cast<Tau&>(input_event->init_particle(index));
+
+    offset += curr_tau.get_decay_products().size()-1; // Skips forward by the number of decay products, as there are a different number of start products compated to end products if a tau decays.
+  }
+}
+
+
 // Fucntionality
 void ColResultContainer::print()
 {
@@ -102,55 +195,10 @@ void ColResultContainer::print()
   // For each particle
   input_event->print();
 
-  for(int i = 0; i<get_num_particles_detected(); i++)
-  {
-    Particle& curr_particle = input_event->init_particle(i);
-    std::cout<<curr_particle.get_name()<<" : id = "<<curr_particle.identify()<<", charge = "<<curr_particle.get_charge()<<", true energy (GeV) = "<<curr_particle.get_true_energy()<<std::endl;
-    std::cout<<"  tracker:"<<std::endl;
-    // Muons act differently in the tracker
-    if(dynamic_cast<Muon*>(&curr_particle))
-    {
-      Muon& curr_muon = dynamic_cast<Muon&>(curr_particle);
-      std::cout<<"    energy (GeV) = "<<curr_muon.get_detected_energy(0)<<" / "<<curr_muon.get_tracker_energy()<<std::endl;
-    }
-    else
-    {
-      std::cout<<"    energy (GeV) = "<<curr_particle.get_detected_energy(0)<<" / "<<curr_particle.get_true_energy()<<std::endl;
-    }
-    std::cout<<"  calorimeter:"<<std::endl;
-    // dynamic cast to a depositor particle to retrieve cal energy deposits true energies
-    if(dynamic_cast<DepositorParticle*>(&curr_particle))
-    {
-      DepositorParticle& curr_depositor = dynamic_cast<DepositorParticle&>(curr_particle);
-      std::cout<<"    energy (GeV) = "<<"("<<curr_depositor.get_detected_energy(1)<<", "<<curr_depositor.get_detected_energy(2)<<", "<<curr_depositor.get_detected_energy(3)<<", "<<curr_depositor.get_detected_energy(4)<<")"<<" / "<<curr_depositor.cal_dep_string()<<std::endl;
-    }
-    else
-    {
-      std::cout<<"    energy (GeV) = (0, 0, 0, 0) / (0, 0, 0, 0)"<<std::endl;
-    }
-    std::cout<<"  muon_detector: "<<std::endl;
-    // Cast to muon
-    if(dynamic_cast<Muon*>(&curr_particle))
-    {
-      Muon& curr_muon = dynamic_cast<Muon&>(curr_particle);
-      std::cout<<"    energy (GeV) = <<"<<curr_muon.get_detected_energy(5)<<" / "<<curr_muon.get_chamber_energy()<<std::endl;
-    }
-    else
-    {
-      std::cout<<"    energy (GeV) = 0 / 0";
-    }
-    std::cout<<std::endl;
-    std::cout<<"  particle detected as : ";
-    for(auto& particle : potential_particles[i])
-    {
-      std::cout<<particle<<", ";
-    }
-
-    std::cout<<std::endl;
-    if(dynamic_cast<Tau*>(&curr_particle))
-    {
-      Tau& curr_tau = dynamic_cast<Tau&>(curr_particle);
-      i += curr_tau.get_decay_products().size()-1; // Skips forward by the number of decay products, as there are a different number of start products compated to end products if a tau decays.
-    }
+  int offset = 0;
+  
+  for(int i = 0; i+offset<input_event->get_num_particles(); i++)
+  { 
+    print_individual(i, offset);
   }
 }

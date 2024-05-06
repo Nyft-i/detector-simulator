@@ -125,6 +125,11 @@ Nucleon& Nucleon::operator=(Nucleon&& move_from)
   return *this;
 }
 
+// Destructor
+
+// Getters
+string Nucleon::get_nuc_type() const {return nuc_type;}
+
 // Functionality
 void Nucleon::print()
 {

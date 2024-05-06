@@ -30,6 +30,11 @@ public:
   // Move
   Nucleon& operator=(Nucleon&& move_from);
 
+  // Getters
+  string get_nuc_type() const;
+
+  // Setters
+
   // Functionality
   void print() override;
 };
