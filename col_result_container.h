@@ -56,7 +56,7 @@ public:
   void set_potential_particle_elem(int index, list<string> set_potential_particle_elem);
 
   // Functionality
-  void print_individual(int index);
+  int print_individual(int index);
   void print();
 };
 

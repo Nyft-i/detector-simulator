@@ -28,6 +28,8 @@ SubDetector(con_efficiency)
 Calorimeter::Calorimeter(const Calorimeter& copy_from)
 {
   total_energy_detected = copy_from.total_energy_detected;
+  num_particles_detected = copy_from.num_particles_detected;
+  efficiency = copy_from.efficiency;
   cal_detection = std::make_unique<vector<double>>(*copy_from.cal_detection);
 }
 
@@ -35,10 +37,14 @@ Calorimeter::Calorimeter(const Calorimeter& copy_from)
 Calorimeter::Calorimeter(Calorimeter&& move_from)
 {
   total_energy_detected = move_from.total_energy_detected;
+  num_particles_detected = move_from.num_particles_detected;
+  efficiency = move_from.efficiency;
   cal_detection = std::move(move_from.cal_detection);
 
   // Set move_from to 0.
   move_from.total_energy_detected = 0;
+  move_from.num_particles_detected = 0;
+  move_from.efficiency = 0;
   move_from.cal_detection = std::make_unique<vector<double>>(4, 0);
 }
 
@@ -53,6 +59,8 @@ Calorimeter& Calorimeter::operator=(const Calorimeter& copy_from)
   
   // Copy the data
   total_energy_detected = copy_from.total_energy_detected;
+  num_particles_detected = copy_from.num_particles_detected;
+  efficiency = copy_from.efficiency;
   cal_detection = std::make_unique<vector<double>>(*copy_from.cal_detection);
   
   return *this;
@@ -66,10 +74,14 @@ Calorimeter& Calorimeter::operator=(Calorimeter&& move_from)
   
   // Move the data
   total_energy_detected = move_from.total_energy_detected;
+  num_particles_detected = move_from.num_particles_detected;
+  efficiency = move_from.efficiency;
   cal_detection = std::move(move_from.cal_detection);
   
   // Set move_from to 0.
   move_from.total_energy_detected = 0;
+  move_from.num_particles_detected = 0;
+  move_from.efficiency = 0;
   move_from.cal_detection = std::make_unique<vector<double>>(4, 0);
   
   return *this;
@@ -108,7 +120,6 @@ void Calorimeter::interact(Particle& interacting_particle)
   if(dynamic_cast<DepositorParticle*>(&interacting_particle))
   {
     num_particles_detected++;
-    std::cout<<num_particles_detected<<std::endl;
     DepositorParticle& interacting_depositor_particle = dynamic_cast<DepositorParticle&>(interacting_particle);
     // Telling the detector how much it detected
     cal_detection->at(0) += interacting_depositor_particle.get_EM_1()*efficiency;

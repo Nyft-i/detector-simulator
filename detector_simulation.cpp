@@ -59,7 +59,7 @@ int main()
   
   CollisionEvent tau_event("tau, antitau, 1500GeV");
   tau_event.add_particle(std::move(std::make_unique<Tau>(750, 1, "hadronic")));
-  tau_event.add_particle(std::move(std::make_unique<Tau>(750, -1, "electron")));
+  tau_event.add_particle(std::move(std::make_unique<Tau>(750, -1, "muon")));
   
 
   /*
@@ -73,8 +73,7 @@ int main()
 
   Detector main_detector; // No arguments means that it will create a perfect detector
   main_detector.reset();
-  shared_ptr<ColResultContainer> p_results3 = main_detector.collide(std::make_unique<CollisionEvent>(tau_event));
-  std::cout<<"main : "<<main_detector.get_tracker().get_num_particles_detected()<<std::endl;
+  shared_ptr<ColResultContainer> p_results3 = main_detector.collide(std::make_unique<CollisionEvent>(background_event));
   p_results3->print();
 
   

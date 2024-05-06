@@ -34,7 +34,6 @@ percent_chance(con_chance)
 // Copy
 Tracker::Tracker(const Tracker& copy_from)
 {
-  std::cout<<"Tracker::Tracker(const Tracker& copy_from) called"<<std::endl;
   total_energy_detected = copy_from.total_energy_detected;
   num_particles_detected = copy_from.num_particles_detected;
   efficiency = copy_from.efficiency;
@@ -45,7 +44,6 @@ Tracker::Tracker(const Tracker& copy_from)
 // Move
 Tracker::Tracker(Tracker&& move_from)
 {
-  std::cout<<"Tracker::Tracker(Tracker&& move_from) called"<<std::endl;
   total_energy_detected = move_from.total_energy_detected;
   num_particles_detected = move_from.num_particles_detected;
   efficiency = move_from.efficiency;
@@ -66,7 +64,6 @@ Tracker::Tracker(Tracker&& move_from)
 // Copy
 Tracker& Tracker::operator=(const Tracker& copy_from)
 {
-  std::cout<<"Tracker::operator=(const Tracker& copy_from) called"<<std::endl;
   // Check for self assignment
   if(this == &copy_from) return *this;
 
@@ -83,7 +80,6 @@ Tracker& Tracker::operator=(const Tracker& copy_from)
 // Move
 Tracker& Tracker::operator=(Tracker&& move_from)
 {
-  std::cout<<"Tracker::operator=(Tracker&& move_from) called"<<std::endl;
   // Check for self assignment
   if(this == &move_from) return *this;
   
@@ -124,7 +120,6 @@ void Tracker::set_percent_chance(int set_percent_chance) {percent_chance = set_p
 // Functionality
 void Tracker::print()
 {
-  std::cout<<"Tracker::print() called"<<std::endl;
   std::cout<<"\nprinting tracker..."<<std::endl;
   SubDetector::print();
   std::cout<<"INNER_PIXEL_LAYER hit? : "<<hit_layers->at(INNER_PIXEL_LAYER)<<std::endl;

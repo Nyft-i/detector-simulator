@@ -63,6 +63,7 @@ public:
   void total_reset();
   void sneak_look();
   list<string> guess_particle();
+  double get_total_detected_energy() const;
 
   shared_ptr<ColResultContainer> collide(unique_ptr<CollisionEvent> p_col_event);
 };

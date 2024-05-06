@@ -28,6 +28,8 @@ SubDetector(con_efficiency)
 MuonDetector::MuonDetector(const MuonDetector& copy_from)
 {
   total_energy_detected = copy_from.total_energy_detected;
+  num_particles_detected = copy_from.num_particles_detected;
+  efficiency = copy_from.efficiency;
   hit_layers = std::make_unique<vector<bool>>(*copy_from.hit_layers);
   percent_chance = copy_from.percent_chance;
 }
@@ -36,11 +38,15 @@ MuonDetector::MuonDetector(const MuonDetector& copy_from)
 MuonDetector::MuonDetector(MuonDetector&& move_from)
 {
   total_energy_detected = move_from.total_energy_detected;
+  num_particles_detected = move_from.num_particles_detected;
+  efficiency = move_from.efficiency;
   hit_layers = std::move(move_from.hit_layers);
   percent_chance = move_from.percent_chance;
 
   // Set move_from to 0.
   move_from.total_energy_detected = 0;
+  move_from.num_particles_detected = 0;
+  move_from.efficiency = 0;
   move_from.hit_layers = nullptr;
   move_from.percent_chance = 0;
 }
@@ -56,6 +62,8 @@ MuonDetector& MuonDetector::operator=(const MuonDetector& copy_from)
 
   // Copy data
   total_energy_detected = copy_from.total_energy_detected;
+  num_particles_detected = copy_from.num_particles_detected;
+  efficiency = copy_from.efficiency;
   hit_layers = std::make_unique<vector<bool>>(*copy_from.hit_layers);
   percent_chance = copy_from.percent_chance;
 
@@ -70,11 +78,15 @@ MuonDetector& MuonDetector::operator=(MuonDetector&& move_from)
   
   // Steal data
   total_energy_detected = move_from.total_energy_detected;
+  num_particles_detected = move_from.num_particles_detected;
+  efficiency = move_from.efficiency;
   hit_layers = std::move(move_from.hit_layers);
   percent_chance = move_from.percent_chance;
 
   // Set move_from to 0.
   move_from.total_energy_detected = 0;
+  move_from.num_particles_detected = 0;
+  move_from.efficiency = 0;
   move_from.hit_layers = nullptr;
   move_from.percent_chance = 0;
 

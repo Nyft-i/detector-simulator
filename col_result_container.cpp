@@ -25,7 +25,6 @@ ColResultContainer::ColResultContainer(string con_col_name, double con_input_ene
 // Copy
 ColResultContainer::ColResultContainer(const ColResultContainer& copy_from)
 {
-  std::cout<<"ColResultContainer(const ColResultContainer& copy_from) called"<<std::endl;
   collision_name = copy_from.collision_name;
   input_energy = copy_from.input_energy;
   total_energy_detected = copy_from.total_energy_detected;
@@ -37,7 +36,6 @@ ColResultContainer::ColResultContainer(const ColResultContainer& copy_from)
 // Move
 ColResultContainer::ColResultContainer(ColResultContainer&& move_from)
 {
-  std::cout<<"ColResultContainer(ColResultContainer&& move_from) called"<<std::endl;
   collision_name = std::move(move_from.collision_name);
   input_energy = move_from.input_energy;
   total_energy_detected = move_from.total_energy_detected;
@@ -57,7 +55,6 @@ ColResultContainer::ColResultContainer(ColResultContainer&& move_from)
 // Copy
 ColResultContainer& ColResultContainer::operator=(const ColResultContainer& copy_from)
 {
-  std::cout<<"ColResultContainer& operator=(const ColResultContainer& copy_from) called"<<std::endl;
   // Make sure we're not copying ourself.
   if(&copy_from==this) return *this;
   
@@ -75,7 +72,6 @@ ColResultContainer& ColResultContainer::operator=(const ColResultContainer& copy
 // Move
 ColResultContainer& ColResultContainer::operator=(ColResultContainer&& move_from)
 {
-  std::cout<<"ColResultContainer& operator=(ColResultContainer&& move_from) called"<<std::endl;
   // Make sure we're not copying ourself.
   if(&move_from==this) return *this;
   
@@ -106,8 +102,9 @@ int ColResultContainer::get_num_particles_detected() const {return input_event->
 // Setters
 void ColResultContainer::set_input_energy(double set_input_energy) {input_energy = set_input_energy;}
 
-void ColResultContainer::print_individual(int index) // Offset determines disparity in number of particles between start and end of event
+int ColResultContainer::print_individual(int index) // Offset determines disparity in number of particles between start and end of event
 {
+  int correct_guess = 0;
   Particle& curr_particle = (*input_event)[index];
   
   // Checks if it is a nucleon so it can print the type rather than printing the word nucleon at the beginning
@@ -136,7 +133,7 @@ void ColResultContainer::print_individual(int index) // Offset determines dispar
     std::cout<<"    energy (GeV) = "<<curr_muon.get_detected_energy(0)<<" / "<<curr_muon.get_tracker_energy()<<std::endl;
   }
   // Neutrinos leave leave nothing in the detector
-  if(dynamic_cast<Neutrino*>(&curr_particle))
+  else if(dynamic_cast<Neutrino*>(&curr_particle))
   {
     std::cout<<"    energy (GeV) = "<<curr_particle.get_detected_energy(0)<<" / 0"<<std::endl;
   }
@@ -164,7 +161,7 @@ void ColResultContainer::print_individual(int index) // Offset determines dispar
   if(dynamic_cast<Muon*>(&curr_particle))
   {
     Muon& curr_muon = dynamic_cast<Muon&>(curr_particle);
-    std::cout<<"    energy (GeV) = <<"<<curr_muon.get_detected_energy(5)<<" / "<<curr_muon.get_chamber_energy()<<std::endl;
+    std::cout<<"    energy (GeV) = "<<curr_muon.get_detected_energy(5)<<" / "<<curr_muon.get_chamber_energy();
   }
   else
   {
@@ -175,36 +172,47 @@ void ColResultContainer::print_individual(int index) // Offset determines dispar
   string guessed_particle = potential_particles[index].front();
   std::cout<<guessed_particle;
   // If the guess is correct
-  if(guessed_particle.find(curr_particle.get_name())!=string::npos) std::cout<<" (correct)";
+  if(guessed_particle.find(curr_particle.get_name())!=string::npos) 
+  {
+    std::cout<<" (correct)";
+    correct_guess = 1;
+  }
   // cast to nucleons as they also have a nucleon type in addition to being called just nucleons
   else if(dynamic_cast<Nucleon*>(&curr_particle))
   {
     Nucleon& curr_nucleon = dynamic_cast<Nucleon&>(curr_particle);
     if(guessed_particle.find(curr_nucleon.get_nuc_type())!=string::npos) std::cout<<" (correct)";
+    correct_guess = 1;
   }
-  else std::cout<<" (incorrect)";
+  else 
+  {
+    std::cout<<" (incorrect)";
+    correct_guess = 0;
+  }
   std::cout<<std::endl;
+  return correct_guess;
 }
 
 
 // Fucntionality
 void ColResultContainer::print()
 {
-  std::cout<<p_detector->get_tracker().get_num_particles_detected()<<std::endl;
-
   // Ugly as all hell print function to ensure that it is readable.
   std::cout<<"collision results for event : \""<<collision_name<<"\""<<std::endl;
   // For each particle
-  input_event->print();
+  //input_event->print();
+
+  int correct_guesses = 0;
 
   for(int i = 0; i<input_event->get_num_particles(); i++)
   { 
-    print_individual(i);
+    correct_guesses += print_individual(i);
   }
   std::cout<<"summary after passing all particles through detectors :"<<std::endl;
   //@TODO make all the rule of 5 for the sub-detectors work again
   std::cout<<"  total particles seen by tracker : "<<p_detector->get_tracker().get_num_particles_detected()<<", total energy seen by tracker (GeV) : "<<p_detector->get_tracker().get_total_energy_detected()<<std::endl;
   std::cout<<"  total particles seen by calorimeter : "<<p_detector->get_calorimeter().get_num_particles_detected()<<", total energy seen by calorimeter (GeV) : "<<p_detector->get_calorimeter().get_total_energy_detected()<<std::endl;
   std::cout<<"  total particles seen by muon detector : "<<p_detector->get_muon_detector().get_num_particles_detected()<<", total energy seen by muon detector (GeV) : "<<p_detector->get_muon_detector().get_total_energy_detected()<<std::endl;
-
+  std::cout<<"  detector guess efficiency : "<<(double)correct_guesses*100/(double)input_event->get_num_particles()<<"%"<<std::endl;
+  std::cout<<"  energy seen by all detectors : "<<p_detector->get_total_detected_energy()*100/input_energy<<"%"<<std::endl;
 }
