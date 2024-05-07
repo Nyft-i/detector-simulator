@@ -25,6 +25,16 @@ private:
   unique_ptr<CollisionEvent> input_event;
   vector<string> potential_particles;
   shared_ptr<Detector> p_detector;
+
+  int tracker_particles;
+  int calorimeter_particles;
+  int muon_particles;
+
+  double tracker_energy;
+  double calorimeter_energy;
+  double muon_energy;
+
+  int correct_guesses;
 public:
   // Constructor
   // Default
@@ -46,17 +56,27 @@ public:
   
   // Getters
   string get_collision_name() const;
+  CollisionEvent& get_input_event() const;
   int get_num_particles_detected() const;
   double get_total_energy_detected() const;
   double get_input_energy() const;
-  vector<string> get_potential_particles(int index) const;
+
+  int get_tracker_particles() const;
+  int get_calorimeter_particles() const;
+  int get_muon_particles() const;
+
+  double get_tracker_energy() const;
+  double get_calorimeter_energy() const;
+  double get_muon_energy() const;
+
+  int get_correct_guesses() const;
 
   // Setters
   void set_input_energy(double set_input_energy);
   void set_potential_particle_elem(int index, vector<string> set_potential_particle_elem);
 
   // Functionality
-  int print_individual(int index);
+  void print_individual(int index);
   void print();
 };
 

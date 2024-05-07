@@ -81,6 +81,7 @@ int main()
   // Firstly print all the input particles, taus will already have decayed.
   photon_event.print();
   // Collide ! & store the results in a Collision result container, ColResultContainer
+  std::cout<<"here at least"<<std::endl;
   shared_ptr<ColResultContainer> p_results1 = main_detector.collide(std::make_unique<CollisionEvent>(photon_event));
   // Print the collision result
   p_results1->print();
@@ -106,6 +107,29 @@ int main()
   p_results4->print();
   main_detector.total_reset();
 
+  // Information about all the events.
+  int total_tracker_particles = p_results1->get_tracker_particles() + p_results2->get_tracker_particles() + p_results3->get_tracker_particles() + p_results4->get_tracker_particles();
+  double total_tracker_energy = p_results1->get_tracker_energy() + p_results2->get_tracker_energy() + p_results3->get_tracker_energy() + p_results4->get_tracker_energy();
+
+  int total_calorimeter_particles = p_results1->get_calorimeter_particles() + p_results2->get_calorimeter_particles() + p_results3->get_calorimeter_particles() + p_results4->get_calorimeter_particles();
+  double total_calorimeter_energy = p_results1->get_calorimeter_energy() + p_results2->get_calorimeter_energy() + p_results3->get_calorimeter_energy() + p_results4->get_calorimeter_energy();
+
+  int total_muon_particles = p_results1->get_muon_particles() + p_results2->get_muon_particles() + p_results3->get_muon_particles() + p_results4->get_muon_particles();
+  double total_muon_energy = p_results1->get_muon_energy() + p_results2->get_muon_energy() + p_results3->get_muon_energy() + p_results4->get_muon_energy();
+
+  int total_correct_guesses = p_results1->get_correct_guesses() + p_results2->get_correct_guesses() + p_results3->get_correct_guesses() + p_results4->get_correct_guesses();
+  int total_particles = p_results1->get_input_event().get_num_particles() + p_results2->get_input_event().get_num_particles() + p_results3->get_input_event().get_num_particles() + p_results4->get_input_event().get_num_particles();
+  double total_detected_energy = p_results1->get_total_energy_detected() + p_results2->get_total_energy_detected() + p_results3->get_total_energy_detected() + p_results4->get_total_energy_detected();
+  double total_input_energy = p_results1->get_input_energy() + p_results2->get_input_energy() + p_results3->get_input_energy() + p_results4->get_input_energy();
+
+  std::cout<<"__ ALL EVENTS __"<<std::endl;
+  std::cout<<"summary after all events:"<<std::endl;
+  std::cout<<"  total number of particles detected by tracker accross all events : "<<total_tracker_particles<<", total energy detected by tracker accross all events (GeV) : "<<total_tracker_energy<<std::endl;
+  std::cout<<"  total number of particles detected by calorimeter accross all events : "<<total_calorimeter_particles<<", total energy detected by calorimeter accross all events (GeV) : "<<total_calorimeter_energy<<std::endl;
+  std::cout<<"  total number of muons detected accross all events : "<<total_muon_particles<<", total energy detected by muon detector accross all events (GeV) : "<<total_muon_energy<<std::endl;
+  std::cout<<"  detector identification efficiency : "<<total_correct_guesses*100/total_particles<<"% ("<<total_correct_guesses<<"/"<<total_particles<<")"<<std::endl;
+  std::cout<<"  energy detected by detectors : "<<total_detected_energy*100/total_input_energy<<"% ("<<total_detected_energy<<"/"<<total_input_energy<<")"<<std::endl;
+  
   
   return 0;
 }
