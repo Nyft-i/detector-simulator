@@ -120,8 +120,6 @@ void MuonDetector::print()
 void MuonDetector::interact(Particle& interacting_particle)
 {
   // Only muons can interact with muon detector
-  std::cout<<typeid(interacting_particle).name()<<std::endl;
-
   if(dynamic_cast<Muon*>(&interacting_particle))
   {
     Muon& interacting_muon = dynamic_cast<Muon&>(interacting_particle);

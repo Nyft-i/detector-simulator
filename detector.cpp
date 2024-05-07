@@ -27,7 +27,7 @@ Detector::Detector(double tracker_efficiency, double calorimeter_efficiency, dou
   muon_detector = std::make_unique<MuonDetector>(muon_efficiency, con_muon_percent_chance);
 
   current_col = nullptr;
-  col_elem = 0;
+  col_elem = -1;
 }
 
 // Copy
@@ -42,7 +42,7 @@ Detector::Detector(const Detector& copy_from)
   col_elem = copy_from.col_elem;
 
   current_col = nullptr;
-  col_elem = 0;
+  col_elem = -1;
 }
 
 // Move
@@ -61,7 +61,7 @@ Detector::Detector(Detector&& move_from)
   calorimeter = nullptr;
   muon_detector = nullptr;
   current_col = nullptr;
-  col_elem = 0;
+  col_elem = -1;
 }
 
 // Destructor
@@ -101,7 +101,7 @@ Detector& Detector::operator=(Detector&& move_from)
   calorimeter = nullptr;
   muon_detector = nullptr;
   current_col = nullptr;
-  col_elem = 0;
+  col_elem = -1;
 
   return *this;
 }
@@ -139,14 +139,14 @@ void Detector::start_collision(unique_ptr<CollisionEvent> p_col_event)
 void Detector::setup_collision(unique_ptr<CollisionEvent> p_col_event)
 {
   current_col = std::move(p_col_event);
-  col_elem = 0;
+  col_elem = -1; // Signifies that the collison has not started
 }
 
 void Detector::step_collision()
 {
   reset();
-  interact((*current_col)[col_elem]);
   col_elem++;
+  interact((*current_col)[col_elem]);
 }
 
 void Detector::see_detections()
@@ -198,8 +198,6 @@ string Detector::guess_particle()
   vector<bool> detections = get_detections();
   enum detection_type {TRACKER=0, CAL_EM=1, CAL_HAD=2, MUON=3};
   list<string> possible_particles = {"muon/antimuon", "electron/positron", "proton", "neutron", "photon", "neutrino/antineutrino"}; // No Tau present as they decay too fast
-  // print the detections for debugging
-  std::cout<<"detections: "<<(int)detections[TRACKER]<<","<<detections[CAL_EM]<<","<<detections[CAL_HAD]<<","<<detections[MUON]<<std::endl;
 
   // Muon detection, unlike the calorimeter, if a detection isn't found then we cannot rule out muons, as their detection is % chance
   if(detections[MUON]) // Must be a muon
@@ -225,10 +223,6 @@ string Detector::guess_particle()
   if(!detections[CAL_HAD]) // Must be a NOT proton or a neutron
   {possible_particles.remove_if([](string const & x) {return x == "proton" || x == "neutron";});}
 
-  for(auto it = possible_particles.begin(); it != possible_particles.end(); it++)
-  {
-    std::cout<<*it<<std::endl;
-  }
   if(possible_particles.size() == 0) return "unknown particle"; // Avoids bad_alloc if the list is empty as a result of no possible particle i.e. when only the tracker picks up a muon
   return possible_particles.front();
 }
@@ -238,31 +232,17 @@ shared_ptr<ColResultContainer> Detector::collide(unique_ptr<CollisionEvent> p_co
   // Transfers ownership to the caller of a unique pointer to a container for all the known information about a potential collision event.
   // Initial setup
   setup_collision(std::move(p_col_event));
-  enum detection_type {TRACKER=0, CAL_EM=1, CAL_HAD=2, MUON=3};
   vector<string> potential_particles;
   double input_energy = current_col->get_collision_energy();
   string collision_name = current_col->get_event_name();
   double detected_energy = 0;
 
   // For every particle (note that tau's will automatically decay into their decay products when they are added to the collision event.)
-  for(int i = 0; i<current_col->get_num_particles(); i++)
+  while(col_elem+1<current_col->get_num_particles())
   {
     step_collision();
     potential_particles.push_back(guess_particle());
-    
-    vector<bool> detections = get_detections();
-
-    // Code stops doubling up energies for particles which have imparted their true energy onto tracker/muon detector as well as the calorimeter.
-    // This is definitely not the physics way to do this but 
-    if(!detections[CAL_EM] && !detections[CAL_HAD]) 
-    {
-      detected_energy += tracker->get_total_energy_detected() + muon_detector->get_total_energy_detected();
-    }      
-    else
-    {
-      detected_energy += calorimeter -> get_total_energy_detected();
-    }
-
+    detected_energy+=get_curr_detected_energy();
     // sneak_look();
   }
 
@@ -271,10 +251,22 @@ shared_ptr<ColResultContainer> Detector::collide(unique_ptr<CollisionEvent> p_co
   return std::make_shared<ColResultContainer>(results); // Transferral of ownership/joinery of ownership
 }
 
-double Detector::get_total_detected_energy() const
+double Detector::get_curr_detected_energy() const
 {
+  double detected_energy = 0;
   enum detection_type {TRACKER=0, CAL_EM=1, CAL_HAD=2, MUON=3};
   vector<bool> detections = get_detections();
-  if(!detections[CAL_EM] && !detections[CAL_HAD]) return tracker->get_total_energy_detected() + muon_detector->get_total_energy_detected();
-  else return calorimeter->get_total_energy_detected();
+  if(!detections[CAL_EM] && !detections[CAL_HAD])
+  {
+    detected_energy+=(*current_col)[col_elem].get_detected_energy(0);
+    detected_energy+=(*current_col)[col_elem].get_detected_energy(5);
+  }
+  else
+  {
+    detected_energy+=(*current_col)[col_elem].get_detected_energy(1);
+    detected_energy+=(*current_col)[col_elem].get_detected_energy(2);
+    detected_energy+=(*current_col)[col_elem].get_detected_energy(3);
+    detected_energy+=(*current_col)[col_elem].get_detected_energy(4);
+  }
+  return detected_energy;
 }

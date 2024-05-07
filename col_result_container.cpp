@@ -96,8 +96,8 @@ ColResultContainer& ColResultContainer::operator=(ColResultContainer&& move_from
 // Getters
 string ColResultContainer::get_collision_name() const {return collision_name;}
 double ColResultContainer::get_input_energy() const {return input_energy;}
-double ColResultContainer::get_total_energy_detected() const {return total_energy_detected;}
 int ColResultContainer::get_num_particles_detected() const {return input_event->get_num_particles();}
+double ColResultContainer::get_total_energy_detected() const {return total_energy_detected;}
 
 // Setters
 void ColResultContainer::set_input_energy(double set_input_energy) {input_energy = set_input_energy;}
@@ -217,7 +217,7 @@ void ColResultContainer::print()
   std::cout<<"  total particles seen by calorimeter : "<<p_detector->get_calorimeter().get_num_particles_detected()<<", total energy seen by calorimeter (GeV) : "<<p_detector->get_calorimeter().get_total_energy_detected()<<std::endl;
   std::cout<<"  total particles seen by muon detector : "<<p_detector->get_muon_detector().get_num_particles_detected()<<", total energy seen by muon detector (GeV) : "<<p_detector->get_muon_detector().get_total_energy_detected()<<std::endl;
   std::cout<<"  detector guess efficiency : "<<(double)correct_guesses*100/(double)input_event->get_num_particles()<<"% ("<<correct_guesses<<"/"<<input_event->get_num_particles()<<")"<<std::endl;
-  std::cout<<"  energy seen by all detectors : "<<p_detector->get_total_detected_energy()*100/input_energy<<"% ("<<p_detector->get_total_detected_energy()<<"/"<<input_energy<<")"<<std::endl;
+  std::cout<<"  energy seen by all detectors : "<<total_energy_detected*100/input_energy<<"% ("<<total_energy_detected<<"/"<<input_energy<<")"<<std::endl;
   // Alert of tau possibility when there is a large disparity on transverse energy
-  if(p_detector->get_total_detected_energy()*100/input_energy < 50) std::cout<<"! large disparity between input and detected energy (i.e. missing transverse energy), possible tau decay"<<std::endl;
+  if(total_energy_detected*100/input_energy < 50) std::cout<<"! large disparity between input and detected energy (i.e. missing transverse energy), possible tau decay"<<std::endl;
 }
