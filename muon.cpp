@@ -16,6 +16,7 @@ Muon::Muon()
   pap_status = 1;
   charge = -1;
   name = "muon";
+  interacted_with_muon_detector = false;
 }
 
 // Parameterised
@@ -34,6 +35,7 @@ Muon::Muon(double con_energy, int con_pap)
     charge = -1;
     name = "muon";
   }
+  interacted_with_muon_detector = false;
 }
 
 // Deep Copy Constructor
@@ -121,6 +123,7 @@ Muon& Muon::operator=(Muon&& move_from)
 // Getters
 double Muon::get_tracker_energy() const {return tracker_energy;}
 double Muon::get_chamber_energy() const {return chamber_energy;}
+bool Muon::get_interacted_with_detector() const {return interacted_with_muon_detector;}
 
 // Setters
 void Muon::set_tracker_energy(double set_tracker_energy) {tracker_energy = set_tracker_energy;}
@@ -145,6 +148,7 @@ void Muon::set_true_energy(double set_energy)
   tracker_energy = true_energy*random_ratio[0];
   chamber_energy = true_energy*random_ratio[1];
 }
+void Muon::set_interacted_with_detector(bool set_interacted) {interacted_with_muon_detector = set_interacted;}
 
 // Functionality
 void Muon::print()

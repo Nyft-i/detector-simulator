@@ -130,6 +130,7 @@ int main()
   std::cout<<"  detector identification efficiency : "<<total_correct_guesses*100/total_particles<<"% ("<<total_correct_guesses<<"/"<<total_particles<<")"<<std::endl;
   std::cout<<"  energy detected by detectors : "<<total_detected_energy*100/total_input_energy<<"% ("<<total_detected_energy<<"/"<<total_input_energy<<")"<<std::endl;
   
+  std::cout<<"__ END __"<<std::endl;
   
   return 0;
 }

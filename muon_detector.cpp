@@ -137,6 +137,7 @@ void MuonDetector::interact(Particle& interacting_particle)
       num_particles_detected++;
       total_energy_detected += interacting_muon.get_chamber_energy()*efficiency;
       interacting_muon.set_detected_energy(5, interacting_muon.get_chamber_energy()*efficiency);
+      interacting_muon.set_interacted_with_detector(true);
     }
   }
 }

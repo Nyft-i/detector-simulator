@@ -127,10 +127,10 @@ void CollisionEvent::print(int index)
 void CollisionEvent::print()
 {
   // Prints all when no index given
-  std::cout<<"no number given, printing all particles in event \""<<event_name<<"\"\n"<<std::endl;
+  std::cout<<"no number given, printing all particles in event \""<<event_name<<"\""<<std::endl;
   for(int i=0; i<event_particles.size(); i++)
   {
-    std::cout<<"printing particle index "<<i<<std::endl;
+    std::cout<<"printing particle index : "<<i<<std::endl;
     event_particles[i]->print();
     std::cout<<std::endl;
   }
