@@ -44,36 +44,40 @@ int main()
   // Seed random number generator
   std::srand(get_ticks()); // use current time as seed for random generator, ensures different answer each time.
 
-  /*
-  CollisionEvent photon_event("two photons, 1500GeV");
-  photon_event.add_particle(std::move(std::make_unique<Photon>(75)));
-  photon_event.add_particle(std::move(std::make_unique<Photon>(75)));
-  */
-
-  CollisionEvent background_event("neutron_photon_proton 1500GeV event");
-  background_event.add_particle(std::move(std::make_unique<Nucleon>(500, "neutron")));
-  background_event.add_particle(std::move(std::make_unique<Photon>(500)));
-  background_event.add_particle(std::move(std::make_unique<Nucleon>(500, "proton")));
   
+  CollisionEvent photon_event("two photons, 125GeV", 125);
+  photon_event.add_particle(std::move(std::make_unique<Photon>(65)));
+  photon_event.add_particle(std::move(std::make_unique<Photon>(60)));
+  photon_event.adjust();
 
+  CollisionEvent background_event("neutron_photon_proton 1500GeV event", 1500);
+  background_event.add_particle(std::move(std::make_unique<Nucleon>(700, "neutron")));
+  background_event.add_particle(std::move(std::make_unique<Photon>(100)));
+  background_event.add_particle(std::move(std::make_unique<Nucleon>(600, "proton")));
+  background_event.adjust();
+
+  CollisionEvent tau_event("tau, antitau, 1500GeV", 1500);
+  tau_event.add_particle(std::move(std::make_unique<Tau>(20, 1, "hadronic"))); // Different value that doesnt add up to 750 to prove that it will adjust
+  tau_event.add_particle(std::move(std::make_unique<Tau>(20, -1, "muon")));
+  tau_event.adjust();
   
-  CollisionEvent tau_event("tau, antitau, 1500GeV");
-  tau_event.add_particle(std::move(std::make_unique<Tau>(750, 1, "hadronic")));
-  tau_event.add_particle(std::move(std::make_unique<Tau>(750, -1, "muon")));
+  Detector main_detector(0.5, 0.5, 0.5, 0.5, 0.5); // No arguments means that it will create a perfect detector
+
+  CollisionEvent test_event("test_event", 100);
+  test_event.add_particle(std::move(std::make_unique<Electron>(50)));
+  test_event.adjust();
   
+  shared_ptr<ColResultContainer> p_results1 = main_detector.collide(std::make_unique<CollisionEvent>(test_event));
+  //p_results1->print();
 
-  /*
-  shared_ptr<ColResultContainer> p_results1 = main_detector.collide(std::make_unique<CollisionEvent>(photon_event));
-  p_results1->print();
-
-  main_detector.reset();
+  main_detector.total_reset();
   shared_ptr<ColResultContainer> p_results2 = main_detector.collide(std::make_unique<CollisionEvent>(background_event));
-  p_results2->print();
-  */
+  //p_results2->print();
+  
+  tau_event.print();
 
-  Detector main_detector; // No arguments means that it will create a perfect detector
-  main_detector.reset();
-  shared_ptr<ColResultContainer> p_results3 = main_detector.collide(std::make_unique<CollisionEvent>(background_event));
+  main_detector.total_reset();
+  shared_ptr<ColResultContainer> p_results3 = main_detector.collide(std::make_unique<CollisionEvent>(tau_event));
   p_results3->print();
 
   

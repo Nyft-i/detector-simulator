@@ -120,18 +120,17 @@ void MuonDetector::print()
 void MuonDetector::interact(Particle& interacting_particle)
 {
   // Only muons can interact with muon detector
-  if(typeid(interacting_particle)==typeid(Muon))
+  std::cout<<typeid(interacting_particle).name()<<std::endl;
+
+  if(dynamic_cast<Muon*>(&interacting_particle))
   {
     Muon& interacting_muon = dynamic_cast<Muon&>(interacting_particle);
     // This code randomly determines, with percent_chance% probability if each layer has been hit
     
     for(int i=0; i<2; i++)
-    {
-      int random_value = std::rand();
-      if(random_value/RAND_MAX < percent_chance)
-      {
-        hit_layers->at(i) = true;
-      }
+    { 
+      double random_value = ((double) std::rand()) / RAND_MAX;
+      if(random_value < percent_chance) hit_layers->at(i) = true;
     }
 
     // Also the energies from the muon are added to the chamber energies.

@@ -29,6 +29,7 @@ percent_chance(con_chance)
   hit_layers->at(INNER_PIXEL_LAYER) = false;
   hit_layers->at(OUTER_PIXEL_LAYER) = false;
   hit_layers->at(STRIP_LAYER) = false;
+  percent_chance = con_chance;
 }
 
 // Copy
@@ -136,8 +137,8 @@ void Tracker::interact(Particle& interacting_particle)
     // This code randomly determines, with percent_chance% probability if each layer has been hit
     for(int i=0; i<3; i++)
     {
-      int random_value = std::rand();
-      if(random_value/RAND_MAX < percent_chance) hit_layers->at(i) = true;
+      double random_value = ((double) std::rand()) / RAND_MAX;
+      if(random_value < percent_chance) hit_layers->at(i) = true;
     }
 
     // more than 2 hits
@@ -145,17 +146,17 @@ void Tracker::interact(Particle& interacting_particle)
     { 
       num_particles_detected++;
       // The amount of energy deposited, not a muon
-      if(typeid(&interacting_particle)!=typeid(Muon)) 
-      {
-        total_energy_detected += interacting_particle.get_true_energy()*efficiency;
-        interacting_particle.set_detected_energy(0, interacting_particle.get_true_energy()*efficiency); // Only detected at efficency*energy if 2 or more hit layers
-      }
-      else 
+      if(dynamic_cast<Muon*>(&interacting_particle)) 
       {
         // If the particle is a muon, it deposits a different amount of energy in detector + tracker
         Muon& interacting_muon = dynamic_cast<Muon&>(interacting_particle);
         total_energy_detected += interacting_muon.get_tracker_energy()*efficiency;
-        interacting_muon.set_detected_energy(0, interacting_muon.get_tracker_energy()*efficiency); // Only detected at efficency*energy if 2 or more hit layers
+        interacting_particle.set_detected_energy(0, interacting_muon.get_tracker_energy()*efficiency); // Only detected at efficency*energy if 2 or more hit layers
+      }
+      else 
+      {
+        total_energy_detected += interacting_particle.get_true_energy()*efficiency;
+        interacting_particle.set_detected_energy(0, interacting_particle.get_true_energy()*efficiency); // Only detected at efficency*energy if 2 or more hit layers
       }
     }
   }

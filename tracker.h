@@ -14,7 +14,7 @@ class Tracker : public SubDetector
 private:
   enum tracker_layers{INNER_PIXEL_LAYER=0, OUTER_PIXEL_LAYER=1, STRIP_LAYER=2};
   std::shared_ptr<vector<bool>> hit_layers; // Unique pointer to a vector of booleans.
-  int percent_chance;
+  double percent_chance;
 public:
   // Constructor
   // Default

@@ -22,7 +22,7 @@ public:
   // Constructor
   // Default
   // Parameterised
-  CollisionEvent(string con_event_name="default");
+  CollisionEvent(string con_event_name="default", double con_collision_energy=1);
   
   // Copy
   CollisionEvent(const CollisionEvent& copy_from);
@@ -55,6 +55,7 @@ public:
   void add_particle(shared_ptr<Particle> add_particle);
   void print(int index);
   void print();
+  void adjust();
 };
 
 #endif

@@ -7,12 +7,12 @@
 // Constructors
 // Default
 // Parameterised
-CollisionEvent::CollisionEvent(string con_event_name)
+CollisionEvent::CollisionEvent(string con_event_name, double con_collision_energy)
 {
   event_name = con_event_name;
   input_particles = {};
   event_particles = {}; // Empty vector.
-  collision_energy = 0;
+  collision_energy = con_collision_energy;
 }
 
 // Copy
@@ -101,7 +101,6 @@ Particle& CollisionEvent::init_particle(int index)
 void CollisionEvent::add_particle(shared_ptr<Particle> add_particle)
 {
   // Copy the energy from the particles into the event.
-  collision_energy += add_particle->get_true_energy();
   input_particles.push_back(add_particle); // Copy, to make sure that we have a record of all the start particles
 
   if(std::dynamic_pointer_cast<Tau>(add_particle))
@@ -134,5 +133,24 @@ void CollisionEvent::print()
     std::cout<<"printing particle index "<<i<<std::endl;
     event_particles[i]->print();
     std::cout<<std::endl;
+  }
+}
+
+void CollisionEvent::adjust()
+{
+  // Sums up the energies of the particles
+  double total_energy = 0;
+  vector<double> ratio = vector<double>(event_particles.size(), 0);
+
+  for(int i = 0; i < event_particles.size(); i++)
+  {
+    ratio[i] = event_particles[i]->get_true_energy(); // Vector of the energies to maintain the same ratio
+    total_energy += ratio[i]; // Running total of the energy 
+  }
+  
+  // Adjust the energy of the particles to total the max energy
+  for(int i = 0; i < event_particles.size(); i++)
+  {
+    event_particles[i]->set_true_energy(ratio[i]*collision_energy/total_energy);
   }
 }

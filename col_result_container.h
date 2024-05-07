@@ -23,13 +23,13 @@ private:
   double input_energy;
   double total_energy_detected;
   unique_ptr<CollisionEvent> input_event;
-  vector<list<string>> potential_particles;
+  vector<string> potential_particles;
   shared_ptr<Detector> p_detector;
 public:
   // Constructor
   // Default
   // Parameterised
-  ColResultContainer(string con_col_name, double con_input_energy, double con_detected_energy,vector<list<string>> con_potential_particles, unique_ptr<CollisionEvent> con_input_event, shared_ptr<Detector> con_p_detector);
+  ColResultContainer(string con_col_name, double con_input_energy, double con_detected_energy, vector<string> con_potential_particles, unique_ptr<CollisionEvent> con_input_event, shared_ptr<Detector> con_p_detector);
   
   // Copy
   ColResultContainer(const ColResultContainer& copy_from);
@@ -49,11 +49,11 @@ public:
   int get_num_particles_detected() const;
   double get_total_energy_detected() const;
   double get_input_energy() const;
-  list<string> get_potential_particles(int index) const;
+  vector<string> get_potential_particles(int index) const;
 
   // Setters
   void set_input_energy(double set_input_energy);
-  void set_potential_particle_elem(int index, list<string> set_potential_particle_elem);
+  void set_potential_particle_elem(int index, vector<string> set_potential_particle_elem);
 
   // Functionality
   int print_individual(int index);

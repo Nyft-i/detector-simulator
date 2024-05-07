@@ -12,7 +12,7 @@
 
 // Constructors
 // Parameterised
-ColResultContainer::ColResultContainer(string con_col_name, double con_input_energy, double con_detected_energy, vector<list<string>> con_potential_particles, unique_ptr<CollisionEvent> con_input_event, shared_ptr<Detector> con_p_detector):
+ColResultContainer::ColResultContainer(string con_col_name, double con_input_energy, double con_detected_energy, vector<string> con_potential_particles, unique_ptr<CollisionEvent> con_input_event, shared_ptr<Detector> con_p_detector):
   collision_name(con_col_name),
   input_energy(con_input_energy),
   total_energy_detected(con_detected_energy), 
@@ -169,7 +169,7 @@ int ColResultContainer::print_individual(int index) // Offset determines dispari
   }
   std::cout<<std::endl;
   std::cout<<"  particle detected as : ";
-  string guessed_particle = potential_particles[index].front();
+  string guessed_particle = potential_particles[index];
   std::cout<<guessed_particle;
   // If the guess is correct
   if(guessed_particle.find(curr_particle.get_name())!=string::npos) 
@@ -181,13 +181,16 @@ int ColResultContainer::print_individual(int index) // Offset determines dispari
   else if(dynamic_cast<Nucleon*>(&curr_particle))
   {
     Nucleon& curr_nucleon = dynamic_cast<Nucleon&>(curr_particle);
-    if(guessed_particle.find(curr_nucleon.get_nuc_type())!=string::npos) std::cout<<" (correct)";
-    correct_guess = 1;
+    if(guessed_particle.find(curr_nucleon.get_nuc_type())!=string::npos) 
+    {
+      std::cout<<" (correct)";
+      correct_guess = 1;
+    }
+    else std::cout<<" (incorrect)";
   }
   else 
   {
     std::cout<<" (incorrect)";
-    correct_guess = 0;
   }
   std::cout<<std::endl;
   return correct_guess;
@@ -213,6 +216,8 @@ void ColResultContainer::print()
   std::cout<<"  total particles seen by tracker : "<<p_detector->get_tracker().get_num_particles_detected()<<", total energy seen by tracker (GeV) : "<<p_detector->get_tracker().get_total_energy_detected()<<std::endl;
   std::cout<<"  total particles seen by calorimeter : "<<p_detector->get_calorimeter().get_num_particles_detected()<<", total energy seen by calorimeter (GeV) : "<<p_detector->get_calorimeter().get_total_energy_detected()<<std::endl;
   std::cout<<"  total particles seen by muon detector : "<<p_detector->get_muon_detector().get_num_particles_detected()<<", total energy seen by muon detector (GeV) : "<<p_detector->get_muon_detector().get_total_energy_detected()<<std::endl;
-  std::cout<<"  detector guess efficiency : "<<(double)correct_guesses*100/(double)input_event->get_num_particles()<<"%"<<std::endl;
-  std::cout<<"  energy seen by all detectors : "<<p_detector->get_total_detected_energy()*100/input_energy<<"%"<<std::endl;
+  std::cout<<"  detector guess efficiency : "<<(double)correct_guesses*100/(double)input_event->get_num_particles()<<"% ("<<correct_guesses<<"/"<<input_event->get_num_particles()<<")"<<std::endl;
+  std::cout<<"  energy seen by all detectors : "<<p_detector->get_total_detected_energy()*100/input_energy<<"% ("<<p_detector->get_total_detected_energy()<<"/"<<input_energy<<")"<<std::endl;
+  // Alert of tau possibility when there is a large disparity on transverse energy
+  if(p_detector->get_total_detected_energy()*100/input_energy < 50) std::cout<<"! large disparity between input and detected energy (i.e. missing transverse energy), possible tau decay"<<std::endl;
 }
