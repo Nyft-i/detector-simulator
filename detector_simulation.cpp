@@ -107,20 +107,36 @@ int main()
   p_results4->print();
   main_detector.total_reset();
 
+  vector<shared_ptr<ColResultContainer>> results = {p_results1, p_results2, p_results3, p_results4};
+  // __ Summary __
+  // It was unclear if the in the rubric if the individual events were meant to at all be considered seperately too, i.e. a summary table at the end of each event
+  // and also one at the end of every event. I have chosen to do both but this leads to this relatively reduntant code
+  // I could have merged all the event particles inso a single event if each of the four events did not require its own summary.
   // Information about all the events.
-  int total_tracker_particles = p_results1->get_tracker_particles() + p_results2->get_tracker_particles() + p_results3->get_tracker_particles() + p_results4->get_tracker_particles();
-  double total_tracker_energy = p_results1->get_tracker_energy() + p_results2->get_tracker_energy() + p_results3->get_tracker_energy() + p_results4->get_tracker_energy();
+  int total_tracker_particles;
+  for(int i=0; i<results.size(); i++) total_tracker_particles += results[i]->get_tracker_particles();
+  double total_tracker_energy;
+  for(int i=0; i<results.size(); i++) total_tracker_energy += results[i]->get_tracker_energy();
 
-  int total_calorimeter_particles = p_results1->get_calorimeter_particles() + p_results2->get_calorimeter_particles() + p_results3->get_calorimeter_particles() + p_results4->get_calorimeter_particles();
-  double total_calorimeter_energy = p_results1->get_calorimeter_energy() + p_results2->get_calorimeter_energy() + p_results3->get_calorimeter_energy() + p_results4->get_calorimeter_energy();
+  int total_calorimeter_particles;
+  for(int i=0; i<results.size(); i++) total_calorimeter_particles += results[i]->get_calorimeter_particles();
+  double total_calorimeter_energy;
+  for(int i=0; i<results.size(); i++) total_calorimeter_energy += results[i]->get_calorimeter_energy();
 
-  int total_muon_particles = p_results1->get_muon_particles() + p_results2->get_muon_particles() + p_results3->get_muon_particles() + p_results4->get_muon_particles();
-  double total_muon_energy = p_results1->get_muon_energy() + p_results2->get_muon_energy() + p_results3->get_muon_energy() + p_results4->get_muon_energy();
+  int total_muon_particles;
+  for(int i=0; i<results.size(); i++) total_muon_particles += results[i]->get_muon_particles();
+  double total_muon_energy;
+  for(int i=0; i<results.size(); i++) total_muon_energy += results[i]->get_muon_energy();
 
-  int total_correct_guesses = p_results1->get_correct_guesses() + p_results2->get_correct_guesses() + p_results3->get_correct_guesses() + p_results4->get_correct_guesses();
-  int total_particles = p_results1->get_input_event().get_num_particles() + p_results2->get_input_event().get_num_particles() + p_results3->get_input_event().get_num_particles() + p_results4->get_input_event().get_num_particles();
-  double total_detected_energy = p_results1->get_total_energy_detected() + p_results2->get_total_energy_detected() + p_results3->get_total_energy_detected() + p_results4->get_total_energy_detected();
-  double total_input_energy = p_results1->get_input_energy() + p_results2->get_input_energy() + p_results3->get_input_energy() + p_results4->get_input_energy();
+  int total_correct_guesses;
+  for(int i=0; i<results.size(); i++) total_correct_guesses += results[i]->get_correct_guesses();
+  int total_particles;
+  for(int i=0; i<results.size(); i++) total_particles += results[i]->get_num_particles_detected();
+
+  double total_detected_energy;
+  for(int i=0; i<results.size(); i++) total_detected_energy += results[i]->get_total_energy_detected();
+  double total_input_energy;
+  for(int i=0; i<results.size(); i++) total_input_energy += results[i]->get_input_energy();
 
   std::cout<<"__ ALL EVENTS __"<<std::endl;
   std::cout<<"summary after all events:"<<std::endl;
