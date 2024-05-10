@@ -23,7 +23,9 @@ DepositorParticle::DepositorParticle(const DepositorParticle& copy_from)
   charge = copy_from.charge;
   name = copy_from.name;
   pap_status = copy_from.pap_status;
+  from_tau = copy_from.from_tau;
   cal_deposits = std::make_unique<vector<double>>(*copy_from.cal_deposits);
+  detected_energies = std::make_unique<vector<double>>(*copy_from.detected_energies);
 }
 
 // Move
@@ -34,7 +36,9 @@ DepositorParticle::DepositorParticle(DepositorParticle&& move_from)
   charge = move_from.charge;
   name = std::move(move_from.name);
   pap_status = move_from.pap_status;
+  from_tau = move_from.from_tau;
   cal_deposits = std::move(move_from.cal_deposits);
+  detected_energies = std::move(move_from.detected_energies);
   
   // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
@@ -42,7 +46,9 @@ DepositorParticle::DepositorParticle(DepositorParticle&& move_from)
   move_from.charge = 0;
   move_from.pap_status = 0;
   move_from.name = "";
-  move_from.cal_deposits = std::make_unique<vector<double>>(4, 0);
+  move_from.from_tau = false;
+  move_from.cal_deposits = nullptr;
+  move_from.detected_energies = nullptr;
 }
 
 // Destructor, don't need
@@ -60,7 +66,9 @@ DepositorParticle& DepositorParticle::operator=(const DepositorParticle& copy_fr
   charge = copy_from.charge;
   name = copy_from.name;
   pap_status = copy_from.pap_status;
+  from_tau = copy_from.from_tau;
   cal_deposits = std::make_unique<vector<double>>(*copy_from.cal_deposits);
+  detected_energies = std::make_unique<vector<double>>(*copy_from.detected_energies);
   
   return *this;
 }
@@ -76,7 +84,9 @@ DepositorParticle& DepositorParticle::operator=(DepositorParticle&& move_from)
   charge = move_from.charge;
   name = std::move(move_from.name);
   pap_status = move_from.pap_status;
+  from_tau = move_from.from_tau;
   cal_deposits = std::move(move_from.cal_deposits);
+  detected_energies = std::move(move_from.detected_energies);
   
   // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
@@ -84,7 +94,9 @@ DepositorParticle& DepositorParticle::operator=(DepositorParticle&& move_from)
   move_from.charge = 0;
   move_from.pap_status = 0;
   move_from.name = "";
-  move_from.cal_deposits = std::make_unique<vector<double>>(4, 0);
+  move_from.from_tau = false;
+  move_from.cal_deposits = nullptr;
+  move_from.detected_energies = nullptr;
 
   return *this;
 }

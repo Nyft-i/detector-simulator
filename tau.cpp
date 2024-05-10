@@ -42,28 +42,38 @@ Tau::Tau(double con_energy, int con_pap, string con_decay_mode)
 // Deep Copy Constructor
 Tau::Tau(const Tau& copy_from)
 {
-  Particle::operator=(copy_from);
+  true_energy = copy_from.true_energy;
+  rest_mass = copy_from.rest_mass;
+  charge = copy_from.charge;
+  pap_status = copy_from.pap_status;
+  from_tau = copy_from.from_tau;
+  name = copy_from.name;
   decay_mode = copy_from.decay_mode;
   decay_products = copy_from.decay_products;
+  detected_energies = std::make_unique<vector<double>>(*copy_from.detected_energies);
 }
 
 // Move Constructor
 Tau::Tau(Tau&& move_from)
 {
-  Particle::operator=(std::move(move_from));
+  true_energy = move_from.true_energy;
+  rest_mass = move_from.rest_mass;
+  charge = move_from.charge;
+  name = std::move(move_from.name);
+  pap_status = move_from.pap_status;
+  from_tau = move_from.from_tau;
   decay_mode = std::move(move_from.decay_mode);
   decay_products = std::move(move_from.decay_products);
+  detected_energies = std::move(move_from.detected_energies);
 
   // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
   move_from.rest_mass = 0;
   move_from.charge = 0;
   move_from.pap_status = 0;
-  move_from.detected_energies->clear();
   move_from.from_tau = false;
   move_from.name = "moved particle";
-
-  // Tau Specific
+  move_from.detected_energies = nullptr;
   move_from.decay_mode = "";
   move_from.decay_products.clear();
 }
@@ -80,9 +90,15 @@ Tau& Tau::operator=(const Tau& copy_from)
   if(&copy_from==this) return *this;
   
   // Copy the data
-  Particle::operator=(copy_from);
+  true_energy = copy_from.true_energy;
+  rest_mass = copy_from.rest_mass;
+  charge = copy_from.charge;
+  pap_status = copy_from.pap_status;
+  from_tau = copy_from.from_tau;
+  name = copy_from.name;
   decay_mode = copy_from.decay_mode;
   decay_products = copy_from.decay_products;
+  detected_energies = std::make_unique<vector<double>>(*copy_from.detected_energies);
 
   return *this;
 }
@@ -92,25 +108,29 @@ Tau& Tau::operator=(Tau&& move_from)
   // Make sure we're not moving from ourself.
   if(&move_from == this) return *this;
   
-  // Move the data
-  Particle::operator=(std::move(move_from));
+  true_energy = move_from.true_energy;
+  rest_mass = move_from.rest_mass;
+  charge = move_from.charge;
+  name = std::move(move_from.name);
+  pap_status = move_from.pap_status;
+  from_tau = move_from.from_tau;
   decay_mode = std::move(move_from.decay_mode);
   decay_products = std::move(move_from.decay_products);
+  detected_energies = std::move(move_from.detected_energies);
 
-  
   // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
   move_from.rest_mass = 0;
   move_from.charge = 0;
   move_from.pap_status = 0;
-  move_from.detected_energies->clear();
   move_from.from_tau = false;
   move_from.name = "moved particle";
-
-  // Tau Specific
   move_from.decay_mode = "";
   move_from.decay_products.clear();
+  move_from.detected_energies = nullptr;
 
+
+  // Move the data
   return *this;
 }
 

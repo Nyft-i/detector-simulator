@@ -25,8 +25,10 @@ Neutrino::Neutrino(const Neutrino& copy_from)
   charge = copy_from.charge;
   name = copy_from.name;
   pap_status = copy_from.pap_status;
+  from_tau = copy_from.from_tau;
   flavour = copy_from.flavour;
   has_interacted = copy_from.has_interacted;
+  detected_energies = std::make_unique<vector<double>>(*copy_from.detected_energies);
 }
 
 // Move Constructor
@@ -37,17 +39,21 @@ Neutrino::Neutrino(Neutrino&& move_from)
   charge = move_from.charge;
   name = std::move(move_from.name);
   pap_status = move_from.pap_status;
+  from_tau = move_from.from_tau;
   flavour = move_from.flavour;
   has_interacted = move_from.has_interacted;
+  detected_energies = std::move(move_from.detected_energies);
 
   // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
   move_from.rest_mass = 0;
   move_from.charge = 0;
   move_from.pap_status = 0;
+  move_from.from_tau = false;
   move_from.flavour = 0;
   move_from.has_interacted = false;
   move_from.name = "";
+  move_from.detected_energies = nullptr;
 }
 
 
@@ -67,8 +73,10 @@ Neutrino& Neutrino::operator=(const Neutrino& copy_from)
   charge = copy_from.charge;
   name = copy_from.name;
   pap_status = copy_from.pap_status;
+  from_tau = copy_from.from_tau;
   flavour = copy_from.flavour;
   has_interacted = copy_from.has_interacted;
+  detected_energies = std::make_unique<vector<double>>(*copy_from.detected_energies);
 
   return *this;
 }
@@ -84,17 +92,21 @@ Neutrino& Neutrino::operator=(Neutrino&& move_from)
   charge = move_from.charge;
   name = std::move(move_from.name);
   pap_status = move_from.pap_status;
+  from_tau = move_from.from_tau;
   flavour = move_from.flavour;
   has_interacted = move_from.has_interacted;
+  detected_energies = std::move(move_from.detected_energies);
   
   // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
   move_from.rest_mass = 0;
   move_from.charge = 0;
-  pap_status = 0;
-  flavour = 0;
-  has_interacted = false;
-  move_from.name = "moved particle";
+  move_from.pap_status = 0;
+  move_from.from_tau = false;
+  move_from.flavour = 0;
+  move_from.has_interacted = false;
+  move_from.name = "";
+  move_from.detected_energies = nullptr;
   
   return *this;
 }

@@ -46,8 +46,11 @@ Muon::Muon(const Muon& copy_from)
   charge = copy_from.charge;
   name = copy_from.name;
   pap_status = copy_from.pap_status;
+  from_tau = copy_from.from_tau;
   tracker_energy = copy_from.tracker_energy;
   chamber_energy = copy_from.chamber_energy;
+  interacted_with_muon_detector = copy_from.interacted_with_muon_detector;
+  detected_energies = std::make_unique<vector<double>>(*copy_from.detected_energies);
 }
 
 // Move Constructor
@@ -58,17 +61,23 @@ Muon::Muon(Muon&& move_from)
   charge = move_from.charge;
   name = std::move(move_from.name);
   pap_status = move_from.pap_status;
+  from_tau = move_from.from_tau;
   tracker_energy = move_from.tracker_energy;
   chamber_energy = move_from.chamber_energy;
+  interacted_with_muon_detector = move_from.interacted_with_muon_detector;
+  detected_energies = std::move(move_from.detected_energies);
 
   // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
   move_from.rest_mass = 0;
   move_from.charge = 0;
   move_from.pap_status = 0;
+  move_from.from_tau = false;
+  move_from.name = "";
   move_from.tracker_energy = 0;
   move_from.chamber_energy = 0;
-  move_from.name = "";
+  move_from.interacted_with_muon_detector = false;
+  move_from.detected_energies = nullptr;
 }
 
 
@@ -88,8 +97,11 @@ Muon& Muon::operator=(const Muon& copy_from)
   charge = copy_from.charge;
   name = copy_from.name;
   pap_status = copy_from.pap_status;
+  from_tau = copy_from.from_tau;
   tracker_energy = copy_from.tracker_energy;
   chamber_energy = copy_from.chamber_energy;
+  interacted_with_muon_detector = copy_from.interacted_with_muon_detector;
+  detected_energies = std::make_unique<vector<double>>(*copy_from.detected_energies);
 
   return *this;
 }
@@ -105,17 +117,23 @@ Muon& Muon::operator=(Muon&& move_from)
   charge = move_from.charge;
   name = std::move(move_from.name);
   pap_status = move_from.pap_status;
+  from_tau = move_from.from_tau;  
   tracker_energy = move_from.tracker_energy; 
   chamber_energy = move_from.chamber_energy;
+  interacted_with_muon_detector = move_from.interacted_with_muon_detector;
+  detected_energies = std::move(move_from.detected_energies);
   
   // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
   move_from.rest_mass = 0;
   move_from.charge = 0;
   pap_status = 0;
+  move_from.from_tau = false;
   tracker_energy = 0;
   chamber_energy = 0;
   move_from.name = "moved particle";
+  move_from.interacted_with_muon_detector = false;
+  move_from.detected_energies = nullptr;
   
   return *this;
 }

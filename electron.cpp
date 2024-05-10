@@ -30,6 +30,7 @@ Electron::Electron(const Electron& copy_from)
   charge = copy_from.charge;
   name = copy_from.name;
   pap_status = copy_from.pap_status;
+  from_tau = copy_from.from_tau;
   cal_deposits = std::make_unique<vector<double>>(*copy_from.cal_deposits);
 }
 
@@ -41,6 +42,7 @@ Electron::Electron(Electron&& move_from)
   charge = move_from.charge;
   name = std::move(move_from.name);
   pap_status = move_from.pap_status;
+  from_tau = move_from.from_tau;
   cal_deposits = std::move(move_from.cal_deposits);
   
   // Set attributes of move_from to nothing.
@@ -48,7 +50,9 @@ Electron::Electron(Electron&& move_from)
   move_from.rest_mass = 0;
   move_from.charge = 0;
   move_from.pap_status = 0;
+  move_from.from_tau = false;
   move_from.name = "";
+  move_from.cal_deposits = std::make_unique<vector<double>>(2, 0);
 }
 
 
@@ -68,6 +72,7 @@ Electron& Electron::operator=(const Electron& copy_from)
   charge = copy_from.charge;
   name = copy_from.name;
   pap_status = copy_from.pap_status;
+  from_tau = copy_from.from_tau;
   cal_deposits = std::make_unique<vector<double>>(*copy_from.cal_deposits);
   
   return *this;
@@ -84,14 +89,19 @@ Electron& Electron::operator=(Electron&& move_from)
   charge = move_from.charge;
   name = std::move(move_from.name);
   pap_status = move_from.pap_status;
+  from_tau = move_from.from_tau;
   cal_deposits = std::move(move_from.cal_deposits);
+  detected_energies = std::move(move_from.detected_energies);
   
   // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
   move_from.rest_mass = 0;
   move_from.charge = 0;
   pap_status = 0;
+  from_tau = false;
   move_from.name = "moved particle";
+  move_from.cal_deposits = std::make_unique<vector<double>>(2, 0);
+  move_from.detected_energies->clear();
   
   return *this;
 }

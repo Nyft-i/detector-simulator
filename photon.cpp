@@ -22,8 +22,10 @@ Photon::Photon(const Photon& copy_from)
   rest_mass = copy_from.rest_mass;
   charge = copy_from.charge;
   pap_status = copy_from.pap_status;
+  from_tau = copy_from.from_tau;
   name = copy_from.name;
   cal_deposits = std::make_unique<vector<double>>(*copy_from.cal_deposits);
+  detected_energies = std::make_unique<vector<double>>(*copy_from.detected_energies);
 }
 
 // Move Constructor
@@ -34,14 +36,19 @@ Photon::Photon(Photon&& move_from)
   charge = move_from.charge;
   name = std::move(move_from.name);
   pap_status = move_from.pap_status;
+  from_tau = move_from.from_tau;
   cal_deposits = std::move(move_from.cal_deposits);
+  detected_energies = std::move(move_from.detected_energies);
   
   // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
   move_from.rest_mass = 0;
   move_from.charge = 0;
   move_from.pap_status = 0;
+  move_from.from_tau = false;
   move_from.name = "";
+  move_from.cal_deposits = nullptr;
+  move_from.detected_energies = nullptr;
 }
 
 
@@ -60,8 +67,10 @@ Photon& Photon::operator=(const Photon& copy_from)
   rest_mass = copy_from.rest_mass;
   charge = copy_from.charge;
   pap_status = copy_from.pap_status;
+  from_tau = copy_from.from_tau;
   name = copy_from.name;
   cal_deposits = std::make_unique<vector<double>>(*copy_from.cal_deposits);
+  detected_energies = std::make_unique<vector<double>>(*copy_from.detected_energies);
   
   return *this;
 }
@@ -77,14 +86,19 @@ Photon& Photon::operator=(Photon&& move_from)
   charge = move_from.charge;
   name = std::move(move_from.name);
   pap_status = move_from.pap_status;
+  from_tau = move_from.from_tau;
   cal_deposits = std::move(move_from.cal_deposits);
+  detected_energies = std::move(move_from.detected_energies);
   
   // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
   move_from.rest_mass = 0;
   move_from.charge = 0;
   move_from.pap_status = 0;
+  move_from.from_tau = false;
   move_from.name = "moved particle";
+  move_from.cal_deposits = nullptr;
+  move_from.detected_energies = nullptr;
   
   return *this;
 }

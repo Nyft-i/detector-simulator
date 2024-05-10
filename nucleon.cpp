@@ -63,7 +63,11 @@ Nucleon::Nucleon(const Nucleon& copy_from)
   rest_mass = copy_from.rest_mass;
   charge = copy_from.charge;
   name = copy_from.name;
+  pap_status = copy_from.pap_status;
+  from_tau = copy_from.from_tau;
   nuc_type = copy_from.nuc_type;
+  cal_deposits = std::make_unique<vector<double>>(*copy_from.cal_deposits);
+  detected_energies = std::make_unique<vector<double>>(*copy_from.detected_energies);
 }
 
 // Move
@@ -73,14 +77,22 @@ Nucleon::Nucleon(Nucleon&& move_from)
   rest_mass = move_from.rest_mass;
   charge = move_from.charge;
   name = std::move(move_from.name);
+  pap_status = move_from.pap_status;
+  from_tau = move_from.from_tau;
   nuc_type = std::move(move_from.nuc_type);
+  cal_deposits = std::move(move_from.cal_deposits);
+  detected_energies = std::move(move_from.detected_energies);
 
   // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
   move_from.rest_mass = 0;
   move_from.charge = 0;
   move_from.name = "";
+  move_from.pap_status = 0;
+  move_from.from_tau = false;
   move_from.nuc_type = "";
+  move_from.cal_deposits = nullptr;
+  move_from.detected_energies = nullptr;
 }
 
 // Destructor 
@@ -97,7 +109,11 @@ Nucleon& Nucleon::operator=(const Nucleon& copy_from)
   rest_mass = copy_from.rest_mass;
   charge = copy_from.charge;
   name = copy_from.name;
+  pap_status = copy_from.pap_status;
+  from_tau = copy_from.from_tau;
   nuc_type = copy_from.nuc_type;
+  cal_deposits = std::make_unique<vector<double>>(*copy_from.cal_deposits);
+  detected_energies = std::make_unique<vector<double>>(*copy_from.detected_energies);
 
   return *this;
 }
@@ -113,14 +129,22 @@ Nucleon& Nucleon::operator=(Nucleon&& move_from)
   rest_mass = move_from.rest_mass;
   charge = move_from.charge;
   name = std::move(move_from.name);
+  pap_status = move_from.pap_status;
+  from_tau = move_from.from_tau;
   nuc_type = std::move(move_from.nuc_type);
+  cal_deposits = std::move(move_from.cal_deposits);
+  detected_energies = std::move(move_from.detected_energies);
 
   // Set attributes of move_from to nothing.
   move_from.true_energy = 0;
   move_from.rest_mass = 0;
   move_from.charge = 0;
   move_from.name = "";
+  move_from.pap_status = 0;
+  move_from.from_tau = false;
   move_from.nuc_type = "";
+  move_from.cal_deposits = nullptr;
+  move_from.detected_energies = nullptr;
 
   return *this;
 }
