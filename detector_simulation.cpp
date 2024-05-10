@@ -113,29 +113,29 @@ int main()
   // and also one at the end of every event. I have chosen to do both but this leads to this relatively reduntant code
   // I could have merged all the event particles inso a single event if each of the four events did not require its own summary.
   // Information about all the events.
-  int total_tracker_particles;
+  int total_tracker_particles=0;
   for(int i=0; i<results.size(); i++) total_tracker_particles += results[i]->get_tracker_particles();
-  double total_tracker_energy;
+  double total_tracker_energy=0;
   for(int i=0; i<results.size(); i++) total_tracker_energy += results[i]->get_tracker_energy();
 
-  int total_calorimeter_particles;
+  int total_calorimeter_particles=0;
   for(int i=0; i<results.size(); i++) total_calorimeter_particles += results[i]->get_calorimeter_particles();
-  double total_calorimeter_energy;
+  double total_calorimeter_energy=0;
   for(int i=0; i<results.size(); i++) total_calorimeter_energy += results[i]->get_calorimeter_energy();
 
-  int total_muon_particles;
+  int total_muon_particles=0;
   for(int i=0; i<results.size(); i++) total_muon_particles += results[i]->get_muon_particles();
-  double total_muon_energy;
+  double total_muon_energy=0;
   for(int i=0; i<results.size(); i++) total_muon_energy += results[i]->get_muon_energy();
 
-  int total_correct_guesses;
+  int total_correct_guesses=0;
   for(int i=0; i<results.size(); i++) total_correct_guesses += results[i]->get_correct_guesses();
-  int total_particles;
+  int total_particles=0;
   for(int i=0; i<results.size(); i++) total_particles += results[i]->get_num_particles_detected();
 
-  double total_detected_energy;
+  double total_detected_energy=0;
   for(int i=0; i<results.size(); i++) total_detected_energy += results[i]->get_total_energy_detected();
-  double total_input_energy;
+  double total_input_energy=0;
   for(int i=0; i<results.size(); i++) total_input_energy += results[i]->get_input_energy();
 
   std::cout<<"__ ALL EVENTS __"<<std::endl;
